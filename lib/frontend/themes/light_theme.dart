@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 
+const Color black_font_color = Color(0xff14192b);
+
 ThemeData light_theme = ThemeData(
   brightness: Brightness.light,
+  scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
+    displaySmall: TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 14, 
+      color: Colors.white
+    ),
+    displayMedium: TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 18, 
+      fontWeight: FontWeight.w600,
+      color: Colors.white
+    ),
+    titleMedium: TextStyle(
+      fontFamily: "Quicksand",
+      fontSize: 22, 
+      fontWeight: FontWeight.w600,
+      color: black_font_color
+    )
   ),
   appBarTheme: const AppBarTheme(
     centerTitle: true,
@@ -16,7 +34,8 @@ ThemeData light_theme = ThemeData(
         width: 0.35
       )
     ),
-    iconTheme: IconThemeData(color: Colors.black),
+    iconTheme: IconThemeData(color: black_font_color),
   ),
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+  
 );

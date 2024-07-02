@@ -14,7 +14,7 @@ ThemeData light_theme = ThemeData(
     ),
     displayMedium: TextStyle(
         fontFamily: "Quicksand",
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: FontWeight.w600,
         color: Colors.white),
     

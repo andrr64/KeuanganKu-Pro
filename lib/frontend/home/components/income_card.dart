@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
@@ -13,7 +14,6 @@ class IncomeCard extends StatefulWidget {
 }
 
 class _IncomeCardState extends State<IncomeCard> {
-
   Widget content(BuildContext context) {
     List<Color> generated3color = generate3Color(widget.bg_color);
 
@@ -34,7 +34,11 @@ class _IncomeCardState extends State<IncomeCard> {
             )
           ],
         ),
-        k_button(context, (){}, icon: Icons.add, text: 'Add', mainColor: generated3color[1], iconColor: Colors.white)
+        k_button(context, () {},
+            icon: Icons.add,
+            text: 'Add',
+            mainColor: generated3color[1],
+            iconColor: Colors.white)
       ],
     ));
   }
@@ -42,6 +46,11 @@ class _IncomeCardState extends State<IncomeCard> {
   @override
   Widget build(BuildContext context) {
     return KCardPlus(context, content(context),
-        title: 'Income', color: widget.bg_color);
+        title: 'Income',
+        color: widget.bg_color,
+        icon: const Icon(
+          Icons.arrow_upward,
+          color: Colors.white,
+        ));
   }
 }

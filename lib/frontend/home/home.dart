@@ -3,6 +3,7 @@ import 'package:keuanganku/frontend/components/navbar/drawer.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/home/components/balance_card.dart';
+import 'package:keuanganku/frontend/home/components/expense_card.dart';
 import 'package:keuanganku/frontend/home/components/income_card.dart';
 
 Widget content(BuildContext context) {
@@ -13,14 +14,17 @@ Widget content(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BalanceCard(name: 'Andreas', balance: 12000000.00),
+        dummyHeight(27.5),
+        const BalanceCard(name: 'Andreas', balance: 12000000.00),
         dummyHeight(27.5),
         const IncomeCard(),
+        dummyHeight(27.5),
+        const ExpenseCard()
       ],
     ),
   );
 }
-  
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 

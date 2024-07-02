@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/components/cards/k_card.dart';
+import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 
 class BalanceCard extends StatefulWidget {
@@ -15,13 +15,17 @@ class BalanceCard extends StatefulWidget {
 class _BalanceCardState extends State<BalanceCard> {
   @override
   Widget build(BuildContext context) {
-    return KCard(
-      _child(context, name: widget.name, balance: widget.balance),
-      const Color(0xff363658),
-    );
+    return KCardPlus(
+        context, content(context, name: widget.name, balance: widget.balance),
+        color: const Color(0xff363658),
+        title: 'Wallet',
+        icon: const Icon(
+          Icons.wallet,
+          color: Colors.white,
+        ));
   }
 
-  Widget _child(BuildContext context, {String? name, double? balance}) {
+  Widget content(BuildContext context, {String? name, double? balance}) {
     name = name ?? 'John';
     balance = balance ?? 0;
     return Row(

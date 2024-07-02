@@ -7,11 +7,22 @@ ThemeData light_theme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   textTheme: const TextTheme(
-    displaySmall:
-        TextStyle(fontFamily: "Quicksand", fontSize: 14, color: Colors.white),
+    displaySmall: TextStyle(
+      fontFamily: "Quicksand", 
+      fontSize: 14, 
+      color: Colors.white
+    ),
     displayMedium: TextStyle(
         fontFamily: "Quicksand",
-        fontSize: 18,
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: Colors.white),
+    
+    labelMedium: TextStyle(fontFamily: "Quicksand", fontSize: 14, color: Colors.white),
+
+    titleSmall: TextStyle(
+        fontFamily: "Quicksand",
+        fontSize: 14,
         fontWeight: FontWeight.w600,
         color: Colors.white),
     titleMedium: TextStyle(
@@ -19,11 +30,6 @@ ThemeData light_theme = ThemeData(
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: black_font_color),
-    titleSmall: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.white),
   ),
   appBarTheme: const AppBarTheme(
     centerTitle: true,

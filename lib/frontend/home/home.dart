@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/navbar/drawer.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/home/components/balance_card.dart';
-import 'package:keuanganku/frontend/home/components/expense_card.dart';
-import 'package:keuanganku/frontend/home/components/income_card.dart';
+import 'package:keuanganku/frontend/home/widgets/balance_card.dart';
+import 'package:keuanganku/frontend/home/widgets/expense_card.dart';
+import 'package:keuanganku/frontend/home/widgets/income_card.dart';
 
 Widget content(BuildContext context) {
   return Padding(

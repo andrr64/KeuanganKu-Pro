@@ -39,7 +39,6 @@ ThemeData light_theme = ThemeData(
   ),
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
   iconTheme: const IconThemeData(
-    size: 24,
     color: Colors.white,
   )
 );

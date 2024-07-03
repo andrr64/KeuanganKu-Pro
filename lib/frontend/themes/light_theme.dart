@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color black_font_color = Color(0xff14192b);
+const Color BLACK_FONT_COLOR = Color(0xff14192b);
 
 ThemeData light_theme = ThemeData(
   brightness: Brightness.light,
@@ -29,13 +29,17 @@ ThemeData light_theme = ThemeData(
         fontFamily: "Quicksand",
         fontSize: 22,
         fontWeight: FontWeight.w600,
-        color: black_font_color),
+        color: BLACK_FONT_COLOR),
   ),
   appBarTheme: const AppBarTheme(
     centerTitle: true,
     color: Colors.white,
     shape: Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
-    iconTheme: IconThemeData(color: black_font_color),
+    iconTheme: IconThemeData(color: BLACK_FONT_COLOR),
   ),
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+  iconTheme: const IconThemeData(
+    size: 24,
+    color: Colors.white,
+  )
 );

@@ -37,40 +37,48 @@ class _IncomeCardState extends State<IncomeCard> {
 
   Widget content(BuildContext context) {
     final KDropdown<DateRange> data_range =
-        KDropdown(KDropdownItem( DateRange.weekly.getDateRangeMap()));
+        KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
     final List<Color> generated3color = generate3Color(widget.bg_color);
 
-    return (Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            data_range.dropdownButton(
-              widget.income_card_data.dateRangeValue,
-              onDropdownDateRangeChange,
-              icon_theme: Theme.of(context).iconTheme,
-              dropdown_bg_color: generated3color[1],
-              text_style:  Theme.of(context).textTheme.labelMedium,
-            ),
-            Text(
-              'Income this month',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            Text(
-              currencyFormat(1200000),
-              style: Theme.of(context).textTheme.displayMedium,
-            )
-          ],
-        ),
-        k_button(context, () {},
-            icon: Icons.add,
-            text: 'Add',
-            mainColor: generated3color[1],
-            iconColor: Colors.white)
-      ],
-    ));
+    return (
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          data_range.dropdownButton(
+            widget.income_card_data.dateRangeValue,
+            onDropdownDateRangeChange,
+            icon_theme: Theme.of(context).iconTheme,
+            dropdown_bg_color: generated3color[1],
+            text_style: Theme.of(context).textTheme.labelMedium,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Income this month',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    currencyFormat(1200000),
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )
+                ],
+              ),
+              k_button(context, () {},
+                  icon: Icons.add,
+                  text: 'Add',
+                  mainColor: generated3color[1],
+                  iconColor: Colors.white)
+            ],
+          )
+        ],
+      )
+    );
   }
 
   @override

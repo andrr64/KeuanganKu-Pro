@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 
 class BalanceCard extends StatefulWidget {
@@ -34,27 +35,15 @@ class _BalanceCardState extends State<BalanceCard> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Hi',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            Text(
-              name,
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+            KText(context, 'Hi', KTextStyle.title, KTextStyleType.small),
+            KText(context, name, KTextStyle.display, KTextStyleType.medium),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              'Balance',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            Text(
-              currencyFormat(balance),
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+            KText(context, 'Balance', KTextStyle.title, KTextStyleType.small),
+            KText(context, currencyFormat(balance), KTextStyle.display, KTextStyleType.medium),
           ],
         ),
       ],

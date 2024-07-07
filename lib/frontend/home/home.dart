@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/navbar/drawer.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/home/widgets/balance_card.dart';
@@ -44,10 +45,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Home',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: KText(context, 'Home', KTextStyle.title, KTextStyleType.medium)
       ),
       drawer: drawer(context),
       body: content(context),

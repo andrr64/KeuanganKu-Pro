@@ -3,6 +3,7 @@ import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 
@@ -19,7 +20,7 @@ class IncomeCardData {
 class IncomeCard extends StatefulWidget {
   const IncomeCard(this.income_card_data, {super.key});
 
-  final bg_color = const Color(0xff3EAA70);
+  final bg_color = const Color(0xff419D6B);
   final IncomeCardData income_card_data;
 
   @override
@@ -59,14 +60,8 @@ class _IncomeCardState extends State<IncomeCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Income this month',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    currencyFormat(1200000),
-                    style: Theme.of(context).textTheme.displayMedium,
-                  )
+                  KText(context, 'Income this month', KTextStyle.title, KTextStyleType.small),
+                  KText(context, currencyFormat(12000000), KTextStyle.display, KTextStyleType.medium)
                 ],
               ),
               k_button(context, () {},

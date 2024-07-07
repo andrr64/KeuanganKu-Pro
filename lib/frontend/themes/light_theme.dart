@@ -23,12 +23,10 @@ ThemeData light_theme = ThemeData(
     titleSmall: TextStyle(
         fontFamily: "Quicksand",
         fontSize: 14,
-        fontWeight: FontWeight.w600,
         color: Colors.white),
     titleMedium: TextStyle(
         fontFamily: "Quicksand",
         fontSize: 22,
-        fontWeight: FontWeight.w600,
         color: BLACK_FONT_COLOR),
   ),
   appBarTheme: const AppBarTheme(

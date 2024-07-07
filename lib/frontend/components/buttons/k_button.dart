@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 
-Widget k_button(BuildContext context, void Function() onPressed, {IconData? icon, String? text, Color? mainColor, Color? iconColor}){
+Widget k_button(BuildContext context, void Function() onPressed, {bool withoutBg = false, IconData? icon, String? text, Color? mainColor, Color? iconColor}){
+
+  List<Widget> isWithIcon(){
+    if (icon != null){
+      return [ Container(
+        decoration: BoxDecoration(
+            color: (withoutBg? Colors.transparent : iconColor),
+            borderRadius: const BorderRadius.all(Radius.circular(5))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: Icon(icon, color: withoutBg? Colors.white : mainColor,),
+        ),
+      ), withoutBg? Container() : dummyWidth(5)];
+    } else {
+      return [Container()];
+    }
+  }
+
+  Widget isWithText(){
+    if (text != null){
+      return KText(context, text, KTextStyle.title, KTextStyleType.small);
+    }
+    return Container();
+  }
+
   return FilledButton(
     onPressed: onPressed,
     style: FilledButton.styleFrom(
@@ -11,18 +37,8 @@ Widget k_button(BuildContext context, void Function() onPressed, {IconData? icon
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: iconColor,
-            borderRadius: const BorderRadius.all(Radius.circular(5))
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Icon(icon, color: mainColor,),
-          ),
-        ),
-        dummyWidth(5),
-        Text(text?? 'Button', style: Theme.of(context).textTheme.titleSmall,)
+        ...isWithIcon(),
+        isWithText()
       ],
     )
   );

@@ -5,6 +5,7 @@ import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
+import 'package:keuanganku/frontend/home/pages/input_income_data_form.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 
 class IncomeCardData {
@@ -36,6 +37,15 @@ class _IncomeCardState extends State<IncomeCard> {
     });
   }
 
+  void when_AddButton_Pressed() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context){
+          return const InputIncomeDataForm();
+        }
+    );
+  }
+
   Widget content(BuildContext context) {
     final KDropdown<DateRange> data_range =
         KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
@@ -64,7 +74,7 @@ class _IncomeCardState extends State<IncomeCard> {
                   KText(context, currencyFormat(12000000), KTextStyle.display, KTextStyleType.medium)
                 ],
               ),
-              k_button(context, () {},
+              k_button(context, when_AddButton_Pressed,
                   icon: Icons.add,
                   text: 'Add',
                   mainColor: generated3color[1],

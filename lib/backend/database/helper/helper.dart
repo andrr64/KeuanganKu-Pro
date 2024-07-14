@@ -30,4 +30,10 @@ abstract class DBHelper {
     );
     return result.isNotEmpty;
   }
+
+  Future<void> checkIfNotExistThenCreate(Database db) async {
+    if (!(await checkTable(db))){
+      await createTable(db);
+    }
+  }
 }

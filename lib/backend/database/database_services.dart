@@ -1,6 +1,8 @@
 import 'package:keuanganku/backend/database/helper/expense.dart';
+import 'package:keuanganku/backend/database/helper/expense_category.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/backend/database/helper/income_category.dart';
+import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,11 +12,13 @@ class DatabaseServices {
   Database? _database;
 
   createTable(Database db, int version){
-    DBHelperExpense().createTable(db);
+    DBHelperWallet().checkIfNotExistThenCreate(db);
 
+    DBHelperExpense().checkIfNotExistThenCreate(db);
+    DBHelperExpenseCategory().checkIfNotExistThenCreate(db);
 
-    DBHelperIncome().createTable(db);
-    DBHelperIncomeCategory().createTable(db);
+    DBHelperIncome().checkIfNotExistThenCreate(db);
+    DBHelperIncomeCategory().checkIfNotExistThenCreate(db);
   }
 
   Future<void> openDb() async {

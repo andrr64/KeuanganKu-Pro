@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 Widget kNumField({
   required String title,
@@ -15,10 +13,10 @@ Widget kNumField({
     decoration: InputDecoration(
         label: Text(title),
         prefixIcon: icon,
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black87, width: 2)
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black45, width: 2)
         )
     ),

@@ -22,9 +22,9 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
         key: _formKey,
         child: Column(
           children: [
-            kTextField (title: 'Title', icon: Icon(Icons.title)),
+            kTextField (title: 'Title', icon: const Icon(Icons.title)),
             dummyHeight(22.5),
-            kNumField(title: 'Amount', icon: Icon(Icons.attach_money))
+            kNumField(title: 'Amount', icon: const Icon(Icons.attach_money))
           ],
         )
     );

@@ -5,7 +5,7 @@ import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
-import 'package:keuanganku/frontend/home/pages/input_income_data_form.dart';
+import 'package:keuanganku/frontend/home/modal_bottom/input_income_data_form.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 
 class IncomeCardData {

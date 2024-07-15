@@ -7,7 +7,7 @@ import 'package:keuanganku/frontend/utility/color.dart';
 
 class ExpenseCard extends StatefulWidget {
   const ExpenseCard({super.key});
-  final Color bg_color = const Color(0xffB24747);
+  final Color bg_color = const Color(0xffa64646);
 
   @override
   State<ExpenseCard> createState() => _ExpenseCardState();
@@ -25,8 +25,8 @@ class _ExpenseCardState extends State<ExpenseCard> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            KText(context, 'Expense this month', KTextStyle.title, KTextStyleType.small),
-            KText(context, currencyFormat(1200000), KTextStyle.display, KTextStyleType.medium),
+            kText(context, 'Expense this month', KTStyle.label, KTSType.medium, color: Colors.white),
+            kText(context, currencyFormat(1200000), KTStyle.display, KTSType.medium, color: Colors.white),
           ],
         ),
         k_button(context, () {},

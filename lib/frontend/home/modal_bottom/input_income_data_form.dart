@@ -16,32 +16,58 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   final _formKey = GlobalKey<FormState>();
   String title = '';
 
-  Widget form(BuildContext context){
+  Widget form(BuildContext context) {
     return Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            kTextField (title: 'Title', icon: const Icon(Icons.title)),
+            kText(context, 'Income', KTStyle.title, KTSType.large),
+            dummyHeight(5),
+            kText(context, 'Add new income data', KTStyle.title, KTSType.medium),
             dummyHeight(22.5),
-            kNumField(title: 'Amount', icon: const Icon(Icons.attach_money))
+            kTextField(title: 'Title', icon: const Icon(Icons.title)),
+            dummyHeight(22.5),
+            kNumField(title: 'Amount', icon: const Icon(Icons.attach_money)),
+            dummyHeight(22.5),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    child: Column(
+                      children: const [Text('Save', style: TextStyle(color: Colors.white),)],
+                    )),
+                dummyWidth(10),
+                ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: Column(
+                      children: [Text('Clear', style: TextStyle(color: Colors.white),)],
+                    ))
+              ],
+            )
           ],
-        )
-    );
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: KText(context, 'Form', KTextStyle.title, KTextStyleType.medium),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-            padding: EdgeInsets.symmetric(vertical: vh(context, 2.5), horizontal: vw(context, 5)),
-            child: form(context)
+        appBar: AppBar(
+          title:
+              kText(context, 'Form', KTStyle.title, KTSType.medium),
         ),
-      )
-    );
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: vh(context, 2.5), horizontal: vw(context, 5)),
+              child: form(context)),
+        ));
   }
 }

@@ -23,7 +23,7 @@ Widget k_button(BuildContext context, void Function() onPressed, {bool withoutBg
 
   Widget isWithText(){
     if (text != null){
-      return KText(context, text, KTextStyle.title, KTextStyleType.small);
+      return kText(context, text, KTStyle.title, KTSType.small, color: Colors.white);
     }
     return Container();
   }

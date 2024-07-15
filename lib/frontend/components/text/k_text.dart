@@ -1,69 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/themes/light_theme.dart';
 
-enum KTextStyle {
+enum KTStyle {
   display, body, label, title
 }
 
-enum KTextStyleType {
+enum KTSType {
   small, medium, large
 }
 
-Text KText(BuildContext context, String text, KTextStyle style, KTextStyleType type) {
+TextStyle _getTextStyle(BuildContext context, KTStyle style, KTSType type, Color color){
   TextStyle? textStyle;
-
   switch (style) {
-    case KTextStyle.display:
+    case KTStyle.display:
       switch (type) {
-        case KTextStyleType.small:
+        case KTSType.small:
           textStyle = Theme.of(context).textTheme.displaySmall;
           break;
-        case KTextStyleType.medium:
+        case KTSType.medium:
           textStyle = Theme.of(context).textTheme.displayMedium;
           break;
-        case KTextStyleType.large:
+        case KTSType.large:
           textStyle = Theme.of(context).textTheme.displayLarge;
           break;
       }
       break;
-    case KTextStyle.body:
+    case KTStyle.body:
       switch (type) {
-        case KTextStyleType.small:
+        case KTSType.small:
           textStyle = Theme.of(context).textTheme.bodySmall;
           break;
-        case KTextStyleType.medium:
+        case KTSType.medium:
           textStyle = Theme.of(context).textTheme.bodyMedium;
           break;
-        case KTextStyleType.large:
+        case KTSType.large:
           textStyle = Theme.of(context).textTheme.bodyLarge;
           break;
       }
       break;
-    case KTextStyle.label:
+    case KTStyle.label:
       switch (type) {
-        case KTextStyleType.small:
+        case KTSType.small:
           textStyle = Theme.of(context).textTheme.labelSmall;
           break;
-        case KTextStyleType.medium:
+        case KTSType.medium:
           textStyle = Theme.of(context).textTheme.labelMedium;
           break;
-        case KTextStyleType.large:
+        case KTSType.large:
           textStyle = Theme.of(context).textTheme.labelLarge;
           break;
       }
       break;
-    case KTextStyle.title:
+    case KTStyle.title:
       switch (type) {
-        case KTextStyleType.small:
+        case KTSType.small:
           textStyle = Theme.of(context).textTheme.titleSmall;
           break;
-        case KTextStyleType.medium:
+        case KTSType.medium:
           textStyle = Theme.of(context).textTheme.titleMedium;
           break;
-        case KTextStyleType.large:
+        case KTSType.large:
           textStyle = Theme.of(context).textTheme.titleLarge;
           break;
       }
       break;
   }
-  return Text(text, style: textStyle);
+
+  return TextStyle(
+    fontSize: textStyle!.fontSize,
+    fontFamily: textStyle.fontFamily,
+    fontWeight: textStyle.fontWeight,
+    color: color
+  );
+}
+
+Text kText(BuildContext context, String text, KTStyle style, KTSType type, {
+  Color color = BLACK_FONT_COLOR
+}){
+  return Text(text, style: _getTextStyle(context, style, type, color));
 }

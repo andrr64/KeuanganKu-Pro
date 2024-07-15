@@ -44,7 +44,12 @@ Widget KCardPlus(BuildContext context, Widget child,
                   left: 10, bottom: 3.5, top: 3.5, right: 15),
               child: Text(
                 title?? 'Widget',
-                style: Theme.of(context).textTheme.labelMedium,
+                style: TextStyle(
+                  fontFamily: Theme.of(context).textTheme.labelMedium?.fontFamily,
+                  fontSize: Theme.of(context).textTheme.labelMedium?.fontSize,
+                  fontWeight: Theme.of(context).textTheme.labelMedium?.fontWeight,
+                  color: Colors.white
+                ),
               ),
             ),
           )),

@@ -30,11 +30,11 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          dummyHeight(15),
+          dummyHeight(10),
           const BalanceCard(name: 'Andreas', balance: 12000000.00),
-          dummyHeight(30),
+          dummyHeight(25),
           IncomeCard(Homepage.data.incomeCardData),
-          dummyHeight(30),
+          dummyHeight(25),
           const ExpenseCard(),
         ],
       ),
@@ -45,7 +45,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: KText(context, 'Home', KTextStyle.title, KTextStyleType.medium)
+        title: kText(context, 'Home', KTStyle.title, KTSType.medium)
       ),
       drawer: drawer(context),
       body: SingleChildScrollView(

@@ -35,15 +35,15 @@ class _BalanceCardState extends State<BalanceCard> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            KText(context, 'Hi', KTextStyle.title, KTextStyleType.small),
-            KText(context, name, KTextStyle.display, KTextStyleType.medium),
+            kText(context, 'Hi', KTStyle.label, KTSType.medium, color: Colors.white),
+            kText(context, name, KTStyle.display, KTSType.medium, color: Colors.white),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            KText(context, 'Balance', KTextStyle.title, KTextStyleType.small),
-            KText(context, currencyFormat(balance), KTextStyle.display, KTextStyleType.medium),
+            kText(context, 'Balance', KTStyle.label, KTSType.medium, color: Colors.white),
+            kText(context, currencyFormat(balance), KTStyle.display, KTSType.medium, color: Colors.white),
           ],
         ),
       ],

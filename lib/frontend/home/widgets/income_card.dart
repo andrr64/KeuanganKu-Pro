@@ -21,7 +21,7 @@ class IncomeCardData {
 class IncomeCard extends StatefulWidget {
   const IncomeCard(this.income_card_data, {super.key});
 
-  final bg_color = const Color(0xff419D6B);
+  final bg_color = const Color(0xff23874b);
   final IncomeCardData income_card_data;
 
   @override
@@ -48,7 +48,6 @@ class _IncomeCardState extends State<IncomeCard> {
     final KDropdown<DateRange> data_range =
         KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
     final List<Color> generated3color = generate3Color(widget.bg_color);
-
     return (
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +58,10 @@ class _IncomeCardState extends State<IncomeCard> {
             onDropdownDateRangeChange,
             icon_theme: Theme.of(context).iconTheme,
             dropdown_bg_color: generated3color[1],
-            text_style: Theme.of(context).textTheme.labelMedium,
+            text_style: const TextStyle(
+              fontFamily: 'Quicksand',
+              fontWeight: FontWeight.w500
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,8 +70,8 @@ class _IncomeCardState extends State<IncomeCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  KText(context, 'Income this month', KTextStyle.title, KTextStyleType.small),
-                  KText(context, currencyFormat(12000000), KTextStyle.display, KTextStyleType.medium)
+                  kText(context, 'Income this month', KTStyle.label, KTSType.medium, color: Colors.white),
+                  kText(context, currencyFormat(12000000), KTStyle.display, KTSType.medium, color: Colors.white)
                 ],
               ),
               k_button(context, when_AddButton_Pressed,

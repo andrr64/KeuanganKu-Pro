@@ -30,12 +30,12 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          dummyHeight(12.5),
+          dummyHeight(15),
           const BalanceCard(name: 'Andreas', balance: 12000000.00),
-          dummyHeight(27.5),
+          dummyHeight(30),
           IncomeCard(Homepage.data.incomeCardData),
-          dummyHeight(27.5),
-          const ExpenseCard()
+          dummyHeight(30),
+          const ExpenseCard(),
         ],
       ),
     );  
@@ -48,7 +48,9 @@ class _HomepageState extends State<Homepage> {
         title: KText(context, 'Home', KTextStyle.title, KTextStyleType.medium)
       ),
       drawer: drawer(context),
-      body: content(context),
+      body: SingleChildScrollView(
+        child: content(context),
+      ),
     );
   }
 }

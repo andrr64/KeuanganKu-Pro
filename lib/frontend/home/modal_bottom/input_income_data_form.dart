@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/form/k_numfield.dart';
+import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
@@ -12,9 +14,19 @@ class InputIncomeDataForm extends StatefulWidget {
 }
 
 class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
-  Widget header(BuildContext context) {
-    return Row(
+  final _formKey = GlobalKey<FormState>();
+  String title = '';
 
+  Widget form(BuildContext context){
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            kTextField (title: 'Title', icon: Icon(Icons.title)),
+            dummyHeight(22.5),
+            kNumField(title: 'Amount', icon: Icon(Icons.attach_money))
+          ],
+        )
     );
   }
 
@@ -22,17 +34,15 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: KText(context, 'New Income', KTextStyle.title, KTextStyleType.medium),
+        title: KText(context, 'Form', KTextStyle.title, KTextStyleType.medium),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: vh(context, 2.5), horizontal: vw(context, 5)),
-        child: Column(
-          children: [
-            header(context),
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: vh(context, 2.5), horizontal: vw(context, 5)),
+            child: form(context)
         ),
-      ),
+      )
     );
   }
 }

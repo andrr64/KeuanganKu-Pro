@@ -38,11 +38,9 @@ class _IncomeCardState extends State<IncomeCard> {
   }
 
   void when_AddButton_Pressed() {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context){
-          return const InputIncomeDataForm();
-        }
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const InputIncomeDataForm())
     );
   }
 

@@ -14,20 +14,20 @@ enum FontColor {
 
 extension BackgroundColorExt on BackgroundColor{
   int value(){
-    return this.color;
+    return color;
   }
 
   Color getColor(){
-    return Color(this.color);
+    return Color(color);
   }
 }
 
 extension FontColorExt on FontColor {
 int value(){
-  return this.color;
+  return color;
 }
 
 Color getColor(){
-  return Color(this.color);
+  return Color(color);
 }
 }

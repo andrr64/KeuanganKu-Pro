@@ -10,7 +10,7 @@ class InputExpenseDataForm extends StatefulWidget {
 class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
     );
   }
 }

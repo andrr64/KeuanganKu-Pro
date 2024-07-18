@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/k_color.dart';
 
 const Color BLACK_FONT_COLOR = Color(0xff14192b);
 
@@ -50,11 +51,11 @@ ThemeData light_theme = ThemeData(
         fontWeight: FontWeight.w600,
       ),
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: Colors.white,
-      shape: Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
-      iconTheme: IconThemeData(color: BLACK_FONT_COLOR),
+      color: BackgroundColor.white.getColor(),
+      shape: const Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
+      iconTheme: IconThemeData(color: FontColor.black.getColor()),
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
     iconTheme: const IconThemeData(

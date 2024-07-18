@@ -7,6 +7,7 @@ import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/home/widgets/balance_card.dart';
 import 'package:keuanganku/frontend/home/widgets/expense_card.dart';
 import 'package:keuanganku/frontend/home/widgets/income_card.dart';
+import 'package:keuanganku/frontend/k_color.dart';
 
 class PageData {
   IncomeCardData incomeCardData = IncomeCardData(dateRangeValue: DateRange.monthly);
@@ -45,11 +46,20 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: BackgroundColor.white.getColor(),
         title: kText(context, 'Home', KTStyle.title, KTSType.medium)
       ),
       drawer: drawer(context),
+      backgroundColor: BackgroundColor.white.getColor(),
       body: SingleChildScrollView(
         child: content(context),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: BackgroundColor.white.getColor(),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'Wallet'),
+          BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Expense'),
+        ],
       ),
     );
   }

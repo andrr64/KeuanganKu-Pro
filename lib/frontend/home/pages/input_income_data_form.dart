@@ -23,8 +23,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             kText(context, 'Income', KTStyle.title, KTSType.large),
-            dummyHeight(5),
-            kText(context, 'Add new income data', KTStyle.title, KTSType.medium),
+            kText(context, 'Insert new income data', KTStyle.label, KTSType.medium),
             dummyHeight(22.5),
             kTextField(title: 'Title', icon: const Icon(Icons.title)),
             dummyHeight(22.5),
@@ -37,8 +36,8 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: Column(
-                      children: const [Text('Save', style: TextStyle(color: Colors.white),)],
+                    child: const Column(
+                      children: [Text('Save', style: TextStyle(color: Colors.white),)],
                     )),
                 dummyWidth(10),
                 ElevatedButton(
@@ -46,7 +45,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
-                    child: Column(
+                    child: const Column(
                       children: [Text('Clear', style: TextStyle(color: Colors.white),)],
                     ))
               ],

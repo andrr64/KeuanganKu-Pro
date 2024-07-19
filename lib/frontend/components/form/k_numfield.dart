@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget kNumField({
   required String title,
+  required TextEditingController controller,
   Icon? icon,
   bool Function(String)? validator,
   void Function (String val)? onChange,
@@ -10,6 +11,7 @@ Widget kNumField({
 }) {
   return TextFormField(
     keyboardType: TextInputType.number,
+    controller: controller,
     decoration: InputDecoration(
         label: Text(title),
         prefixIcon: icon,

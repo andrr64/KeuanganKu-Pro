@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Widget kTextField(
   {
     required String title,
+    required TextEditingController controller,
     Icon? icon,
     bool Function(String)? validator,
     void Function (String val)? onChange,
@@ -10,6 +11,7 @@ Widget kTextField(
     void Function()? failCallback
   }){
   return TextFormField(
+    controller: controller,
     decoration: InputDecoration(
       label: Text(title),
       prefixIcon: icon,

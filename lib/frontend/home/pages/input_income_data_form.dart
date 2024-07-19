@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/components/buttons/k_sbutton.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
@@ -16,6 +18,9 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   final _formKey = GlobalKey<FormState>();
   String title = '';
 
+  TextEditingController titleController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+
   Widget form(BuildContext context) {
     return Form(
         key: _formKey,
@@ -23,31 +28,17 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             kText(context, 'Income', KTStyle.title, KTSType.large),
-            kText(context, 'Insert new income data', KTStyle.label, KTSType.medium),
+            kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
             dummyHeight(22.5),
-            kTextField(title: 'Title', icon: const Icon(Icons.title)),
+            kTextField(controller: titleController, title: 'Title', icon: const Icon(Icons.title)),
             dummyHeight(22.5),
-            kNumField(title: 'Amount', icon: const Icon(Icons.attach_money)),
+            kNumField(controller: amountController, title: 'Amount', icon: const Icon(Icons.attach_money)),
             dummyHeight(22.5),
             Row(
               children: [
-                ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                    child: const Column(
-                      children: [Text('Save', style: TextStyle(color: Colors.white),)],
-                    )),
+                kSimpleButton(context, text: 'Save', onPressed: (){}),
                 dummyWidth(10),
-                ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Column(
-                      children: [Text('Clear', style: TextStyle(color: Colors.white),)],
-                    ))
+                kSimpleButton(context, text: 'Clear', onPressed: (){})
               ],
             )
           ],

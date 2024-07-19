@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/buttons/k_sbutton.dart';
+import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
@@ -16,10 +17,51 @@ class InputIncomeDataForm extends StatefulWidget {
 
 class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   final _formKey = GlobalKey<FormState>();
-  String title = '';
 
   TextEditingController titleController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+  List<String> kategori = ['Bensin', 'Makan dan Minum'];
+
+  List<Widget> fields(BuildContext context) {
+    return [
+      dummyHeight(22.5),
+      kTextField(
+          context,
+          controller: titleController,
+          title: 'Title',
+          icon: const Icon(Icons.title)),
+      dummyHeight(22.5),
+      kNumField(
+          context,
+          controller: amountController,
+          title: 'Amount',
+          icon: const Icon(Icons.attach_money)),
+      dummyHeight(22.5),
+      Container(
+        width: vw(context, 75),
+        child: kDropdown<String>(context,
+            items: kategori, value: kategori[0], onChanged: (e) {}),
+      ),
+      dummyHeight(22.5),
+    ];
+  }
+
+  List<Widget> formInfo(BuildContext context) {
+    return [
+      kText(context, 'Income', KTStyle.title, KTSType.large),
+      kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
+    ];
+  }
+
+  Row buttons(BuildContext context) {
+    return Row(
+      children: [
+        kSimpleButton(context, text: 'Save', onPressed: () {}),
+        dummyWidth(10),
+        kSimpleButton(context, text: 'Clear', onPressed: () {})
+      ],
+    );
+  }
 
   Widget form(BuildContext context) {
     return Form(
@@ -27,20 +69,9 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            kText(context, 'Income', KTStyle.title, KTSType.large),
-            kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
-            dummyHeight(22.5),
-            kTextField(controller: titleController, title: 'Title', icon: const Icon(Icons.title)),
-            dummyHeight(22.5),
-            kNumField(controller: amountController, title: 'Amount', icon: const Icon(Icons.attach_money)),
-            dummyHeight(22.5),
-            Row(
-              children: [
-                kSimpleButton(context, text: 'Save', onPressed: (){}),
-                dummyWidth(10),
-                kSimpleButton(context, text: 'Clear', onPressed: (){})
-              ],
-            )
+            ...formInfo(context),
+            ...fields(context),
+            buttons(context)
           ],
         ));
   }
@@ -49,8 +80,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title:
-              kText(context, 'Form', KTStyle.title, KTSType.medium),
+          title: kText(context, 'Form', KTStyle.title, KTSType.medium),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,

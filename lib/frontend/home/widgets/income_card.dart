@@ -21,7 +21,7 @@ class IncomeCardData {
 class IncomeCard extends StatefulWidget {
   const IncomeCard(this.income_card_data, {super.key});
 
-  final bg_color = const Color(0xff3f915d);
+  final bg_color = const Color(0xff379777);
   final IncomeCardData income_card_data;
 
   @override

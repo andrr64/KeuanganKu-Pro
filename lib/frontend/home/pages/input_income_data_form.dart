@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/buttons/k_sbutton.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
@@ -37,7 +36,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
           title: 'Amount',
           icon: const Icon(Icons.attach_money)),
       dummyHeight(22.5),
-      Container(
+      SizedBox(
         width: vw(context, 75),
         child: kDropdown<String>(context,
             items: kategori, value: kategori[0], onChanged: (e) {}),

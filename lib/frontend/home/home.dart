@@ -7,7 +7,7 @@ import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/home/widgets/balance_card.dart';
 import 'package:keuanganku/frontend/home/widgets/expense_card.dart';
 import 'package:keuanganku/frontend/home/widgets/income_card.dart';
-import 'package:keuanganku/frontend/k_color.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class PageData {
   IncomeCardData incomeCardData = IncomeCardData(dateRangeValue: DateRange.monthly);

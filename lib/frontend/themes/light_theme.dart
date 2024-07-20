@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/k_color.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 
 const Color BLACK_FONT_COLOR = Color(0xff14192b);
 

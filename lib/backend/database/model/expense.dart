@@ -1,7 +1,7 @@
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelExpense extends DBModel {
-  int id;
+  int? id;
   String title;
   double amount;
   String? description;
@@ -11,7 +11,7 @@ class DBModelExpense extends DBModel {
   String datetime;
 
   DBModelExpense({
-    required this.id,
+    this.id,
     required this.title,
     required this.amount,
     this.description,

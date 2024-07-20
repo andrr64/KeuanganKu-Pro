@@ -1,3 +1,4 @@
+import 'package:keuanganku/backend/database/model/model.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class DBHelper<T> {
@@ -26,6 +27,12 @@ abstract class DBHelper<T> {
 
   Future<void> createTable(Database db) async {
     await db.execute(createTableQuery);
+    if (initData.length != 0){
+      for (var item in initData) {
+        DBModel _data = item as DBModel;
+        await db.insert(tableName, (_data).toJson());
+      }
+    }
   }
 
   Future<bool> checkTable(Database db) async {

@@ -27,10 +27,10 @@ abstract class DBHelper<T> {
 
   Future<void> createTable(Database db) async {
     await db.execute(createTableQuery);
-    if (initData.length != 0){
+    if (initData.isNotEmpty){
       for (var item in initData) {
-        DBModel _data = item as DBModel;
-        await db.insert(tableName, (_data).toJson());
+        DBModel data = item as DBModel;
+        await db.insert(tableName, (data).toJson());
       }
     }
   }

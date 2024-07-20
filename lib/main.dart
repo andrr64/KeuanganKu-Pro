@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/database_services.dart';
-import 'package:keuanganku/frontend/home/home.dart';
+import 'package:keuanganku/frontend/app/home/home.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
 
 DatabaseServices db = DatabaseServices();

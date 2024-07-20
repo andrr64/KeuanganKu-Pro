@@ -4,9 +4,9 @@ import 'package:keuanganku/frontend/components/navbar/drawer.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/home/widgets/balance_card.dart';
-import 'package:keuanganku/frontend/home/widgets/expense_card.dart';
-import 'package:keuanganku/frontend/home/widgets/income_card.dart';
+import 'package:keuanganku/frontend/app/home/widgets/balance_card.dart';
+import 'package:keuanganku/frontend/app/home/widgets/expense_card.dart';
+import 'package:keuanganku/frontend/app/home/widgets/income_card.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class PageData {

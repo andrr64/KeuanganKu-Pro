@@ -9,7 +9,7 @@ ThemeData light_theme = ThemeData(
     useMaterial3: true,
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         backgroundColor: BackgroundColor.black.getColor(),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5)

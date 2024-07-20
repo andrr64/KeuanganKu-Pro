@@ -7,8 +7,8 @@ DatabaseServices db = DatabaseServices();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await db.openDb();
-  runApp(const MyApp());
+  await db.openDb(); // open database, and wait..
+  runApp(const MyApp()); // if the database successfully opened, run the App
 }
 
 class MyApp extends StatelessWidget {

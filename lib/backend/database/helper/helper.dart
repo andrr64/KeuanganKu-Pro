@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
-abstract class DBHelper {
+abstract class DBHelper<T> {
   String get tableName;
 
   List<Map<String, String>> get tableColumns;
@@ -15,6 +15,14 @@ abstract class DBHelper {
     );
     """;
   }
+
+  List<T> get initData;
+
+  Future<bool> save({required Database db, required T data});
+  Future<bool> update ({required Database db, required T data});
+  Future<bool> delete({required Database db, required T data});
+  Future<T> readById({required Database db, required int id});
+  Future<List<T>> readAll({required Database db});
 
   Future<void> createTable(Database db) async {
     await db.execute(createTableQuery);

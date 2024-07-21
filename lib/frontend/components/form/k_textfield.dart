@@ -5,12 +5,14 @@ Widget kTextField(BuildContext context,
     required TextEditingController controller,
     Icon? icon,
     bool Function(String)? validator,
+    int? maxLines,
     void Function(String val)? onChange,
     void Function()? successCallback,
     void Function()? failCallback}) {
   TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
   return TextFormField(
     controller: controller,
+    maxLines: maxLines,
     decoration: InputDecoration(
         label: Text(
           title,

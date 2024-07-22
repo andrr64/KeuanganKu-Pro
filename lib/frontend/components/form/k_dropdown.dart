@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 
 Widget kDropdown<T>(
   BuildContext context, {
   required List<T> items,
+  required List<String> itemsAsString,
   required T? value,
   required ValueChanged<T?> onChanged,
 }) {
   TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
 
-  List<DropdownMenuItem<T>> dropdownItems = items.map((T item) {
+  List<DropdownMenuItem<T>> dropdownItems = List.generate(items.length, (index) {
     return DropdownMenuItem<T>(
-      value: item,
+      value: items[index],
       child: Text(
-        item.toString(),
+        itemsAsString[index],
         style: TextStyle(
-            fontFamily: tStyle!.fontFamily,
-            fontSize: tStyle.fontSize,
-            fontWeight: tStyle.fontWeight),
-      ), // You can customize the display of each item here
+          fontFamily: tStyle!.fontFamily,
+          fontSize: tStyle.fontSize,
+          fontWeight: tStyle.fontWeight,
+        ),
+      ),
     );
-  }).toList();
+  });
 
   return DropdownButtonFormField<T>(
     items: dropdownItems,
@@ -37,5 +40,7 @@ Widget kDropdown<T>(
             borderSide: BorderSide(color: Colors.black45, width: 2))),
     value: value,
     onChanged: onChanged,
+    borderRadius: const BorderRadius.all(Radius.circular(15)),
+    dropdownColor: BackgroundColor.white.getColor()
   );
 }

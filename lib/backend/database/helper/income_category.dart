@@ -27,8 +27,15 @@ class DBHelperIncomeCategory extends DBHelper<DBModelIncomeCategory> {
 
   @override
   Future<List<DBModelIncomeCategory>> readAll({required Database db}) async {
-    // TODO: implement readAll
-    throw UnimplementedError();
+    // Mendapatkan hasil query dari tabel 'income_categories'
+    final List<Map<String, dynamic>> maps = await db.query(tableName);
+    // Mengonversi hasil query menjadi List<DBModelIncomeCategory>
+    return List.generate(maps.length, (i) {
+      return DBModelIncomeCategory(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
+    });
   }
 
   @override

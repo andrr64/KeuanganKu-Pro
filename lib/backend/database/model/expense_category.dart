@@ -1,10 +1,10 @@
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelExpenseCategory extends DBModel {
-  String name;
-  int? id;
+  final String? name;
+  final int? id;
 
-  DBModelExpenseCategory({required this.name, this.id});
+  DBModelExpenseCategory({this.name, this.id});
 
   @override
   Map<String, dynamic> toJson() {
@@ -12,5 +12,13 @@ class DBModelExpenseCategory extends DBModel {
       'id': id,
       'name': name
     };
+  }
+
+  @override
+  DBModelExpenseCategory fromJson(Map<String, dynamic> json) {
+    return DBModelExpenseCategory(
+        id: json['id'],
+        name: json['name']
+    );
   }
 }

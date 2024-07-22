@@ -1,24 +1,24 @@
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelIncome extends DBModel {
-  int id;
-  String title;
-  double amount;
-  String? description;
-  int wallet_id;
-  int category_id;
-  int rate;
-  String datetime;
+  final int? id;
+  final String? title;
+  final double? amount;
+  final String? description;
+  final int? wallet_id;
+  final int? category_id;
+  final int? rate;
+  final String? datetime;
 
   DBModelIncome({
-    required this.id,
-    required this.title,
-    required this.amount,
+    this.id,
+    this.title,
+    this.amount,
     this.description,
-    required this.wallet_id,
-    required this.category_id,
-    required this.rate,
-    required this.datetime
+    this.wallet_id,
+    this.category_id,
+    this.rate,
+    this.datetime
   });
 
   @override
@@ -33,5 +33,18 @@ class DBModelIncome extends DBModel {
       'rate': rate,
       'datetime': datetime,
     };
+  }
+
+  @override
+  DBModelIncome fromJson(Map<String, dynamic> json) {
+    return DBModelIncome(
+      id: json['id'],
+      title: json['title'],
+      amount: json['amount'],
+      wallet_id: json['wallet_id'],
+      category_id: json['category_id'],
+      rate: json['rate'],
+      datetime: json['datetime'],
+    );
   }
 }

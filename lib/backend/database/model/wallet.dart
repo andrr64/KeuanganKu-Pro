@@ -20,17 +20,22 @@ extension Get on WalletType {
 }
 
 class DBModelWallet extends DBModel {
-  int id;
-  String name;
-  int type;
+  final int? id;
+  final String? name;
+  final int? type;
 
   DBModelWallet({
-    required this.id,
-    required this.name,
-    required this.type
+    this.id,
+    this.name,
+    this.type
   });
 
-  String get type_str => WalletType.wallet.type_str(type);
+  String get type_str {
+    if (type == null){
+      return 'null';
+    }
+    return WalletType.wallet.type_str(type!);
+  }
 
   @override
   Map<String, dynamic> toJson() => {
@@ -38,4 +43,9 @@ class DBModelWallet extends DBModel {
     'name': name,
     'type': type
   };
+
+  @override
+  DBModelWallet fromJson(Map<String, dynamic> json) {
+    return DBModelWallet(id: json['id'], name: json['name'], type: json['type']);
+  }
 }

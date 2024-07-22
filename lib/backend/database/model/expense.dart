@@ -34,4 +34,18 @@ class DBModelExpense extends DBModel {
       'datetime': datetime,
     };
   }
+
+  @override
+  DBModelExpense fromJson(Map<String, dynamic> json) {
+    return DBModelExpense(
+      id: json['id'],
+      title: json['title'],
+      amount: json['amount'],
+      description: json['description'],
+      wallet_id: json['wallet_id'],
+      category_id: json['category_id'],
+      rate: json['rate'],
+      datetime: json['datetime'],
+    );
+  }
 }

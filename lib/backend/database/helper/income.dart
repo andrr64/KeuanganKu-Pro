@@ -8,6 +8,7 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
   List<Map<String, String>> get tableColumns => [
     createSql3Column(name: 'id', dtype: 'INTEGER', constraint: 'PRIMARY KEY AUTOINCREMENT'),
     createSql3Column(name: 'title', dtype: 'TEXT', required: true),
+    createSql3Column(name: 'amount', dtype: 'REAL', required: true),
     createSql3Column(name: 'description', dtype: 'TEXT'),
     createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
     createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),

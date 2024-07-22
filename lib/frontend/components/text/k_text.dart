@@ -75,7 +75,8 @@ TextStyle _getTextStyle(BuildContext context, KTStyle style, KTSType type, Color
 }
 
 Text kText(BuildContext context, String text, KTStyle style, KTSType type, {
-  Color color = BLACK_FONT_COLOR
+  Color color = BLACK_FONT_COLOR,
+  TextAlign? align,
 }){
-  return Text(text, style: _getTextStyle(context, style, type, color));
+  return Text(text, style: _getTextStyle(context, style, type, color), textAlign: align,);
 }

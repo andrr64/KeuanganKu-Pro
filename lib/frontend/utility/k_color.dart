@@ -12,6 +12,14 @@ enum FontColor {
   final int color;
 }
 
+enum BaseColor {
+  old_red(Color(0xffa64646)),
+  old_green(Color(0xff379777));
+
+  const BaseColor(this.color);
+  final Color color;
+}
+
 extension BackgroundColorExt on BackgroundColor{
   int value(){
     return color;

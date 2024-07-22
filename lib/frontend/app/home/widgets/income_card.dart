@@ -7,6 +7,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/app/home/pages/input_income_data_form.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class IncomeCardData {
   DateRange dateRangeValue;
@@ -21,7 +22,6 @@ class IncomeCardData {
 class IncomeCard extends StatefulWidget {
   const IncomeCard(this.income_card_data, {super.key});
 
-  final bg_color = const Color(0xff379777);
   final IncomeCardData income_card_data;
 
   @override
@@ -47,7 +47,7 @@ class _IncomeCardState extends State<IncomeCard> {
   Widget content(BuildContext context) {
     final KDropdown<DateRange> data_range =
         KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
-    final List<Color> generated3color = generate3Color(widget.bg_color);
+    final List<Color> generated3color = generate3Color(BaseColor.old_green.color);
     return (
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +90,7 @@ class _IncomeCardState extends State<IncomeCard> {
   Widget build(BuildContext context) {
     return KCardPlus(context, content(context),
         title: 'Income',
-        color: widget.bg_color,
+        color: BaseColor.old_green.color,
         icon: const Icon(
           Icons.arrow_upward,
           color: Colors.white,

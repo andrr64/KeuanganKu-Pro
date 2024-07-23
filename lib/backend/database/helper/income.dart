@@ -1,6 +1,7 @@
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
+import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelperIncome extends DBHelper<DBModelIncome> {
@@ -29,9 +30,38 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
   }
 
   @override
-  Future<List<DBModelIncome>> readAll({required Database db}) async {
-    // TODO: implement readAll
-    throw UnimplementedError();
+  Future<List<DBModelIncome>> readAll({required Database db, DateRange? date}) async {
+    String? startDate;
+    String? endDate;
+
+    if (date != null) {
+      final now = DateTime.now();
+      if (date == DateRange.monthly) {
+        startDate = DateTime(now.year, now.month, 1).toIso8601String();
+        endDate = DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1)).toIso8601String();
+      } else if (date == DateRange.weekly) {
+        final weekDay = now.weekday;
+        startDate = now.subtract(Duration(days: weekDay - 1)).toIso8601String();
+        endDate = now.add(Duration(days: DateTime.daysPerWeek - weekDay)).toIso8601String();
+      } else if (date == DateRange.yearly) {
+        startDate = DateTime(now.year, 1, 1).toIso8601String();
+        endDate = DateTime(now.year + 1, 1, 1).subtract(const Duration(days: 1)).toIso8601String();
+      }
+
+      final List<Map<String, dynamic>> data = await db.query(
+        tableName,
+        where: 'datetime >= ? AND datetime <= ?',
+        whereArgs: [startDate, endDate],
+      );
+      return List.generate(data.length, (i) {
+        return DBModelIncome().fromJson(data[i]);
+      });
+    } else {
+      final List<Map<String, dynamic>> data = await db.query(tableName);
+      return List.generate(data.length, (i) {
+        return DBModelIncome().fromJson(data[i]);
+      });
+    }
   }
 
   @override

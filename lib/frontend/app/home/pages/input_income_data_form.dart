@@ -17,7 +17,8 @@ import 'package:keuanganku/main.dart';
 import 'package:quickalert/quickalert.dart';
 
 class InputIncomeDataForm extends StatefulWidget {
-  const InputIncomeDataForm({super.key});
+  const InputIncomeDataForm({super.key, required this.callbackWhenDataSaved});
+  final void Function() callbackWhenDataSaved;
 
   @override
   State<InputIncomeDataForm> createState() => _InputIncomeDataFormState();
@@ -64,7 +65,6 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   }
 
   // Events
-  // TODO: not completed
   void whenButtonSavePressed(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -84,7 +84,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
         );
         DBHelperIncome().save(db: db.database, data: income).then((result) {
           if (result) {
-            whenButtonClearPressed();
+            widget.callbackWhenDataSaved();
             QuickAlert.show(
                     context: context,
                     type: QuickAlertType.success,

@@ -11,6 +11,7 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class PageData {
   IncomeCardData incomeCardData = IncomeCardData(dateRangeValue: DateRange.monthly);
+  ExpenseCardData expenseCardData = ExpenseCardData(dateRangeValue: DateRange.monthly);
 }
 
 class Homepage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _HomepageState extends State<Homepage> {
           dummyHeight(25),
           IncomeCard(Homepage.data.incomeCardData),
           dummyHeight(25),
-          const ExpenseCard(),
+          ExpenseCard(Homepage.data.expenseCardData),
         ],
       ),
     );  

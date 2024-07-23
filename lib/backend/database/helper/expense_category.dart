@@ -33,8 +33,8 @@ class DBHelperExpenseCategory extends DBHelper<DBModelExpenseCategory> {
 
   @override
   Future<List<DBModelExpenseCategory>> readAll({required Database db}) async {
-    // TODO: implement readAll
-    throw UnimplementedError();
+    List<Map<String, dynamic>> data = await db.query(tableName);
+    return List.generate(data.length, (index) => DBModelExpenseCategory().fromJson(data[index]));
   }
 
   @override

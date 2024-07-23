@@ -1,7 +1,7 @@
 enum DateRange {
-  weekly('Weekly', 'weekly'),
-  monthly('Monthly', 'monthly'),
-  yearly('Yearly', 'yearly');
+  weekly('Weekly', 'week'),
+  monthly('Monthly', 'month'),
+  yearly('Yearly', 'year');
 
   const DateRange(this.label, this.value);
   final String label;

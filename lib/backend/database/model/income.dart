@@ -7,7 +7,6 @@ class DBModelIncome extends DBModel {
   final String? description;
   final int? wallet_id;
   final int? category_id;
-  final int? rate;
   final String? datetime;
 
   DBModelIncome({
@@ -17,7 +16,6 @@ class DBModelIncome extends DBModel {
     this.description,
     this.wallet_id,
     this.category_id,
-    this.rate,
     this.datetime
   });
 
@@ -30,7 +28,6 @@ class DBModelIncome extends DBModel {
       'description': description,
       'wallet_id': wallet_id,
       'category_id': category_id,
-      'rate': rate,
       'datetime': datetime,
     };
   }
@@ -43,7 +40,6 @@ class DBModelIncome extends DBModel {
       amount: json['amount'],
       wallet_id: json['wallet_id'],
       category_id: json['category_id'],
-      rate: json['rate'],
       datetime: json['datetime'],
     );
   }

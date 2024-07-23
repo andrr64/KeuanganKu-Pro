@@ -13,7 +13,6 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
     createSql3Column(name: 'description', dtype: 'TEXT'),
     createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
     createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'rate', dtype: 'INTEGER', required: true),
     createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
   ];
 

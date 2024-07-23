@@ -30,7 +30,7 @@ class DatabaseServices {
         onCreate: createTable
       );
     } catch(e){
-      e;
+      throw Exception(e);
     }
   }
 

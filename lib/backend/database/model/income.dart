@@ -48,3 +48,9 @@ class DBModelIncome extends DBModel {
     );
   }
 }
+
+extension ModelIncomeUtility on DBModelIncome {
+  double sum(List<DBModelIncome> list) {
+    return list.fold(0.0, (previousValue, element) => previousValue + (element.amount ?? 0));
+  }
+}

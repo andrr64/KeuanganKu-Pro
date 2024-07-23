@@ -72,7 +72,6 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
         if (double.tryParse(amountController.text) == null) {
           throw Exception('Invalid amount, try again.');
         }
-        // TODO: implement rate
         DBModelIncome income = DBModelIncome(
           title: titleController.text,
           amount: double.tryParse(amountController.text),
@@ -80,7 +79,6 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
           wallet_id: 1,
           datetime: combineDateTimeAndTimeOfDay(dateController, timeController),
           category_id: categoryController.id,
-          rate: 5,
         );
         DBHelperIncome().save(db: db.database, data: income).then((result) {
           if (result) {

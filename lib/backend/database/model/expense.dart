@@ -48,4 +48,8 @@ class DBModelExpense extends DBModel {
       datetime: json['datetime'],
     );
   }
+
+  double sum(List<DBModelExpense> list) {
+    return list.fold(0.0, (previousValue, element) => previousValue + (element.amount ?? 0));
+  }
 }

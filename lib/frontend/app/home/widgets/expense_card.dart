@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/frontend/app/home/pages/input_expense_data_form.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
@@ -9,11 +10,13 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
+import 'package:keuanganku/frontend/utility/future.dart';
+import 'package:keuanganku/main.dart';
 
 class ExpenseCardData {
   DateRange dateRangeValue;
-  List<DBModelExpense> expense = [];
-  double incomeCache = 0;
+  List<DBModelExpense> expenses = [];
+  double expenseAmountCache = 0;
 
   set setDateRange(DateRange val) {
     dateRangeValue = val;
@@ -24,7 +27,7 @@ class ExpenseCardData {
 
 class ExpenseCard extends StatefulWidget {
   const ExpenseCard(this.data, {super.key});
-  final Color bg_color = const Color(0xffa64646);
+  final Color bgColor = const Color(0xffa64646);
   final ExpenseCardData data;
 
   @override
@@ -32,6 +35,7 @@ class ExpenseCard extends StatefulWidget {
 }
 
 class _ExpenseCardState extends State<ExpenseCard> {
+  // Events
   void updateState() {
     setState(() {});
   }
@@ -45,24 +49,27 @@ class _ExpenseCardState extends State<ExpenseCard> {
       });
     }
   }
+
   void whenAddButtonPressed() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                InputExpenseDataForm(callbackWhenDataSaved: updateState)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => InputExpenseDataForm(callbackWhenDataSaved: updateState),
+      ),
+    );
   }
 
-  Widget content(BuildContext context) {
-    List<Color> generated3color = generate3Color(widget.bg_color);
-    final KDropdown<DateRange> data_range =
-        KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
+  // Frontend
+  Widget content(BuildContext context, {required String expense}) {
+    List<Color> generated3color = generate3Color(widget.bgColor);
+    final KDropdown<DateRange> dataRange =
+    KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        data_range.dropdownButton(
+        dataRange.dropdownButton(
           widget.data.dateRangeValue,
           whenDropdownDateRangeChange,
           icon_theme: Theme.of(context).iconTheme,
@@ -76,11 +83,10 @@ class _ExpenseCardState extends State<ExpenseCard> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                kText(context, 'Expense this month', KTStyle.label,
+                kText(context, 'Expense this ${widget.data.dateRangeValue.value}', KTStyle.label,
                     KTSType.medium,
                     color: Colors.white),
-                kText(context, currencyFormat(1200000), KTStyle.display,
-                    KTSType.medium,
+                kText(context, expense, KTStyle.display, KTSType.medium,
                     color: Colors.white),
               ],
             ),
@@ -103,14 +109,47 @@ class _ExpenseCardState extends State<ExpenseCard> {
     );
   }
 
+  // Backend
+  Future getData() async {
+    try {
+      widget.data.expenses = await DBHelperExpense().readAll(db: db.database, date: widget.data.dateRangeValue);
+      widget.data.expenseAmountCache = DBModelExpense().sum(widget.data.expenses);
+    } catch (e) {
+      throw Exception('Failed to load expenses: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return KCardPlus(
-      context,
-      content(context),
-      title: 'Expense',
-      color: widget.bg_color,
-      icon: const Icon(Icons.arrow_downward, color: Colors.white),
+    return kFutureBuilder(
+      futureFunction: getData(),
+      wxWhenError: (error) {
+        return KCardPlus(
+          context,
+          content(context, expense: "$error"),
+          title: 'Expense',
+          color: widget.bgColor,
+          icon: const Icon(Icons.arrow_downward, color: Colors.white),
+        );
+      },
+      wxWhenSuccess: (_) {
+        return KCardPlus(
+          context,
+          content(context,
+              expense: currencyFormat(widget.data.expenseAmountCache)),
+          title: 'Expense',
+          color: widget.bgColor,
+          icon: const Icon(Icons.arrow_downward, color: Colors.white),
+        );
+      },
+      wxWhenWaiting: KCardPlus(
+        context,
+        content(context,
+            expense: currencyFormat(widget.data.expenseAmountCache)),
+        title: 'Expense',
+        color: widget.bgColor,
+        icon: const Icon(Icons.arrow_downward, color: Colors.white),
+      ),
     );
   }
 }

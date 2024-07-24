@@ -25,8 +25,11 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
 
   @override
   Future<List<DBModelWallet>> readAll({required Database db}) async {
-    // TODO: implement readAll
-    throw UnimplementedError();
+    return await db.query(tableName).then((val){
+      return List.generate(val.length, (index){
+        return DBModelWallet().fromJson(val[index]);
+      });
+    });
   }
 
   @override
@@ -37,8 +40,8 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
 
   @override
   Future<bool> save({required Database db, required DBModelWallet data}) async {
-    // TODO: implement save
-    throw UnimplementedError();
+    await db.insert(tableName, data.toJson());
+    return true;
   }
 
   @override

@@ -7,7 +7,7 @@ import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
-import 'package:keuanganku/frontend/app/home/pages/input_income_data_form.dart';
+import 'package:keuanganku/frontend/app/forms/form_income.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';

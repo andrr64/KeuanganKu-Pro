@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 
 const int constanta = 0x101797;

@@ -84,6 +84,15 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     throw UnimplementedError();
   }
 
+  Future<List<DBModelExpense>> readByWalletId(
+      {required Database db, required int wallet_id}) async {
+    return await db.query(tableName,
+        where: 'wallet_id = ?', whereArgs: [wallet_id]).then((expenses) {
+      return List<DBModelExpense>.generate(expenses.length,
+          (index) => DBModelExpense().fromJson(expenses[index]));
+    });
+  }
+
   @override
   Future<bool> save(
       {required Database db, required DBModelExpense data}) async {

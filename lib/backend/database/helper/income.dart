@@ -69,6 +69,14 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
     throw UnimplementedError();
   }
 
+  Future<List<DBModelIncome>> readByWalletId({required Database db, required int wallet_id}) async {
+    return await db.query(tableName, where: 'wallet_id = ?', whereArgs: [wallet_id]).then((incomes){
+      return List<DBModelIncome>.generate(incomes.length, (index){
+        return DBModelIncome().fromJson(incomes[index]);
+      });
+    });
+  }
+
   @override
   Future<bool> save({required Database db, required DBModelIncome data}) async {
     try {

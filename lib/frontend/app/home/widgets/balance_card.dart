@@ -1,12 +1,15 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/app/forms/form_wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/future.dart';
+import 'package:keuanganku/frontend/utility/page.dart';
 import 'package:keuanganku/main.dart';
 
 class BalanceCardData {
@@ -27,9 +30,58 @@ class BalanceCard extends StatefulWidget {
 }
 
 class _BalanceCardState extends State<BalanceCard> {
-  Future getData() async {
-    widget.data.wallets = await DBHelperWallet().readAll(db: db.database);
-    widget.data.balanceAmount = 500;
+  void updateState() {
+    setState(() {});
+  }
+
+  Widget walletCard(DBModelWallet wallet) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: GestureDetector(
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white.withAlpha(50)),
+        ),
+      ),
+    );
+  }
+
+  Widget generateWalletCards(List<DBModelWallet> wallets) {
+    if (wallets.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              FluentIcons.wallet_24_regular,
+              size: 40,
+            ),
+            Text(
+              'Empty Wallet',
+              style: TextStyle(
+                  fontWeight:
+                      Theme.of(context).textTheme.displaySmall!.fontWeight,
+                  fontStyle:
+                      Theme.of(context).textTheme.displaySmall!.fontStyle,
+                  fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,
+                  fontFamily:
+                      Theme.of(context).textTheme.displaySmall!.fontFamily,
+                  color: Colors.white),
+            )
+          ],
+        ),
+      );
+    } else {
+      return Column(
+        children: [
+          ...List<Widget>.generate(
+              wallets.length, (i) => walletCard(wallets[i]))
+        ],
+      );
+    }
   }
 
   Widget content(BuildContext context, {String? name, double? balance}) {
@@ -62,19 +114,26 @@ class _BalanceCardState extends State<BalanceCard> {
           ],
         ),
         dummyHeight(10),
-        ...List<Widget>.generate(widget.data.wallets.length,(index){
-          return Container(
-            height: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white.withAlpha(50)
-            ),
-          );
-        }),
-        dummyHeight(10),
-        k_button(context, (){}, text: 'Add Wallet', icon: Icons.add_box, mainColor: Colors.white.withAlpha(50), withoutBg: true,)
+        generateWalletCards(widget.data.wallets),
+        k_button(
+          context,
+          () => openPage(
+              context,
+              FormWallet(
+                callbackWhenDataSaved: updateState,
+              )),
+          text: 'Add Wallet',
+          icon: Icons.add_box,
+          mainColor: Colors.white.withAlpha(50),
+          withoutBg: true,
+        )
       ],
     );
+  }
+
+  Future getData() async {
+    widget.data.wallets = await DBHelperWallet().readAll(db: db.database);
+    widget.data.balanceAmount = 500;
   }
 
   @override

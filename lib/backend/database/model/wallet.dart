@@ -1,4 +1,10 @@
+import 'package:keuanganku/backend/database/helper/expense.dart';
+import 'package:keuanganku/backend/database/helper/income.dart';
+import 'package:keuanganku/backend/database/model/expense.dart';
+import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 enum WalletType {
   wallet('Wallet', 1),
@@ -8,6 +14,7 @@ enum WalletType {
   final String name;
   final int type;
 }
+
 extension Get on WalletType {
   String type_str(int type) {
     for (var walletType in WalletType.values) {
@@ -16,6 +23,9 @@ extension Get on WalletType {
       }
     }
     return 'Unknown';
+  }
+  List<String> walletTypeValueAsString(){
+    return List<String>.generate(WalletType.values.length, (i) => type_str(WalletType.values[i].type));
   }
 }
 
@@ -47,5 +57,19 @@ class DBModelWallet extends DBModel {
   @override
   DBModelWallet fromJson(Map<String, dynamic> json) {
     return DBModelWallet(id: json['id'], name: json['name'], type: json['type']);
+  }
+
+  Future<List<DBModelIncome>> getIncomes({required Database db, String? startDate, String? endDate}) async {
+    if (id != null){
+      return await DBHelperIncome().readByWalletId(db: db, wallet_id: id!);
+    }
+    throw ('Invalid Wallet');
+  }
+
+  Future<List<DBModelExpense>> readExpenses({required Database db, String? startDate, String? endDate}) async{
+    if (id != null){
+      return await DBHelperExpense().readByWalletId(db: db, wallet_id: id!);
+    }
+    throw ('Invalid Wallet');
   }
 }

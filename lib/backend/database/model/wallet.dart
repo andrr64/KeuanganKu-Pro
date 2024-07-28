@@ -39,7 +39,7 @@ class DBModelWallet extends DBModel {
   final double? total_income;
   final double? total_expense;
 
-  DBModelWallet({this.id, this.name, this.type, this.total_expense, this.total_income});
+  DBModelWallet({this.id, this.name, this.type, this.total_expense = 0, this.total_income});
   
   @override
   Map<String, dynamic> toJson() => {

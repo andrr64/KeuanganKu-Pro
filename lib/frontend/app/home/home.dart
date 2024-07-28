@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:keuanganku/frontend/app/home/widgets/balance_card.dart';
-import 'package:keuanganku/frontend/app/home/widgets/income_card.dart';
+import 'package:keuanganku/frontend/components/cards/balance_card.dart';
+import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';

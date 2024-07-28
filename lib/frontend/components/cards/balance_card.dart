@@ -115,9 +115,9 @@ class BalanceCard extends HookConsumerWidget {
 
     return KCardPlus(context, content(),
         color: bgColor,
-        title: 'Wallets',
+        title: 'Balance',
         icon: const Icon(
-          Icons.wallet,
+          FluentIcons.text_bullet_list_square_20_filled,
           color: Colors.white,
         ));
   }

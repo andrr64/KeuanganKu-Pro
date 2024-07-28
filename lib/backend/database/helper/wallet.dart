@@ -8,7 +8,9 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
   List<Map<String, String>> get tableColumns => [
     createSql3Column(name: 'id', dtype: 'INTEGER', required: true, constraint: 'PRIMARY KEY'),
     createSql3Column(name: 'name', dtype: 'TEXT', required: true),
-    createSql3Column(name: 'type', dtype: 'INTEGER', required: true)
+    createSql3Column(name: 'type', dtype: 'INTEGER', required: true),
+    createSql3Column(name: 'total_income', dtype: 'REAL', required: true),
+    createSql3Column(name: 'total_expense', dtype: 'REAL', required: true),
   ];
 
   @override
@@ -42,6 +44,11 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
   Future<bool> save({required Database db, required DBModelWallet data}) async {
     await db.insert(tableName, data.toJson());
     return true;
+  }
+
+  Future<DBModelWallet> insert({required Database db, required DBModelWallet data}) async {
+    int id = await db.insert(tableName, data.toJson());
+    return DBModelWallet().copyFrom(data, id: id);
   }
 
   @override

@@ -16,15 +16,16 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/main.dart';
 import 'package:quickalert/quickalert.dart';
 
-class InputIncomeDataForm extends StatefulWidget {
-  const InputIncomeDataForm({super.key, required this.callbackWhenDataSaved});
-  final void Function() callbackWhenDataSaved;
+class IncomeForm extends StatefulWidget {
+  final void Function(DBModelIncome data) callbackWhenDataSaved;
+
+  const IncomeForm({super.key, required this.callbackWhenDataSaved});
 
   @override
-  State<InputIncomeDataForm> createState() => _InputIncomeDataFormState();
+  State<IncomeForm> createState() => _IncomeFormState();
 }
 
-class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
+class _IncomeFormState extends State<IncomeForm> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
@@ -82,12 +83,12 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
         );
         DBHelperIncome().save(db: db.database, data: income).then((result) {
           if (result) {
-            widget.callbackWhenDataSaved();
+            widget.callbackWhenDataSaved(income);
             QuickAlert.show(
-                    context: context,
-                    type: QuickAlertType.success,
-                    text: 'Data saved successfully',
-                    showConfirmBtn: true)
+                context: context,
+                type: QuickAlertType.success,
+                text: 'Data saved successfully',
+                showConfirmBtn: true)
                 .then((_) {
               Navigator.of(context).pop();
             });
@@ -141,11 +142,11 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
           maxLines: 1),
       dummyHeight(22.5),
       kNumField(
-        context,
-        controller: amountController,
-        title: 'Amount',
-        icon: const Icon(Icons.attach_money),
-        maxVal: 10000000000
+          context,
+          controller: amountController,
+          title: 'Amount',
+          icon: const Icon(Icons.attach_money),
+          maxVal: 10000000000
       ),
       dummyHeight(22.5),
       Row(
@@ -182,15 +183,15 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
                 icon: const Icon(Icons.date_range),
                 disable: true,
                 controller: dateTextController, onTap: () {
-              showDatePicker(
+                  showDatePicker(
                       context: context,
                       initialDate: dateController,
                       firstDate: DateTime(2020),
                       lastDate: DateTime.now())
-                  .then((value) {
-                if (value != null) whenDatePicked(value);
-              });
-            }),
+                      .then((value) {
+                    if (value != null) whenDatePicked(value);
+                  });
+                }),
           ),
           dummyWidth(vw(context, 2.5)),
           SizedBox(
@@ -200,11 +201,11 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
                 icon: const Icon(Icons.access_time_sharp),
                 disable: true,
                 controller: timeTextController, onTap: () {
-              showTimePicker(context: context, initialTime: timeController)
-                  .then((val) {
-                if (val != null) whenTimePicked(val);
-              });
-            }),
+                  showTimePicker(context: context, initialTime: timeController)
+                      .then((val) {
+                    if (val != null) whenTimePicked(val);
+                  });
+                }),
           ),
         ],
       ),
@@ -269,7 +270,7 @@ class _InputIncomeDataFormState extends State<InputIncomeDataForm> {
   // Backend
   Future<List<DBModelIncomeCategory>> getData() async {
     List<DBModelIncomeCategory> datas =
-        await DBHelperIncomeCategory().readAll(db: db.database);
+    await DBHelperIncomeCategory().readAll(db: db.database);
     inited = true;
     return datas;
   }

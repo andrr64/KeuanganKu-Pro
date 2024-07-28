@@ -37,7 +37,7 @@ class DBModelWallet extends DBModel {
   final double? total_income;
   final double? total_expense;
 
-  DBModelWallet({this.id, this.name, this.type, this.total_expense = 0, this.total_income});
+  DBModelWallet({this.id, this.name, this.type, this.total_income = 0, this.total_expense = 0});
   
   @override
   Map<String, dynamic> toJson() => {
@@ -50,7 +50,7 @@ class DBModelWallet extends DBModel {
 
   @override
   DBModelWallet fromJson(Map<String, dynamic> json) {
-    return DBModelWallet(id: json['id'], name: json['name'], type: json['type']);
+    return DBModelWallet(id: json['id'], name: json['name'], type: json['type'], total_income: json['total_income'], total_expense: json['total_expense']);
   }
 
   Future<List<DBModelIncome>> getIncomes({required Database db, String? startDate, String? endDate}) async {

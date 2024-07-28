@@ -41,18 +41,18 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
 
     if (date != null) {
       final now = DateTime.now();
-      if (date == DateRange.monthly) {
+      if (date == DateRange.month) {
         startDate = DateTime(now.year, now.month, 1).toIso8601String();
         endDate = DateTime(now.year, now.month + 1, 1)
             .subtract(const Duration(days: 1))
             .toIso8601String();
-      } else if (date == DateRange.weekly) {
+      } else if (date == DateRange.week) {
         final weekDay = now.weekday;
         startDate = now.subtract(Duration(days: weekDay - 1)).toIso8601String();
         endDate = now
             .add(Duration(days: DateTime.daysPerWeek - weekDay))
             .toIso8601String();
-      } else if (date == DateRange.yearly) {
+      } else if (date == DateRange.year) {
         startDate = DateTime(now.year, 1, 1).toIso8601String();
         endDate = DateTime(now.year + 1, 1, 1)
             .subtract(const Duration(days: 1))

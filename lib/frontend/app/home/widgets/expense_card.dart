@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
-import 'package:keuanganku/frontend/app/forms/form_expense.dart';
+import 'package:keuanganku/frontend/app/forms/expense_form.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
@@ -63,7 +63,7 @@ class _ExpenseCardState extends State<ExpenseCard> {
   Widget content(BuildContext context, {required String expense}) {
     List<Color> generated3color = generate3Color(widget.bgColor);
     final KDropdown<DateRange> dataRange =
-    KDropdown(KDropdownItem(DateRange.weekly.getDateRangeMap()));
+    KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

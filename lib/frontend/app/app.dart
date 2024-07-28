@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keuanganku/frontend/app/home/home.dart';
+import 'package:keuanganku/frontend/app/provider/wallet_list.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/main.dart';
+
+final pageIndexProvider = StateProvider<int>((_) => 0);
+final pageControllerProvider = StateProvider<PageController>((_) => PageController());
+final mainPageScaffoldKeyProvider = StateProvider<GlobalKey<ScaffoldState>>((_) => GlobalKey<ScaffoldState>());
+final List<String> pageNames = ["Home", "Wallet"];
+final pagesProvider = StateProvider<List<Widget>>((ref) {
+  return [
+    const Homepage(),
+    const Homepage(),
+  ];
+});
+
+class KeuangankuPro extends HookConsumerWidget {
+  const KeuangankuPro({super.key});
+
+  void whenBottomNavbarChanged(int value, WidgetRef ref, PageController pageController) {
+    ref.read(pageIndexProvider.notifier).state = value;
+    pageController.jumpToPage(value);
+  }
+
+  List<BottomNavigationBarItem> bottomNavigationBarItems() {
+    return [
+      BottomNavigationBarItem(icon: const Icon(Icons.home), label: pageNames[0]),
+      BottomNavigationBarItem(icon: const Icon(Icons.wallet), label: pageNames[1])
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var scaffoldKey = ref.watch(mainPageScaffoldKeyProvider);
+    var pageIndex = ref.watch(pageIndexProvider);
+    var pageController = ref.watch(pageControllerProvider);
+    var pages = ref.watch(pagesProvider);
+    var watchWalletListController = ref.watch(globalWalletListProvider.notifier);
+
+    if (!watchWalletListController.init) {
+      watchWalletListController.initData(db.database);
+    }
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(pageNames[pageIndex]),
+        backgroundColor: BackgroundColor.white.getColor(),
+      ),
+      key: scaffoldKey,
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (index) =>
+            ref.read(pageIndexProvider.notifier).state = index,
+        children: pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: pageIndex,
+        onTap: (value) => whenBottomNavbarChanged(value, ref, pageController),
+        backgroundColor: Colors.white,
+        items: bottomNavigationBarItems(),
+      ),
+    );
+  }
+}

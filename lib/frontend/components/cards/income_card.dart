@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/forms/income_form.dart';
@@ -13,13 +14,18 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class IncomeCard extends HookConsumerWidget {
-  final StateProvider<DateRange> dateRangeProvider;
+  final DateRange dateRange;
+  final double incomesAmount;
+  final void Function(DateRange val) callbackWhenDateChange;
 
-  const IncomeCard({super.key, required this.dateRangeProvider});
+  const IncomeCard(
+      {super.key,
+        required this.dateRange,
+        required this.incomesAmount,
+        required this.callbackWhenDateChange});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateRange = ref.watch(dateRangeProvider);
     final KDropdown<DateRange> data_range =
     KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
     final List<Color> generated3color =
@@ -27,16 +33,13 @@ class IncomeCard extends HookConsumerWidget {
 
     void whenDropdownDateRangeChange(DateRange? val) {
       if (val != null && val != dateRange) {
-        ref.read(dateRangeProvider.notifier).state = val;
+        callbackWhenDateChange(val);
       }
     }
 
     void whenAddButtonPressed() {
-      openPage(context, IncomeForm(
-          callbackWhenDataSaved: (income){
-
-          })
-      );
+      // TODO: implement callbackWhenDataSaved
+      openPage(context, IncomeForm(callbackWhenDataSaved: (income) {}));
     }
 
     Widget content() {
@@ -60,40 +63,52 @@ class IncomeCard extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   kText(
-                      context,
-                      'Income this ${dateRange.value}',
-                      KTStyle.label,
-                      KTSType.medium,
-                      color: Colors.white),
-                  kText(context, currencyFormat(250000), KTStyle.display, KTSType.medium,
-                      color: Colors.white)
+                    context,
+                    'Income this ${dateRange.value}',
+                    KTStyle.label,
+                    KTSType.medium,
+                    color: Colors.white,
+                  ),
+                  kText(
+                    context,
+                    currencyFormat(incomesAmount),
+                    KTStyle.display,
+                    KTSType.medium,
+                    color: Colors.white,
+                  )
                 ],
               ),
-              k_button(context, whenAddButtonPressed,
-                  icon: Icons.add,
-                  text: 'Add',
-                  mainColor: generated3color[1],
-                  iconColor: Colors.white)
+              k_button(
+                context,
+                whenAddButtonPressed,
+                icon: Icons.add,
+                text: 'Add',
+                mainColor: generated3color[1],
+                iconColor: Colors.white,
+              )
             ],
           ),
           dummyHeight(5),
           Center(
-            child: k_button(context, whenAddButtonPressed,
-                text: 'Detail',
-                withoutBg: true,
-                mainColor: generated3color[1],
-                iconColor: Colors.white),
+            child: k_button(
+              context,
+              whenAddButtonPressed,
+              text: 'Detail',
+              withoutBg: true,
+              mainColor: generated3color[1],
+              iconColor: Colors.white,
+            ),
           )
         ],
       );
     }
 
-    return KCardPlus(context, content(),
+    return  KCardPlus(
         title: 'Income',
-        color: BaseColor.old_green.color,
-        icon: const Icon(
-          Icons.arrow_upward,
-          color: Colors.white,
-        ));
+        icon: const Icon(FluentIcons.arrow_up_20_filled),
+        context,
+        content(),
+        color: BaseColor.old_green.color
+    );
   }
 }

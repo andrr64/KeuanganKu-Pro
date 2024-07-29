@@ -53,27 +53,22 @@ class _WalletFormState extends State<WalletForm> {
           type: _walletType.type,
           total_income: initAmount,
         );
-        widget.callbackWhenDataSaved(DBModelWallet(
-          name: _walletNameController.text,
-          type: _walletType.type,
-          total_income: initAmount,
-        ));
-
-        DBHelperWallet().insert(db: db.database, data: walletData).then((result) {
+        DBHelperWallet()
+            .insert(db: db.database, data: walletData)
+            .then((result) {
           final incomeData = DBModelIncome(
               title: 'Wallet Initialization',
               amount: initAmount,
               wallet_id: result.id,
               category_id: 1,
-              datetime: DateTime.now().toIso8601String()
-          );
+              datetime: DateTime.now().toIso8601String());
           DBHelperIncome().save(db: db.database, data: incomeData);
-
           QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
             text: 'Data saved successfully',
           ).then((_) {
+            widget.callbackWhenDataSaved(walletData);
             closePage(context);
           });
         });
@@ -144,7 +139,8 @@ class _WalletFormState extends State<WalletForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kText(context, 'Wallet', KTStyle.title, KTSType.large),
-          kText(context, 'Insert new wallet data.', KTStyle.label, KTSType.medium),
+          kText(context, 'Insert new wallet data.', KTStyle.label,
+              KTSType.medium),
           ..._buildFormFields(context),
           Row(
             children: [
@@ -175,7 +171,8 @@ class _WalletFormState extends State<WalletForm> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: vh(context, 2.5), horizontal: vw(context, 5)),
+        padding: EdgeInsets.symmetric(
+            vertical: vh(context, 2.5), horizontal: vw(context, 5)),
         child: _buildForm(context),
       ),
     );

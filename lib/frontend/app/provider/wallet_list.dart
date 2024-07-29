@@ -23,7 +23,6 @@ class WalletListController extends Notifier<List<DBModelWallet>>{
     _loading = true;
     state = await DBHelperWallet().readAll(db: db);
     _loading = false;
-    print('reading_data');
   }
 
   bool get isLoading => _loading;

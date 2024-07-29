@@ -5,20 +5,28 @@ import 'package:keuanganku/main.dart';
 
 class HomepageData {
   final DateRange incomesDateRange;
+  final DateRange expenseDateRange;
   final double incomesAmount;
+  final double expenseAmount;
 
   HomepageData({
     this.incomesDateRange = DateRange.week,
+    this.expenseDateRange = DateRange.week,
     this.incomesAmount = 0,
+    this.expenseAmount = 0
   });
 
   HomepageData copyWith({
     DateRange? incomeCardDateRange,
     double? incomesAmount,
+    DateRange? expenseDateRange,
+    double? expenseAmount
   }) {
     return HomepageData(
       incomesDateRange: incomeCardDateRange ?? incomesDateRange,
       incomesAmount: incomesAmount ?? this.incomesAmount,
+      expenseDateRange: expenseDateRange ?? this.expenseDateRange,
+      expenseAmount: expenseAmount ?? this.expenseAmount,
     );
   }
 }

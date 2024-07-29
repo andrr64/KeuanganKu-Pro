@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/income_form.dart';
@@ -21,12 +22,14 @@ class IncomeCard extends StatelessWidget {
   final List<DBModelIncomeCategory> incomeCategories;
 
   final void Function(DateRange val) callbackWhenDateChange;
+  final void Function(DBModelIncome) callbackWhenNewIncomeSaved;
 
   const IncomeCard({
     super.key,
     required this.dateRange,
     required this.incomesAmount,
     required this.callbackWhenDateChange,
+    required this.callbackWhenNewIncomeSaved,
     required this.wallets,
     required this.incomeCategories,
   });
@@ -50,7 +53,7 @@ class IncomeCard extends StatelessWidget {
           IncomeForm(
               wallets: wallets,
               incomeCategories: incomeCategories,
-              callbackWhenDataSaved: (data){}));
+              callbackWhenDataSaved: callbackWhenNewIncomeSaved));
     }
 
     return KCardPlus(

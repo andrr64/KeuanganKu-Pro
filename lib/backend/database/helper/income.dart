@@ -48,7 +48,7 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
           break;
         case DateRange.week:
           final startOfWeek = now.subtract(Duration(days: now.weekday - 1)).copyWith(hour: 0, minute: 0, second: 0);
-          final endOfWeek = startOfWeek.add(Duration(days: DateTime.daysPerWeek - 1)).copyWith(hour: 23, minute: 59, second: 59);
+          final endOfWeek = startOfWeek.add(const Duration(days: DateTime.daysPerWeek - 1)).copyWith(hour: 23, minute: 59, second: 59);
           startDate = startOfWeek.toIso8601String();
           endDate = endOfWeek.toIso8601String();
           break;

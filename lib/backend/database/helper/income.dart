@@ -2,6 +2,7 @@ import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -85,18 +86,13 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
   }
 
   @override
-  Future<bool> save({required Database db, required DBModelIncome data}) async {
-    try {
-      await db.insert(tableName, data.toJson());
-      return true;
-    } catch (e){
-      return false;
-    }
-  }
-
-  @override
   Future<bool> update({required Database db, required DBModelIncome data}) async {
     // TODO: implement update
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> insert({required DBModelIncome data}) async {
+    return await db.database.insert(tableName, data.toJson());
   }
 }

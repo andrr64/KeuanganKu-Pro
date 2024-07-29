@@ -45,14 +45,13 @@ class DBHelperIncomeCategory extends DBHelper<DBModelIncomeCategory> {
   }
 
   @override
-  Future<bool> save({required Database db, required DBModelIncomeCategory data}) async {
-    // TODO: implement save
+  Future<bool> update({required Database db, required DBModelIncomeCategory data}) async {
+    // TODO: implement update
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> update({required Database db, required DBModelIncomeCategory data}) async {
-    // TODO: implement update
+  Future<int> insert({required DBModelIncomeCategory data}) {
     throw UnimplementedError();
   }
 }

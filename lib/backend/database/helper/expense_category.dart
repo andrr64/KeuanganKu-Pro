@@ -44,14 +44,14 @@ class DBHelperExpenseCategory extends DBHelper<DBModelExpenseCategory> {
   }
 
   @override
-  Future<bool> save({required Database db, required DBModelExpenseCategory data}) async {
-    // TODO: implement save
+  Future<bool> update({required Database db, required DBModelExpenseCategory data}) async {
+    // TODO: implement update
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> update({required Database db, required DBModelExpenseCategory data}) async {
-    // TODO: implement update
+  Future<int> insert({required DBModelExpenseCategory data}) {
+    // TODO: implement insert
     throw UnimplementedError();
   }
 

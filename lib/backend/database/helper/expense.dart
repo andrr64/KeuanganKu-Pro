@@ -94,20 +94,15 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   @override
-  Future<bool> save(
-      {required Database db, required DBModelExpense data}) async {
-    try {
-      await db.insert(tableName, data.toJson());
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  @override
   Future<bool> update(
       {required Database db, required DBModelExpense data}) async {
     // TODO: implement update
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> insert({required DBModelExpense data}) {
+    // TODO: implement insert
     throw UnimplementedError();
   }
 }

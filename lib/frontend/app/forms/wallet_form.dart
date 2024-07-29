@@ -116,6 +116,7 @@ class _WalletFormState extends State<WalletForm> {
         width: vw(context, 60),
         child: kDropdown<WalletType>(
           context,
+          label: 'Type',
           items: WalletType.values,
           itemsAsString: WalletType.wallet.walletTypeValueAsString(),
           value: _walletType,

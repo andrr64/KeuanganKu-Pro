@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
-import 'package:keuanganku/backend/database/helper/income_category.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
-import 'package:keuanganku/frontend/app/pages/content_when_x.dart';
+import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -18,8 +17,9 @@ import 'package:quickalert/quickalert.dart';
 
 class IncomeForm extends StatefulWidget {
   final void Function(DBModelIncome data) callbackWhenDataSaved;
-
-  const IncomeForm({super.key, required this.callbackWhenDataSaved});
+  final List<DBModelWallet> wallets;
+  final List<DBModelIncomeCategory> incomeCategories;
+  const IncomeForm({super.key,required this.wallets, required this.incomeCategories,  required this.callbackWhenDataSaved});
 
   @override
   State<IncomeForm> createState() => _IncomeFormState();
@@ -33,13 +33,14 @@ class _IncomeFormState extends State<IncomeForm> {
   late TextEditingController amountController;
   late TextEditingController descriptionController;
   late DBModelIncomeCategory categoryController;
-  late List<String> categoryAsStrings;
 
   late DateTime dateController;
   late TextEditingController dateTextController;
 
   late TimeOfDay timeController;
   late TextEditingController timeTextController;
+
+  late DBModelWallet walletController;
 
   late bool inited;
 
@@ -51,6 +52,8 @@ class _IncomeFormState extends State<IncomeForm> {
     dateTextController = TextEditingController();
     descriptionController = TextEditingController();
     timeTextController = TextEditingController();
+    walletController = widget.wallets[0];
+    categoryController = widget.incomeCategories[0];
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
@@ -125,8 +128,7 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   // Components
-  List<Widget> fields(BuildContext context,
-      {required List<DBModelIncomeCategory> incomeCategories}) {
+  List<Widget> fields(BuildContext context) {
     return [
       dummyHeight(22.5),
       kTextField(context,
@@ -154,9 +156,12 @@ class _IncomeFormState extends State<IncomeForm> {
           SizedBox(
             width: vw(context, 60),
             child: kDropdown<DBModelIncomeCategory>(
+              label: 'Category',
               context,
-              items: incomeCategories,
-              itemsAsString: categoryAsStrings,
+              items: widget.incomeCategories,
+              itemsAsString: List<String>.generate(widget.incomeCategories.length, (index){
+                return widget.incomeCategories[index].name!;
+              }).toList(),
               value: categoryController,
               onChanged: (e) {
                 if (e != null) categoryController = e;
@@ -166,6 +171,19 @@ class _IncomeFormState extends State<IncomeForm> {
           dummyWidth(vw(context, 2.5)),
           k_button(context, () {}, text: 'Add', icon: Icons.add_box)
         ],
+      ),
+      dummyHeight(22.5),
+      kDropdown<DBModelWallet>(
+        context,
+        label: 'Wallet',
+        items: widget.wallets,
+        itemsAsString: List<String>.generate(widget.wallets.length, (index){
+          return widget.wallets[index].name!;
+        }).toList(),
+        value: walletController,
+        onChanged: (e) {
+          if (e != null) walletController = e;
+        },
       ),
       dummyHeight(22.5),
       kTextField(context,
@@ -213,8 +231,7 @@ class _IncomeFormState extends State<IncomeForm> {
     ];
   }
 
-  Widget form(BuildContext context,
-      {required List<DBModelIncomeCategory> incomeCategories}) {
+  Widget form(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -223,7 +240,7 @@ class _IncomeFormState extends State<IncomeForm> {
           kText(context, 'Income', KTStyle.title, KTSType.large),
           kText(context, 'Insert new income data.', KTStyle.label,
               KTSType.medium),
-          ...fields(context, incomeCategories: incomeCategories),
+          ...fields(context),
           Row(
             children: [
               k_button(
@@ -242,15 +259,7 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   // Frontend
-  Widget content(
-      BuildContext context, List<DBModelIncomeCategory> incomeCategories) {
-    if (inited) {
-      categoryController = incomeCategories[0];
-      categoryAsStrings = List.generate(incomeCategories.length, (index) {
-        return incomeCategories[index].name!;
-      });
-    }
-
+  Widget content(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: kText(context, 'Form', KTStyle.title, KTSType.medium),
@@ -262,32 +271,13 @@ class _IncomeFormState extends State<IncomeForm> {
           vertical: vh(context, 2.5),
           horizontal: vw(context, 5),
         ),
-        child: form(context, incomeCategories: incomeCategories),
+        child: form(context),
       ),
     );
   }
 
-  // Backend
-  Future<List<DBModelIncomeCategory>> getData() async {
-    List<DBModelIncomeCategory> datas =
-    await DBHelperIncomeCategory().readAll(db: db.database);
-    inited = true;
-    return datas;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DBModelIncomeCategory>>(
-      future: getData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return contentWhenWaiting(context);
-        } else if (snapshot.hasError) {
-          return contentWhenError(context, snapshot.error);
-        } else {
-          return content(context, snapshot.data ?? []);
-        }
-      },
-    );
+    return content(context);
   }
 }

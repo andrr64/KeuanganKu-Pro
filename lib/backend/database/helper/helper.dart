@@ -19,7 +19,7 @@ abstract class DBHelper<T> {
 
   List<T> get initData;
 
-  Future<bool> save({required Database db, required T data});
+  Future<int> insert({required T data});
   Future<bool> update ({required Database db, required T data});
   Future<bool> delete({required Database db, required T data});
   Future<T> readById({required Database db, required int id});

@@ -24,15 +24,23 @@ class HomepageData {
 }
 
 class HomepageProvider extends Notifier<HomepageData> {
+  bool _init = false;
+
   @override
   HomepageData build() {
     return HomepageData();
   }
 
+  void initData() async{
+    if (!_init){
+      updateIncomes();
+      _init = true;
+    }
+  }
+
   void updateIncomes() async {
     double updatedTotalIncomes = await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange);
     state = state.copyWith(incomesAmount: updatedTotalIncomes);
-    print(updatedTotalIncomes);
   }
 
   void setIncomeCardDateRange(DateRange dateRange) async{

@@ -20,6 +20,10 @@ class IncomesCategoryProvider extends Notifier<List<DBModelIncomeCategory>>{
     }
   }
 
+  void updateFromDatabase() async {
+    state = await DBHelperIncomeCategory().readAll(db: db.database);
+  }
+
   void add(DBModelIncomeCategory incomeCategory){
     state = [...state, incomeCategory];
   }

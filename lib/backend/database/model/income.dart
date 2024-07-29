@@ -1,13 +1,15 @@
+import 'package:keuanganku/backend/database/helper/income.dart';
+import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelIncome extends DBModel {
-  final int? id;
-  final String? title;
-  final double? amount;
-  final String? description;
-  final int? wallet_id;
-  final int? category_id;
-  final String? datetime;
+  int? id;
+  String? title;
+  double? amount;
+  String? description;
+  int? wallet_id;
+  int? category_id;
+  String? datetime;
 
   DBModelIncome({
     this.id,
@@ -42,6 +44,16 @@ class DBModelIncome extends DBModel {
       category_id: json['category_id'],
       datetime: json['datetime'],
     );
+  }
+
+  Future<void> insert() async {
+    int id = await DBHelperIncome().insert(data: this);
+    id = id;
+  }
+
+  Future<void> insertAndUpdateWalletIncome() async {
+    await insert();
+    await DBHelperWallet().addIncome(walletId: wallet_id!, income: amount!);
   }
 }
 

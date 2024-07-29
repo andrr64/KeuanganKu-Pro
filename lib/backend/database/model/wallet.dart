@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
+import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
@@ -31,11 +32,11 @@ extension Get on WalletType {
 }
 
 class DBModelWallet extends DBModel {
-  final int? id;
-  final String? name;
-  final int? type;
-  final double? total_income;
-  final double? total_expense;
+  int? id;
+  String? name;
+  int? type;
+  double? total_income;
+  double? total_expense;
 
   DBModelWallet({this.id, this.name, this.type, this.total_income = 0, this.total_expense = 0});
   
@@ -60,7 +61,7 @@ class DBModelWallet extends DBModel {
     throw ('Invalid Wallet');
   }
 
-  String get type_str {
+  String get typeString {
     if (type == null){
       return 'null';
     }
@@ -74,14 +75,9 @@ class DBModelWallet extends DBModel {
     return Icons.account_balance_sharp;
   }
 
-  DBModelWallet copyFrom(DBModelWallet target, {int? id, String? name, int? type, double? income, double? expense}){
-    return DBModelWallet(
-      id: id?? target.id,
-      name: name?? target.name,
-      type: type?? target.type,
-      total_income: income?? target.total_income,
-      total_expense: expense?? target.total_expense
-    );
+  Future<void> insert() async {
+    int newId = await DBHelperWallet().insert(data: this);
+    id = newId;
   }
 
   Future<List<DBModelExpense>> readExpenses({required Database db, String? startDate, String? endDate}) async{

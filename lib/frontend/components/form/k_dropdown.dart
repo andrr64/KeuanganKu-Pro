@@ -7,6 +7,7 @@ Widget kDropdown<T>(
   required List<String> itemsAsString,
   required T? value,
   required ValueChanged<T?> onChanged,
+      required label,
 }) {
   TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
 
@@ -28,7 +29,7 @@ Widget kDropdown<T>(
     items: dropdownItems,
     decoration: InputDecoration(
         label: Text(
-          'Category',
+          label,
           style: TextStyle(
               fontFamily: tStyle!.fontFamily,
               fontWeight: tStyle.fontWeight,

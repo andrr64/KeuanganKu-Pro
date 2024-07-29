@@ -16,7 +16,7 @@ class WalletCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: KCardPlus(
             context,
-            title: wallet.type_str,
+            title: wallet.typeString,
             icon: Icon(wallet.icon),
             color: const Color(0xff55557a),
             Row(
@@ -34,15 +34,15 @@ class WalletCard extends StatelessWidget {
                 ),
                 FilledButton(
                   onPressed: () {},
-                  child: Icon(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white.withAlpha(50),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(100)))),
+                  child: const Icon(
                     FluentIcons.arrow_right_20_regular,
                     color: Colors.white,
                   ),
-                  style: FilledButton.styleFrom(
-                      backgroundColor: Colors.white.withAlpha(50),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(100)))),
                 )
               ],
             )));

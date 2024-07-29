@@ -36,6 +36,10 @@ class Homepage extends HookConsumerWidget {
               callbackWhenDateChange: callbackWhenIncomeCardDateChange,
               wallets: ref.watch(globalWalletsProvider),
               incomeCategories: ref.watch(globalIncomeCategoriesProvider),
+              callbackWhenNewIncomeSaved: (newIncome){
+                ref.read(homepageProvider.notifier).updateIncomes();
+                ref.read(globalWalletsProvider.notifier).addIncome(walletTargetId: newIncome.wallet_id!, newIncome: newIncome);
+              },
             ),
           ],
         ),

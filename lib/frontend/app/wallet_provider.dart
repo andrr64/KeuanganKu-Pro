@@ -16,25 +16,27 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
 
   void initData(){
     if (!init){
-      read();
+      updateFromDatabase();
     }
   }
 
-  void read() async{
+  void updateFromDatabase() async{
     state = await DBHelperWallet().readAll(db: db.database);
   }
 
-  void add(DBModelWallet wallet) {
+  void add(DBModelWallet wallet){
     state = [...state, wallet];
   }
 
-  void addIncome({required DBModelWallet target, required DBModelIncome income}) {
+  void addToDatabase(DBModelWallet wallet) async {
+    wallet.insert();
+    add(wallet);
+  }
+
+  void addIncome({required int walletTargetId, required DBModelIncome newIncome}) {
     state = state.map((wallet) {
-      if (wallet.id == target.id) {
-        return wallet.copyFrom(
-          wallet,
-          income: wallet.total_income! + income.amount!,
-        );
+      if (wallet.id == walletTargetId) {
+        wallet.total_income = wallet.total_income! + newIncome.amount!;
       }
       return wallet;
     }).toList();
@@ -42,16 +44,6 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
 
   double get totalIncome {
     return state.fold(0.0, (sum, wallet) => sum + (wallet.total_income ?? 0.0));
-  }
-
-  void edit(DBModelWallet target){
-    state = [
-      for(final wallet in state)
-        if (wallet.id == target.id)
-          target
-        else
-          wallet,
-    ];
   }
 
   void remove(DBModelWallet target){

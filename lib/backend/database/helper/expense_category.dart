@@ -1,6 +1,7 @@
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelperExpenseCategory extends DBHelper<DBModelExpenseCategory> {
@@ -50,9 +51,8 @@ class DBHelperExpenseCategory extends DBHelper<DBModelExpenseCategory> {
   }
 
   @override
-  Future<int> insert({required DBModelExpenseCategory data}) {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<int> insert({required DBModelExpenseCategory data}) async{
+    final newId = await db.database.insert(tableName, data.toJson());
+    return newId;
   }
-
 }

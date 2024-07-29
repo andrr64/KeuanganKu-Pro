@@ -155,6 +155,7 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
             width: vw(context, 60),
             child: kDropdown<DBModelExpenseCategory>(
               context,
+              label: 'Category',
               items: expenseCategories,
               itemsAsString: categoryAsStrings,
               value: categoryController,

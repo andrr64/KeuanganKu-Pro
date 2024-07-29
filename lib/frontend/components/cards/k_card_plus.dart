@@ -23,7 +23,7 @@ Widget KCardPlus(BuildContext context, Widget child,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(padding: const EdgeInsets.symmetric(vertical: 10), child: child,),
+              Padding(padding: const EdgeInsets.symmetric(vertical: 8.5), child: child,),
             ],
           ),
         ),

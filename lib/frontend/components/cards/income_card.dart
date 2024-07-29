@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keuanganku/backend/database/model/income_category.dart';
+import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/income_form.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
@@ -13,23 +14,29 @@ import 'package:keuanganku/frontend/utility/color.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
-class IncomeCard extends HookConsumerWidget {
+class IncomeCard extends StatelessWidget {
   final DateRange dateRange;
   final double incomesAmount;
+  final List<DBModelWallet> wallets;
+  final List<DBModelIncomeCategory> incomeCategories;
+
   final void Function(DateRange val) callbackWhenDateChange;
 
-  const IncomeCard(
-      {super.key,
-        required this.dateRange,
-        required this.incomesAmount,
-        required this.callbackWhenDateChange});
+  const IncomeCard({
+    super.key,
+    required this.dateRange,
+    required this.incomesAmount,
+    required this.callbackWhenDateChange,
+    required this.wallets,
+    required this.incomeCategories,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final KDropdown<DateRange> data_range =
-    KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
+  Widget build(BuildContext context) {
+    final KDropdown<DateRange> dataRangeDropdown =
+        KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
     final List<Color> generated3color =
-    generate3Color(BaseColor.old_green.color);
+        generate3Color(BaseColor.old_green.color);
 
     void whenDropdownDateRangeChange(DateRange? val) {
       if (val != null && val != dateRange) {
@@ -38,16 +45,23 @@ class IncomeCard extends HookConsumerWidget {
     }
 
     void whenAddButtonPressed() {
-      // TODO: implement callbackWhenDataSaved
-      openPage(context, IncomeForm(callbackWhenDataSaved: (income) {}));
+      openPage(
+          context,
+          IncomeForm(
+              wallets: wallets,
+              incomeCategories: incomeCategories,
+              callbackWhenDataSaved: (data){}));
     }
 
-    Widget content() {
-      return Column(
+    return KCardPlus(
+      title: 'Income',
+      icon: const Icon(FluentIcons.arrow_up_20_filled),
+      context,
+      Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          data_range.dropdownButton(
+          dataRangeDropdown.dropdownButton(
             dateRange,
             whenDropdownDateRangeChange,
             icon_theme: Theme.of(context).iconTheme,
@@ -75,7 +89,7 @@ class IncomeCard extends HookConsumerWidget {
                     KTStyle.display,
                     KTSType.medium,
                     color: Colors.white,
-                  )
+                  ),
                 ],
               ),
               k_button(
@@ -85,7 +99,7 @@ class IncomeCard extends HookConsumerWidget {
                 text: 'Add',
                 mainColor: generated3color[1],
                 iconColor: Colors.white,
-              )
+              ),
             ],
           ),
           dummyHeight(5),
@@ -98,17 +112,10 @@ class IncomeCard extends HookConsumerWidget {
               mainColor: generated3color[1],
               iconColor: Colors.white,
             ),
-          )
+          ),
         ],
-      );
-    }
-
-    return  KCardPlus(
-        title: 'Income',
-        icon: const Icon(FluentIcons.arrow_up_20_filled),
-        context,
-        content(),
-        color: BaseColor.old_green.color
+      ),
+      color: BaseColor.old_green.color,
     );
   }
 }

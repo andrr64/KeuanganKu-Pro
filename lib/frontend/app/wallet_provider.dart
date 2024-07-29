@@ -2,30 +2,27 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:keuanganku/main.dart';
 
-final globalWalletListProvider = NotifierProvider<WalletListController, List<DBModelWallet>>(WalletListController.new);
+final globalWalletsProvider = NotifierProvider<WalletListProvider, List<DBModelWallet>>(WalletListProvider.new);
 
-class WalletListController extends Notifier<List<DBModelWallet>>{
-  //TODO: setiap kali wallet bertambah, perbaharui amount = total_incomes - total_expense
-  bool _loading = false;
+class WalletListProvider extends Notifier<List<DBModelWallet>>{
   bool init = false;
-  double amount = 0;
-  
+
   @override
   List<DBModelWallet> build() {
     return [];
   }
 
-  void initData(Database db) async => read(db);
-
-  void read(Database db) async{
-    _loading = true;
-    state = await DBHelperWallet().readAll(db: db);
-    _loading = false;
+  void initData(){
+    if (!init){
+      read();
+    }
   }
 
-  bool get isLoading => _loading;
+  void read() async{
+    state = await DBHelperWallet().readAll(db: db.database);
+  }
 
   void add(DBModelWallet wallet) {
     state = [...state, wallet];

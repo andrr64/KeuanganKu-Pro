@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/home/home_provider.dart';
+import 'package:keuanganku/frontend/app/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
@@ -15,7 +17,6 @@ class Homepage extends HookConsumerWidget {
     void callbackWhenIncomeCardDateChange(DateRange val) {
       ref.read(homepageProvider.notifier).setIncomeCardDateRange(val);
     }
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -33,6 +34,8 @@ class Homepage extends HookConsumerWidget {
               dateRange: ref.watch(homepageProvider).incomesDateRange,
               incomesAmount: ref.watch(homepageProvider).incomesAmount,
               callbackWhenDateChange: callbackWhenIncomeCardDateChange,
+              wallets: ref.watch(globalWalletsProvider),
+              incomeCategories: ref.watch(globalIncomeCategoriesProvider),
             ),
           ],
         ),

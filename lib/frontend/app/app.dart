@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/home/home.dart';
-import 'package:keuanganku/frontend/app/provider/wallet_list.dart';
+import 'package:keuanganku/frontend/app/home/home_provider.dart';
+import 'package:keuanganku/frontend/app/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
-import 'package:keuanganku/main.dart';
 
 final pageIndexProvider = StateProvider<int>((_) => 0);
 final pageControllerProvider = StateProvider<PageController>((_) => PageController());
@@ -31,18 +32,21 @@ class KeuangankuPro extends HookConsumerWidget {
     ];
   }
 
+  void initData(WidgetRef ref){
+    ref.watch(globalWalletsProvider.notifier).initData();
+    ref.watch(globalIncomeCategoriesProvider.notifier).initData();
+    ref.watch(homepageProvider.notifier).initData();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var scaffoldKey = ref.watch(mainPageScaffoldKeyProvider);
     var pageIndex = ref.watch(pageIndexProvider);
     var pageController = ref.watch(pageControllerProvider);
     var pages = ref.watch(pagesProvider);
-    var watchWalletListController = ref.watch(globalWalletListProvider.notifier);
 
-    if (!watchWalletListController.init) {
-      watchWalletListController.initData(db.database);
-    }
-    
+    initData(ref);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(pageNames[pageIndex]),

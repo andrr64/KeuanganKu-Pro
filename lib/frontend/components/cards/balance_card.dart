@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/forms/wallet_form.dart';
 import 'package:keuanganku/frontend/app/home/home_provider.dart';
-import 'package:keuanganku/frontend/app/provider/userdata.dart';
-import 'package:keuanganku/frontend/app/provider/wallet_list.dart';
+import 'package:keuanganku/frontend/app/userdata_provider.dart';
+import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/cards/wallet_card.dart';
@@ -21,8 +21,8 @@ class BalanceCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var userdataProvider = ref.watch(globalUserdataProvider.notifier);
-    var walletsProvider = ref.watch(globalWalletListProvider);
-    var walletsProviderNotifier = ref.read(globalWalletListProvider.notifier);
+    var walletsProvider = ref.watch(globalWalletsProvider);
+    var walletsProviderNotifier = ref.read(globalWalletsProvider.notifier);
 
     void whenAddButtonPressed(BuildContext context) {
       openPage(context, WalletForm(

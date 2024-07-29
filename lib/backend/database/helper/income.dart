@@ -3,6 +3,7 @@ import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class DBHelperIncome extends DBHelper<DBModelIncome> {
   @override
@@ -24,27 +25,37 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
 
   @override
   Future<bool> delete({required Database db, required DBModelIncome data}) async {
-    // TODO: implement delete
     throw UnimplementedError();
+  }
+
+  Future<double> readTotalIncome({required Database db, DateRange? date}) async {
+    List<DBModelIncome> data = await readAll(db: db, date: date);
+    double result = data.fold(0, (sum, income) => sum + income.amount!);
+    return result;
   }
 
   @override
   Future<List<DBModelIncome>> readAll({required Database db, DateRange? date}) async {
+    final now = DateTime.now();
     String? startDate;
     String? endDate;
 
     if (date != null) {
-      final now = DateTime.now();
-      if (date == DateRange.month) {
-        startDate = DateTime(now.year, now.month, 1).toIso8601String();
-        endDate = DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1)).toIso8601String();
-      } else if (date == DateRange.week) {
-        final weekDay = now.weekday;
-        startDate = now.subtract(Duration(days: weekDay - 1)).toIso8601String();
-        endDate = now.add(Duration(days: DateTime.daysPerWeek - weekDay)).toIso8601String();
-      } else if (date == DateRange.year) {
-        startDate = DateTime(now.year, 1, 1).toIso8601String();
-        endDate = DateTime(now.year + 1, 1, 1).subtract(const Duration(days: 1)).toIso8601String();
+      switch (date) {
+        case DateRange.month:
+          startDate = DateTime(now.year, now.month, 1).toIso8601String();
+          endDate = DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1)).toIso8601String();
+          break;
+        case DateRange.week:
+          final startOfWeek = now.subtract(Duration(days: now.weekday - 1)).copyWith(hour: 0, minute: 0, second: 0);
+          final endOfWeek = startOfWeek.add(Duration(days: DateTime.daysPerWeek - 1)).copyWith(hour: 23, minute: 59, second: 59);
+          startDate = startOfWeek.toIso8601String();
+          endDate = endOfWeek.toIso8601String();
+          break;
+        case DateRange.year:
+          startDate = DateTime(now.year, 1, 1).toIso8601String();
+          endDate = DateTime(now.year + 1, 1, 1).subtract(const Duration(days: 1)).toIso8601String();
+          break;
       }
 
       final List<Map<String, dynamic>> data = await db.query(
@@ -52,14 +63,10 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
         where: 'datetime >= ? AND datetime <= ?',
         whereArgs: [startDate, endDate],
       );
-      return List.generate(data.length, (i) {
-        return DBModelIncome().fromJson(data[i]);
-      });
+      return data.map((item) => DBModelIncome().fromJson(item)).toList();
     } else {
       final List<Map<String, dynamic>> data = await db.query(tableName);
-      return List.generate(data.length, (i) {
-        return DBModelIncome().fromJson(data[i]);
-      });
+      return data.map((item) => DBModelIncome().fromJson(item)).toList();
     }
   }
 
@@ -92,5 +99,4 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

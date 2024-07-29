@@ -9,7 +9,7 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 final pageIndexProvider = StateProvider<int>((_) => 0);
 final pageControllerProvider = StateProvider<PageController>((_) => PageController());
 final mainPageScaffoldKeyProvider = StateProvider<GlobalKey<ScaffoldState>>((_) => GlobalKey<ScaffoldState>());
-final List<String> pageNames = ["Home", "Wallet"];
+final pageNames = ["Home", "Wallet"];
 final pagesProvider = StateProvider<List<Widget>>((ref) {
   return [
     const Homepage(),
@@ -17,8 +17,8 @@ final pagesProvider = StateProvider<List<Widget>>((ref) {
   ];
 });
 
-class KeuangankuPro extends HookConsumerWidget {
-  const KeuangankuPro({super.key});
+class KeuanganKuPro extends HookConsumerWidget {
+  const KeuanganKuPro({super.key});
 
   void whenBottomNavbarChanged(int value, WidgetRef ref, PageController pageController) {
     ref.read(pageIndexProvider.notifier).state = value;

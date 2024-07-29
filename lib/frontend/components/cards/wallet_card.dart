@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
@@ -25,18 +26,25 @@ class WalletCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    kText(
-                        context, wallet.name!, KTStyle.display, KTSType.small,
+                    kText(context, wallet.name!, KTStyle.display, KTSType.small,
                         color: Colors.white),
-                    kText(context, currencyFormat(wallet.total_income!), KTStyle.label,
-                        KTSType.large,
+                    kText(context, currencyFormat(wallet.total_income!),
+                        KTStyle.label, KTSType.large,
                         color: Colors.white),
                   ],
                 ),
-                k_button(context, () {},
-                    text: 'Detail',
-                    mainColor: Colors.white.withAlpha(50),
-                    withoutBg: true)
+                FilledButton(
+                  onPressed: () {},
+                  child: Icon(
+                    FluentIcons.arrow_right_20_regular,
+                    color: Colors.white,
+                  ),
+                  style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white.withAlpha(50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(100)))),
+                )
               ],
             )));
   }

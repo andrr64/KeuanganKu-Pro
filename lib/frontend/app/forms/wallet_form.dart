@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/backend/database/helper/income.dart';
-import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
@@ -12,7 +10,6 @@ import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
-import 'package:keuanganku/main.dart';
 import 'package:quickalert/quickalert.dart';
 
 class WalletForm extends StatefulWidget {
@@ -44,45 +41,34 @@ class _WalletFormState extends State<WalletForm> {
     super.dispose();
   }
 
-  void _handleSave(BuildContext context) async {
-    double initAmount = double.parse(_initialAmountController.text);
+  void handleSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      try {
-        final walletData = DBModelWallet(
-          name: _walletNameController.text,
-          type: _walletType.type,
-          total_income: initAmount,
+      final initAmount = double.parse(_initialAmountController.text);
+      final newWallet = DBModelWallet(
+        name: _walletNameController.text,
+        type: _walletType.type,
+        total_income: initAmount,
+      );
+      newWallet.insert().then((_){
+        final newIncome = DBModelIncome(
+          wallet_id: newWallet.id,
+          title: 'Wallet Init',
+          amount: initAmount,
+          category_id: 1,
+          description: 'Wallet Initialization',
+          datetime: DateTime.now().toIso8601String()
         );
-        DBHelperWallet()
-            .insert(db: db.database, data: walletData)
-            .then((result) {
-          final incomeData = DBModelIncome(
-              title: 'Wallet Initialization',
-              amount: initAmount,
-              wallet_id: result.id,
-              category_id: 1,
-              datetime: DateTime.now().toIso8601String());
-          DBHelperIncome().save(db: db.database, data: incomeData);
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            text: 'Data saved successfully',
-          ).then((_) {
-            widget.callbackWhenDataSaved(walletData);
+        newIncome.insert().then((_){
+          widget.callbackWhenDataSaved(newWallet);
+          QuickAlert.show(context: context, type: QuickAlertType.success).then((_){
             closePage(context);
           });
         });
-      } catch (e) {
-        QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          text: '$e',
-        );
-      }
+      });
     }
   }
 
-  void _handleClear() {
+  void handleClear() {
     _walletNameController.clear();
     _initialAmountController.clear();
   }
@@ -148,14 +134,14 @@ class _WalletFormState extends State<WalletForm> {
               k_button(
                 context,
                 text: 'Save',
-                () => _handleSave(context),
+                () => handleSave(context),
               ),
               dummyWidth(10),
               k_button(
                 context,
                 mainColor: BaseColor.old_red.color,
                 text: 'Clear',
-                _handleClear,
+                handleClear,
               ),
             ],
           ),

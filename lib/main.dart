@@ -36,7 +36,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'KeuanganKu Pro',
-      home: const KeuangankuPro(),
+      home: const KeuanganKuPro(),
       theme: light_theme,
     );
   }

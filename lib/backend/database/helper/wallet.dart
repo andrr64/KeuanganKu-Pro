@@ -1,7 +1,9 @@
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class DBHelperWallet extends DBHelper<DBModelWallet> {
   @override
@@ -36,24 +38,33 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
 
   @override
   Future<DBModelWallet> readById({required Database db, required int id}) async {
-    // TODO: implement readById
-    throw UnimplementedError();
+    // TODO: not safe code
+    return DBModelWallet().fromJson(
+        (await db.query(tableName, where: 'id = ?', whereArgs: [id]))[0]
+    );
   }
 
   @override
-  Future<bool> save({required Database db, required DBModelWallet data}) async {
-    await db.insert(tableName, data.toJson());
-    return true;
-  }
-
-  Future<DBModelWallet> insert({required Database db, required DBModelWallet data}) async {
-    int id = await db.insert(tableName, data.toJson());
-    return DBModelWallet().copyFrom(data, id: id);
+  Future<int> insert({required DBModelWallet data}) async {
+    return await db.database.insert(tableName, data.toJson());
   }
 
   @override
   Future<bool> update({required Database db, required DBModelWallet data}) async {
     // TODO: implement update
     throw UnimplementedError();
+  }
+
+  Future<void> addIncome({
+    required int walletId,
+    required double income,
+  }) async {
+    final DBModelWallet wallet = await readById(db: db.database, id: walletId);
+    await db.database.update(
+      tableName,
+      {'total_income': wallet.total_income! + income},
+      where: 'id = ?',
+      whereArgs: [walletId],
+    );
   }
 }

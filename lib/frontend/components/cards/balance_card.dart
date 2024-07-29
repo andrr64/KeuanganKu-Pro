@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/forms/wallet_form.dart';
+import 'package:keuanganku/frontend/app/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/provider/userdata.dart';
 import 'package:keuanganku/frontend/app/provider/wallet_list.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
@@ -27,6 +28,7 @@ class BalanceCard extends HookConsumerWidget {
       openPage(context, WalletForm(
         callbackWhenDataSaved: (wallet) {
           walletsProviderNotifier.add(wallet);
+          ref.read(homepageProvider.notifier).updateIncomes();
         },
       ));
     }

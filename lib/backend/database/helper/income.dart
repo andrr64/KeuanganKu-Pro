@@ -37,38 +37,22 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
 
   @override
   Future<List<DBModelIncome>> readAll({required Database db, DateRange? date}) async {
-    final now = DateTime.now();
-    String? startDate;
-    String? endDate;
+    String? startDate = date?.startDateISO8601;
+    String? endDate = date?.endDateISO8601;
 
-    if (date != null) {
-      switch (date) {
-        case DateRange.month:
-          startDate = DateTime(now.year, now.month, 1).toIso8601String();
-          endDate = DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1)).toIso8601String();
-          break;
-        case DateRange.week:
-          final startOfWeek = now.subtract(Duration(days: now.weekday - 1)).copyWith(hour: 0, minute: 0, second: 0);
-          final endOfWeek = startOfWeek.add(const Duration(days: DateTime.daysPerWeek - 1)).copyWith(hour: 23, minute: 59, second: 59);
-          startDate = startOfWeek.toIso8601String();
-          endDate = endOfWeek.toIso8601String();
-          break;
-        case DateRange.year:
-          startDate = DateTime(now.year, 1, 1).toIso8601String();
-          endDate = DateTime(now.year + 1, 1, 1).subtract(const Duration(days: 1)).toIso8601String();
-          break;
-      }
+    final whereClause = (startDate != null && endDate != null)
+        ? 'datetime >= ? AND datetime <= ?'
+        : null;
+    final whereArgs = (startDate != null && endDate != null)
+        ? [startDate, endDate]
+        : null;
 
-      final List<Map<String, dynamic>> data = await db.query(
-        tableName,
-        where: 'datetime >= ? AND datetime <= ?',
-        whereArgs: [startDate, endDate],
-      );
-      return data.map((item) => DBModelIncome().fromJson(item)).toList();
-    } else {
-      final List<Map<String, dynamic>> data = await db.query(tableName);
-      return data.map((item) => DBModelIncome().fromJson(item)).toList();
-    }
+    final List<Map<String, dynamic>> data = await db.query(
+      tableName,
+      where: whereClause,
+      whereArgs: whereArgs,
+    );
+    return data.map((item) => DBModelIncome().fromJson(item)).toList();
   }
 
   @override

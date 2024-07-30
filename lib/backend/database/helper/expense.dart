@@ -35,47 +35,22 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   @override
-  Future<List<DBModelExpense>> readAll(
-      {required Database db, DateRange? date}) async {
-    String? startDate;
-    String? endDate;
+  Future<List<DBModelExpense>> readAll({required Database db, DateRange? date}) async {
+    String? startDate = date?.startDateISO8601;
+    String? endDate = date?.endDateISO8601;
 
-    if (date != null) {
-      final now = DateTime.now();
-      if (date == DateRange.month) {
-        startDate = DateTime(now.year, now.month, 1).toIso8601String();
-        endDate = DateTime(now.year, now.month + 1, 1)
-            .subtract(const Duration(days: 1))
-            .toIso8601String();
-      } else if (date == DateRange.week) {
-        final weekDay = now.weekday;
-        startDate = now.subtract(Duration(days: weekDay - 1)).toIso8601String();
-        endDate = now
-            .add(Duration(days: DateTime.daysPerWeek - weekDay))
-            .toIso8601String();
-      } else if (date == DateRange.year) {
-        startDate = DateTime(now.year, 1, 1).toIso8601String();
-        endDate = DateTime(now.year + 1, 1, 1)
-            .subtract(const Duration(days: 1))
-            .toIso8601String();
-      }
-
-      return await db.query(
-        tableName,
-        where: 'datetime >= ? AND datetime <= ?',
-        whereArgs: [startDate, endDate],
-      ).then((data) {
-        return List.generate(data.length, (i) {
-          return DBModelExpense().fromJson(data[i]);
-        });
-      });
-    } else {
-      return await db.query(tableName).then((data) {
-        return List.generate(data.length, (i) {
-          return DBModelExpense().fromJson(data[i]);
-        });
-      });
-    }
+    final whereClause = (startDate != null && endDate != null)
+        ? 'datetime >= ? AND datetime <= ?'
+        : null;
+    final whereArgs = (startDate != null && endDate != null)
+        ? [startDate, endDate]
+        : null;
+    final List<Map<String, dynamic>> data = await db.query(
+      tableName,
+      where: whereClause,
+      whereArgs: whereArgs,
+    );
+    return data.map((item) => DBModelExpense().fromJson(item)).toList();
   }
 
   @override

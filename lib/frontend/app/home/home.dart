@@ -52,12 +52,12 @@ class Homepage extends HookConsumerWidget {
       callbackWhenDateChange: (val) => _callbackWhenIncomeCardDateChange(val, ref),
       wallets: ref.watch(globalWalletsProvider),
       incomeCategories: ref.watch(globalIncomeCategoriesProvider),
-      callbackWhenNewIncomeSaved: (newIncome) {
-        ref.read(homepageProvider.notifier).updateIncomes();
+      callbackWhenNewIncomeSaved: (newIncome) async{
         ref.read(globalWalletsProvider.notifier).addIncome(
           walletTargetId: newIncome.wallet_id!,
           newIncome: newIncome,
         );
+        await ref.read(homepageProvider.notifier).updateIncomes();
       },
     );
   }
@@ -69,12 +69,12 @@ class Homepage extends HookConsumerWidget {
       wallets: ref.watch(globalWalletsProvider),
       expenseCategories: ref.watch(globalExpenseCategoriesProvider),
       callbackWhenDataChange: (val) => _callbackWhenExpenseCardDateChange(val, ref),
-      callbackWhenNewExpenseSaved: (newExpense) {
-        ref.read(homepageProvider.notifier).updateExpense();
+      callbackWhenNewExpenseSaved: (newExpense) async{
         ref.read(globalWalletsProvider.notifier).addExpense(
             walletTargetId: newExpense.wallet_id!,
             newExpense: newExpense
         );
+        await ref.read(homepageProvider.notifier).updateExpense();
       },
     );
   }

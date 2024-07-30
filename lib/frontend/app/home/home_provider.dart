@@ -40,32 +40,28 @@ class HomepageProvider extends Notifier<HomepageData> {
     return HomepageData();
   }
 
-  void initData() async{
+  Future<void> initData() async{
     if (!_init){
-      updateIncomes();
+      await updateIncomes();
+      await updateExpense();
       _init = true;
     }
   }
 
-  void updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange));
-  void updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.expenseDateRange));
-  void updateAll() {
-    updateIncomes();
-    updateExpense();
-  }
-
-  void setIncomeCardDateRange(DateRange dateRange) async{
+  Future<void> updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange));
+  Future<void> updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.expenseDateRange));
+  Future<void> setIncomeCardDateRange(DateRange dateRange) async{
     if (dateRange != state.incomesDateRange) {
       state = state.copyWith(
-        incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange),
+        incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: dateRange),
         incomeCardDateRange: dateRange
       );
     }
   }
-  void setExpenseCardDateRange(DateRange dateRange) async{
+  Future<void> setExpenseCardDateRange(DateRange dateRange) async{
     if (dateRange != state.expenseDateRange){
       state = state.copyWith(
-          expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.incomesDateRange),
+          expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: dateRange),
           expenseDateRange: dateRange
       );
     }

@@ -55,14 +55,21 @@ class DBHelperWallet extends DBHelper<DBModelWallet> {
     throw UnimplementedError();
   }
 
-  Future<void> addIncome({
-    required int walletId,
-    required double income,
-  }) async {
+  Future<void> addIncome({required int walletId, required double income}) async {
     final DBModelWallet wallet = await readById(db: db.database, id: walletId);
     await db.database.update(
       tableName,
       {'total_income': wallet.total_income! + income},
+      where: 'id = ?',
+      whereArgs: [walletId],
+    );
+  }
+
+  Future<void> addExpense({required int walletId,required double expense}) async{
+    final DBModelWallet wallet = await readById(db: db.database, id: walletId);
+    await db.database.update(
+      tableName,
+      {'total_expense': wallet.total_expense! + expense},
       where: 'id = ?',
       whereArgs: [walletId],
     );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+final _formatted = NumberFormat("#,###");
 
 Widget kNumField(
   BuildContext context, {
@@ -13,6 +16,7 @@ Widget kNumField(
   double? maxVal,
 }) {
   TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
+  String maxValue = _formatted.format((maxVal));
   return TextFormField(
     keyboardType: TextInputType.number,
     controller: controller,
@@ -20,7 +24,7 @@ Widget kNumField(
       if  (maxVal != null){
         try {
           double value = double.parse(val!);
-          if (value > maxVal) return 'Maximum value is $maxVal';
+          if (value > maxVal) return 'Maximum value is $maxValue';
         } catch(e){
           return 'Input an number!';
         }

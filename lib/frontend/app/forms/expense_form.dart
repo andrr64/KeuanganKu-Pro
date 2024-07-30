@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/backend/database/helper/expense.dart';
-import 'package:keuanganku/backend/database/helper/expense_category.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
-import 'package:keuanganku/frontend/app/pages/content_when_x.dart';
+import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -13,18 +11,25 @@ import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
-import 'package:keuanganku/main.dart';
+import 'package:keuanganku/frontend/utility/page.dart';
 import 'package:quickalert/quickalert.dart';
 
-class InputExpenseDataForm extends StatefulWidget {
-  const InputExpenseDataForm({super.key, required this.callbackWhenDataSaved});
-  final void Function() callbackWhenDataSaved;
+class ExpenseForm extends StatefulWidget {
+  final void Function(DBModelExpense) callbackWhenDataSaved;
+  final List<DBModelExpenseCategory> expenseCategories;
+  final List<DBModelWallet> wallets;
+
+  const ExpenseForm(
+      {super.key,
+      required this.callbackWhenDataSaved,
+      required this.expenseCategories,
+      required this.wallets});
 
   @override
-  State<InputExpenseDataForm> createState() => _InputExpenseDataFormState();
+  State<ExpenseForm> createState() => _ExpenseFormState();
 }
 
-class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
+class _ExpenseFormState extends State<ExpenseForm> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
@@ -32,15 +37,14 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
   late TextEditingController amountController;
   late TextEditingController descriptionController;
   late DBModelExpenseCategory categoryController;
-  late List<String> categoryAsStrings;
 
+  late DBModelWallet walletController;
   late DateTime dateController;
   late TextEditingController dateTextController;
 
   late TimeOfDay timeController;
   late TextEditingController timeTextController;
 
-  late bool inited;
 
   @override
   void initState() {
@@ -50,6 +54,8 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
     dateTextController = TextEditingController();
     descriptionController = TextEditingController();
     timeTextController = TextEditingController();
+    walletController = widget.wallets[0];
+    categoryController = widget.expenseCategories[0];
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
@@ -65,48 +71,27 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
   }
 
   // Events
-  void whenButtonSavePressed(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        if (double.tryParse(amountController.text) == null) {
-          throw Exception('Invalid amount, try again.');
-        }
-        // TODO: implement rate
-        DBModelExpense expense = DBModelExpense(
+  void handleSave(BuildContext context) async {
+    if(_formKey.currentState!.validate()){
+      final newExpense = DBModelExpense(
           title: titleController.text,
           amount: double.parse(amountController.text),
-          description: descriptionController.text,
-          wallet_id: 1,
-          datetime: combineDateTimeAndTimeOfDay(dateController, timeController),
+          description: titleController.text,
+          wallet_id: walletController.id,
           category_id: categoryController.id,
-          rate: 5,
-        );
-        DBHelperExpense().save(db: db.database, data: expense).then((result) {
-          if (result) {
-            widget.callbackWhenDataSaved();
-            QuickAlert.show(
-                context: context,
-                type: QuickAlertType.success,
-                text: 'Data saved successfully',
-                showConfirmBtn: true)
-                .then((_) {
-              Navigator.of(context).pop();
-            });
-          } else {
-            throw Exception('Failed when save data');
-          }
+          rate: 0,
+          datetime: combineDateTimeAndTimeOfDay(dateController, timeController)
+      );
+      newExpense.insert().then((_){
+        widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
+        QuickAlert.show(context: context, type: QuickAlertType.success).then((_){
+          closePage(context);
         });
-      } catch (e) {
-        QuickAlert.show(
-            text: e.toString(),
-            context: context,
-            type: QuickAlertType.error,
-            showConfirmBtn: true);
-      }
+      });
     }
   }
 
-  void whenButtonClearPressed() {
+  void handleClear() {
     titleController.clear();
     amountController.clear();
     descriptionController.clear();
@@ -125,29 +110,22 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
   }
 
   // Components
-  List<Widget> fields(BuildContext context,
-      {required List<DBModelExpenseCategory> expenseCategories}) {
+  List<Widget> fields(BuildContext context) {
     return [
       dummyHeight(22.5),
-      kTextField(context,
-          controller: titleController,
-          title: 'Title',
+      kTextField(context, controller: titleController, title: 'Title',
           validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Title can't empty";
-            }
-            return null;
-          },
-          icon: const Icon(Icons.title),
-          maxLines: 1),
+        if (value == null || value.isEmpty) {
+          return "Title can't empty";
+        }
+        return null;
+      }, icon: const Icon(Icons.title), maxLines: 1),
       dummyHeight(22.5),
-      kNumField(
-          context,
+      kNumField(context,
           controller: amountController,
           title: 'Amount',
           icon: const Icon(Icons.attach_money),
-          maxVal: 10000000000
-      ),
+          maxVal: walletController.total_income! - walletController.total_expense!),
       dummyHeight(22.5),
       Row(
         children: [
@@ -156,8 +134,10 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
             child: kDropdown<DBModelExpenseCategory>(
               context,
               label: 'Category',
-              items: expenseCategories,
-              itemsAsString: categoryAsStrings,
+              items: widget.expenseCategories,
+              itemsAsString: widget.expenseCategories.map((e){
+                return e.name!;
+              }).toList(),
               value: categoryController,
               onChanged: (e) {
                 if (e != null) categoryController = e;
@@ -167,6 +147,19 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
           dummyWidth(vw(context, 2.5)),
           k_button(context, () {}, text: 'Add', icon: Icons.add_box)
         ],
+      ),
+      dummyHeight(22.5),
+      kDropdown<DBModelWallet>(
+        context,
+        label: 'Wallets',
+        items: widget.wallets,
+        itemsAsString: widget.wallets.map((e){
+          return e.name!;
+        }).toList(),
+        value: walletController,
+        onChanged: (e) {
+          if (e != null) walletController = e;
+        },
       ),
       dummyHeight(22.5),
       kTextField(context,
@@ -184,15 +177,15 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
                 icon: const Icon(Icons.date_range),
                 disable: true,
                 controller: dateTextController, onTap: () {
-                  showDatePicker(
+              showDatePicker(
                       context: context,
                       initialDate: dateController,
                       firstDate: DateTime(2020),
                       lastDate: DateTime.now())
-                      .then((value) {
-                    if (value != null) whenDatePicked(value);
-                  });
-                }),
+                  .then((value) {
+                if (value != null) whenDatePicked(value);
+              });
+            }),
           ),
           dummyWidth(vw(context, 2.5)),
           SizedBox(
@@ -202,11 +195,11 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
                 icon: const Icon(Icons.access_time_sharp),
                 disable: true,
                 controller: timeTextController, onTap: () {
-                  showTimePicker(context: context, initialTime: timeController)
-                      .then((val) {
-                    if (val != null) whenTimePicked(val);
-                  });
-                }),
+              showTimePicker(context: context, initialTime: timeController)
+                  .then((val) {
+                if (val != null) whenTimePicked(val);
+              });
+            }),
           ),
         ],
       ),
@@ -214,8 +207,7 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
     ];
   }
 
-  Widget form(BuildContext context,
-      {required List<DBModelExpenseCategory> expenseCategories}) {
+  Widget form(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -224,17 +216,16 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
           kText(context, 'Expense', KTStyle.title, KTSType.large),
           kText(context, 'Insert new expense data.', KTStyle.label,
               KTSType.medium),
-          ...fields(context, expenseCategories: expenseCategories),
+          ...fields(context),
           Row(
             children: [
-              k_button(
-                  context, text: 'Save', () => whenButtonSavePressed(context)),
+              k_button(context, text: 'Save', () => handleSave(context)),
               dummyWidth(10),
               k_button(
                   context,
                   mainColor: BaseColor.old_red.color,
                   text: 'Clear',
-                  whenButtonClearPressed)
+                  handleClear)
             ],
           )
         ],
@@ -243,15 +234,7 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
   }
 
   // Frontend
-  Widget content(
-      BuildContext context, List<DBModelExpenseCategory> expenseCategories) {
-    if (inited) {
-      categoryController = expenseCategories[0];
-      categoryAsStrings = List.generate(expenseCategories.length, (index) {
-        return expenseCategories[index].name!;
-      });
-    }
-
+  Widget content(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: kText(context, 'Form', KTStyle.title, KTSType.medium),
@@ -263,32 +246,14 @@ class _InputExpenseDataFormState extends State<InputExpenseDataForm> {
           vertical: vh(context, 2.5),
           horizontal: vw(context, 5),
         ),
-        child: form(context, expenseCategories: expenseCategories),
+        child: form(context),
       ),
     );
   }
 
-  // Backend
-  Future<List<DBModelExpenseCategory>> getData() async {
-    List<DBModelExpenseCategory> datas =
-    await DBHelperExpenseCategory().readAll(db: db.database);
-    inited = true;
-    return datas;
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DBModelExpenseCategory>>(
-      future: getData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return contentWhenWaiting(context);
-        } else if (snapshot.hasError) {
-          return contentWhenError(context, snapshot.error);
-        } else {
-          return content(context, snapshot.data ?? []);
-        }
-      },
-    );
+    return content(context);
   }
 }

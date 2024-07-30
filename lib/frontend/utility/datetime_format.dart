@@ -17,24 +17,12 @@ String formatTimeOfDay(TimeOfDay timeOfDay, {bool is24HourFormat = true}) {
   return format.format(dateTime);
 }
 
-
-
 // Fungsi untuk menggabungkan DateTime dan TimeOfDay menjadi string ISO
-String combineDateTimeAndTimeOfDay(DateTime dateTime, TimeOfDay timeOfDay) {
-  // Konversi TimeOfDay menjadi Duration (jumlah detik sejak tengah malam)
-  final duration = Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
-
-  // Gabungkan tanggal dan durasi untuk mendapatkan DateTime yang tepat
-  DateTime combinedDateTime = dateTime.add(duration);
-
-  // Ubah zona waktu menjadi UTC
-  combinedDateTime = combinedDateTime.toUtc();
-
-  // Format DateTime ke dalam string ISO8601
-  String isoFormatted = DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(combinedDateTime);
-
-  return isoFormatted;
-}
+String combineDateTimeAndTimeOfDay(DateTime dateTime, TimeOfDay timeOfDay) =>
+    dateTime
+      .add(Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute))
+      .toUtc()
+      .toIso8601String();
 
 // Fungsi untuk mengubah string ISO8601 menjadi DateTime
 DateTime? parseIso8601String(String iso8601String) {

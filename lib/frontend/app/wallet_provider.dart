@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
+import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/main.dart';
@@ -42,8 +43,19 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
     }).toList();
   }
 
-  double get totalIncome {
-    return state.fold(0.0, (sum, wallet) => sum + (wallet.total_income ?? 0.0));
+  void addExpense({required int walletTargetId, required DBModelExpense newExpense}){
+    state = state.map((wallet) {
+      if (wallet.id == walletTargetId) {
+        wallet.total_expense = wallet.total_expense! + newExpense.amount!;
+      }
+      return wallet;
+    }).toList();
+  }
+
+  double get totalBalance {
+    double totalBalance = state.fold(0.0, (sum, wallet) => sum + (wallet.total_income ?? 0.0))
+        - state.fold(0.0, (sum, wallet) => sum + (wallet.total_expense ?? 0.0));
+    return totalBalance;
   }
 
   void remove(DBModelWallet target){

@@ -1,3 +1,5 @@
+import 'package:keuanganku/backend/database/helper/expense.dart';
+import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelExpense extends DBModel {
@@ -51,5 +53,12 @@ class DBModelExpense extends DBModel {
 
   double sum(List<DBModelExpense> list) {
     return list.fold(0.0, (previousValue, element) => previousValue + (element.amount ?? 0));
+  }
+
+  /// This function will insert expense and update wallet.total_expense
+  Future<void> insert() async{
+    final newId = await DBHelperExpense().insert(data: this);
+    await DBHelperWallet().addExpense(walletId: wallet_id!, expense: amount!);
+    id = newId;
   }
 }

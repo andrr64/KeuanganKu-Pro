@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices {
   final String _dbName = 'keuanganku_pro.db';
-  final int _dbVer = 0x100;
+  final int _dbVer = 1;
   Database? _database;
 
   createTable(Database db, int version){
@@ -27,7 +27,7 @@ class DatabaseServices {
       _database = await openDatabase(
         db_path,
         version: _dbVer,
-        onCreate: createTable
+        onCreate: createTable,
       );
     } catch(e){
       throw Exception(e);

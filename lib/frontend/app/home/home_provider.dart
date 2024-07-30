@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
 import 'package:keuanganku/main.dart';
@@ -46,17 +47,28 @@ class HomepageProvider extends Notifier<HomepageData> {
     }
   }
 
-  void updateIncomes() async {
-    double updatedTotalIncomes = await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange);
-    state = state.copyWith(incomesAmount: updatedTotalIncomes);
+  void updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange));
+  void updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.expenseDateRange));
+  void updateAll() {
+    updateIncomes();
+    updateExpense();
   }
 
   void setIncomeCardDateRange(DateRange dateRange) async{
-    double? updatedTotalIncomes;
-    if (dateRange != state.incomesDateRange){
-      updatedTotalIncomes = await DBHelperIncome().readTotalIncome(db: db.database, date: dateRange);
+    if (dateRange != state.incomesDateRange) {
+      state = state.copyWith(
+        incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange),
+        incomeCardDateRange: dateRange
+      );
     }
-    state = state.copyWith(incomeCardDateRange: dateRange, incomesAmount: updatedTotalIncomes);
+  }
+  void setExpenseCardDateRange(DateRange dateRange) async{
+    if (dateRange != state.expenseDateRange){
+      state = state.copyWith(
+          expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.incomesDateRange),
+          expenseDateRange: dateRange
+      );
+    }
   }
 }
 

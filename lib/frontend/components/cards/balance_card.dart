@@ -92,7 +92,7 @@ class BalanceCard extends HookConsumerWidget {
                 children: [
                   kText(context, 'Balance', KTStyle.label, KTSType.medium,
                       color: Colors.white),
-                  kText(context, currencyFormat(walletsProviderNotifier.totalIncome), KTStyle.display,
+                  kText(context, currencyFormat(walletsProviderNotifier.totalBalance), KTStyle.display,
                       KTSType.medium,
                       color: Colors.white),
                 ],

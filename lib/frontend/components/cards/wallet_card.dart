@@ -27,7 +27,7 @@ class WalletCard extends StatelessWidget {
                   children: [
                     kText(context, wallet.name!, KTStyle.display, KTSType.small,
                         color: Colors.white),
-                    kText(context, currencyFormat(wallet.total_income!),
+                    kText(context, currencyFormat(wallet.total_income! - wallet.total_expense!),
                         KTStyle.label, KTSType.large,
                         color: Colors.white),
                   ],

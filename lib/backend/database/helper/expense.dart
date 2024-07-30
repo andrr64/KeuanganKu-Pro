@@ -1,4 +1,5 @@
 import 'package:keuanganku/frontend/components/enum/date_range.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/expense.dart'; // Pastikan sesuaikan dengan nama dan lokasi model yang sebenarnya
@@ -101,8 +102,14 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   @override
-  Future<int> insert({required DBModelExpense data}) {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<int> insert({required DBModelExpense data}) async{
+    return await db.database.insert(tableName, data.toJson());
+  }
+
+  Future<double> readTotalExpense({required DateRange dateRange}) async {
+    final listExpense = await readAll(db: db.database, date: dateRange);
+    final result =
+        listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
+    return result;
   }
 }

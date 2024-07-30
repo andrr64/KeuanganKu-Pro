@@ -1,7 +1,7 @@
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
-import 'package:keuanganku/frontend/components/enum/date_range.dart';
+import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';

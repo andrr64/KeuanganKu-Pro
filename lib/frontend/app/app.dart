@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keuanganku/frontend/app/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/home/home.dart';
 import 'package:keuanganku/frontend/app/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
@@ -35,6 +36,7 @@ class KeuanganKuPro extends HookConsumerWidget {
   void initData(WidgetRef ref){
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
+    ref.watch(globalExpenseCategoriesProvider.notifier).initData();
     ref.watch(homepageProvider.notifier).initData();
   }
 

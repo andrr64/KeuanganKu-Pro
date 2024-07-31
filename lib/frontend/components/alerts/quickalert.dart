@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
-void showSuccess({required BuildContext context, String? title, String? text}) {
+Future<void> alertSuccess({required BuildContext context, String? title, String? text}) async {
   QuickAlert.show(
     context: context,
     type: QuickAlertType.success,
@@ -10,7 +10,7 @@ void showSuccess({required BuildContext context, String? title, String? text}) {
   );
 }
 
-void showFailed({required BuildContext context, String? title, String? text}) {
+Future<void> alertFailed({required BuildContext context, String? title, String? text}) async {
   QuickAlert.show(
     context: context,
     type: QuickAlertType.error,

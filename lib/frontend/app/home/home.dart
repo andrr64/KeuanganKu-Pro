@@ -8,6 +8,7 @@ import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 
@@ -25,7 +26,7 @@ class Homepage extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            dummyHeight(10),
+            dummyHeight(25),
             const BalanceCard(),
             dummyHeight(25),
             _buildIncomeCard(context, ref),

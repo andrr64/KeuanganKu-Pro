@@ -69,8 +69,7 @@ class IncomeCard extends StatelessWidget {
             whenDropdownDateRangeChange,
             icon_theme: Theme.of(context).iconTheme,
             dropdown_bg_color: generated3color[1],
-            text_style: const TextStyle(
-                fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
+            text_style: getTextStyle(context, KTStyle.label, KTSType.medium, Colors.white),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,15 +81,15 @@ class IncomeCard extends StatelessWidget {
                   kText(
                     context,
                     'Income this ${dateRange.value}',
-                    KTStyle.label,
-                    KTSType.medium,
+                    KTStyle.title,
+                    KTSType.small,
                     color: Colors.white,
                   ),
                   kText(
                     context,
                     currencyFormat(incomesAmount),
-                    KTStyle.display,
-                    KTSType.medium,
+                    KTStyle.title,
+                    KTSType.large,
                     color: Colors.white,
                   ),
                 ],

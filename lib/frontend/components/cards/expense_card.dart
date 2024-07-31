@@ -48,8 +48,7 @@ class ExpenseCard extends StatelessWidget {
           callbackWhenDataChange,
           icon_theme: Theme.of(context).iconTheme,
           dropdown_bg_color: generated3color[1],
-          text_style: const TextStyle(
-              fontFamily: 'Quicksand', fontWeight: FontWeight.w500),
+          text_style: getTextStyle(context, KTStyle.label, KTSType.medium, Colors.white),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,22 +56,21 @@ class ExpenseCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                kText(
-                    context,
-                    'Expense this ${dateRange.value}',
-                    KTStyle.label,
-                    KTSType.medium,
+                kText(context, 'Expense this ${dateRange.value}', KTStyle.title,
+                    KTSType.small,
                     color: Colors.white),
-                kText(context, currencyFormat(expenseAmount), KTStyle.display, KTSType.medium,
+                kText(context, currencyFormat(expenseAmount), KTStyle.title,
+                    KTSType.large,
                     color: Colors.white),
               ],
             ),
             k_button(context, () {
-              openPage(context, ExpenseForm(
-                  callbackWhenDataSaved: callbackWhenNewExpenseSaved,
-                  expenseCategories: expenseCategories,
-                  wallets: wallets)
-              );
+              openPage(
+                  context,
+                  ExpenseForm(
+                      callbackWhenDataSaved: callbackWhenNewExpenseSaved,
+                      expenseCategories: expenseCategories,
+                      wallets: wallets));
             },
                 icon: Icons.add,
                 text: 'Add',

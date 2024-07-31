@@ -41,22 +41,10 @@ class BalanceCard extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(
-                FluentIcons.wallet_24_regular,
-                size: 40,
+                FluentIcons.wallet_20_filled,
+                size: 30,
               ),
-              Text(
-                'Empty Wallet',
-                style: TextStyle(
-                    fontWeight:
-                        Theme.of(context).textTheme.displaySmall!.fontWeight,
-                    fontStyle:
-                        Theme.of(context).textTheme.displaySmall!.fontStyle,
-                    fontSize:
-                        Theme.of(context).textTheme.displaySmall!.fontSize,
-                    fontFamily:
-                        Theme.of(context).textTheme.displaySmall!.fontFamily,
-                    color: Colors.white),
-              )
+              kText(context, 'Empty Wallet', KTStyle.body, KTSType.medium, color: Colors.white),
             ],
           ),
         );
@@ -81,19 +69,19 @@ class BalanceCard extends HookConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  kText(context, 'Hi', KTStyle.label, KTSType.medium,
+                  kText(context, 'Hi', KTStyle.title, KTSType.small,
                       color: Colors.white),
-                  kText(context, name, KTStyle.display, KTSType.medium,
+                  kText(context, name, KTStyle.title, KTSType.large,
                       color: Colors.white),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  kText(context, 'Balance', KTStyle.label, KTSType.medium,
+                  kText(context, 'Balance', KTStyle.title, KTSType.small,
                       color: Colors.white),
-                  kText(context, currencyFormat(walletsProviderNotifier.totalBalance), KTStyle.display,
-                      KTSType.medium,
+                  kText(context, currencyFormat(walletsProviderNotifier.totalBalance), KTStyle.title,
+                      KTSType.large,
                       color: Colors.white),
                 ],
               ),

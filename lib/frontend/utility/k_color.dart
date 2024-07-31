@@ -13,8 +13,8 @@ enum FontColor {
 }
 
 enum BaseColor {
-  old_red(Color(0xffa64646)),
-  old_green(Color(0xff298867));
+  old_red(Color(0xff773030)),
+  old_green(Color(0xff1e7154));
 
   const BaseColor(this.color);
   final Color color;

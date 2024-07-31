@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/components/alerts/quickalert.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -12,7 +13,6 @@ import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
-import 'package:quickalert/quickalert.dart';
 
 class IncomeForm extends StatefulWidget {
   final void Function(DBModelIncome data) callbackWhenDataSaved;
@@ -84,13 +84,7 @@ class _IncomeFormState extends State<IncomeForm> {
         );
         newIncome.insertAndUpdateWalletIncome().then((_){
           widget.callbackWhenDataSaved(newIncome);
-          QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              showConfirmBtn: true)
-              .then((_) {
-            closePage(context);
-          });
+          alertSuccess(context: context).then((_) => closePage(context));
         });
       }
   }

@@ -19,6 +19,7 @@ dependencies:
   riverpod_annotation: ^2.3.5
   hooks_riverpod: ^2.5.1
   persistent_bottom_nav_bar: 6.2.1
+  google_fonts:
 
 dev_dependencies:
   flutter_test:

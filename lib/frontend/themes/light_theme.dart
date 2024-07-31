@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 
 const Color BLACK_FONT_COLOR = Color(0xff14192b);
 
 ThemeData light_theme = ThemeData(
+    textTheme: GoogleFonts.openSansTextTheme(),
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     useMaterial3: true,
@@ -15,50 +17,6 @@ ThemeData light_theme = ThemeData(
           borderRadius: BorderRadius.circular(5)
         )
       )
-    ),
-    textTheme: const TextTheme(
-      displaySmall: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-      ),
-      displayMedium: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-      ),
-
-      labelSmall: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 12,
-        fontWeight: FontWeight.normal,
-      ),
-      labelMedium: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
-      ),
-      labelLarge: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 16,
-        fontWeight: FontWeight.normal,
-      ),
-
-      titleSmall: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-      ),
-      titleMedium: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-      ),
-      titleLarge: TextStyle(
-        fontFamily: "Quicksand",
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-      ),
     ),
     appBarTheme: AppBarTheme(
       centerTitle: true,

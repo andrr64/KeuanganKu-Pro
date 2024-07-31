@@ -35,7 +35,7 @@ extension DateRangeExtension on DateRange {
         final endOfMonth = DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1));
         return DateTime(endOfMonth.year, endOfMonth.month, endOfMonth.day, 23, 59, 59).toIso8601String();
       case DateRange.week:
-        final endOfWeek = now.subtract(Duration(days: now.weekday - 1)).add(Duration(days: 6));
+        final endOfWeek = now.subtract(Duration(days: now.weekday - 1)).add(const Duration(days: 6));
         return DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day, 23, 59, 59).toIso8601String();
       case DateRange.year:
         final endOfYear = DateTime(now.year, 12, 31);

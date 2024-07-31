@@ -8,7 +8,6 @@ import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/date_range.dart';
-import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 

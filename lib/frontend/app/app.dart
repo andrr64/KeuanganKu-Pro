@@ -6,7 +6,6 @@ import 'package:keuanganku/frontend/app/home/home.dart';
 import 'package:keuanganku/frontend/app/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/wallet_provider.dart';
-import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/keep_alive.dart';
 

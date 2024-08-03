@@ -15,7 +15,7 @@ Widget kNumField(
   double minVal = 0,
   double? maxVal,
 }) {
-  TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
+  TextStyle? tStyle = Theme.of(context).textTheme.bodyMedium;
   String maxValue = _formatted.format((maxVal));
   return TextFormField(
     keyboardType: TextInputType.number,

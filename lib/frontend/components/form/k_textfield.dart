@@ -11,7 +11,7 @@ Widget kTextField(BuildContext context,
       void Function()? successCallback,
       void Function()? onTap,
       void Function()? failCallback}) {
-  TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
+  TextStyle? tStyle = Theme.of(context).textTheme.bodyMedium;
 
   return TextFormField(
     controller: controller,

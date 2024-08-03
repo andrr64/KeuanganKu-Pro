@@ -9,7 +9,7 @@ Widget kDropdown<T>(
   required ValueChanged<T?> onChanged,
       required label,
 }) {
-  TextStyle? tStyle = Theme.of(context).textTheme.displaySmall;
+  TextStyle? tStyle = Theme.of(context).textTheme.bodyMedium;
 
   List<DropdownMenuItem<T>> dropdownItems = List.generate(items.length, (index) {
     return DropdownMenuItem<T>(

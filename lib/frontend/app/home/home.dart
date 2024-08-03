@@ -25,7 +25,7 @@ class Homepage extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            dummyHeight(25),
+            dummyHeight(15),
             const BalanceCard(),
             dummyHeight(25),
             _buildIncomeCard(context, ref),

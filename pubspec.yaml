@@ -20,6 +20,7 @@ dependencies:
   hooks_riverpod: ^2.5.1
   persistent_bottom_nav_bar: 6.2.1
   google_fonts:
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:

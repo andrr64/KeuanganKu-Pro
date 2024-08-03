@@ -54,8 +54,10 @@ class _ExpenseFormState extends State<ExpenseForm> {
     dateTextController = TextEditingController();
     descriptionController = TextEditingController();
     timeTextController = TextEditingController();
-    walletController = widget.wallets[0];
-    categoryController = widget.expenseCategories[0];
+    if (widget.wallets.isNotEmpty)
+      walletController = widget.wallets[0];
+    if (widget.expenseCategories.isNotEmpty)
+      categoryController = widget.expenseCategories[0];
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
@@ -249,9 +251,34 @@ class _ExpenseFormState extends State<ExpenseForm> {
     );
   }
 
+  Widget buildWhenListOrCategoryIsEmpty(BuildContext context){
+    //TODO: create error page
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.close, color: Colors.black, size: vw(context, 20),),
+            Text('Empty Wallet :(', style: getTextStyle(context, KTStyle.title, KTSType.large, FontColor.black.getColor()),),
+            Text('Add wallet first.'),
+            dummyHeight(5),
+            SizedBox(
+              width: 100,
+              child: k_button(context, () => closePage(context), text: 'Back'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (widget.wallets.isEmpty || widget.expenseCategories.isEmpty){
+      return buildWhenListOrCategoryIsEmpty(context);
+    }
     return content(context);
   }
 }

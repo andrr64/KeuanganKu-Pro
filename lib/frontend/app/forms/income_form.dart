@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
@@ -55,8 +56,10 @@ class _IncomeFormState extends State<IncomeForm> {
     dateTextController = TextEditingController();
     descriptionController = TextEditingController();
     timeTextController = TextEditingController();
-    walletController = widget.wallets[0];
-    categoryController = widget.incomeCategories[0];
+    if (widget.wallets.isNotEmpty)
+      walletController = widget.wallets[0];
+    if (widget.incomeCategories.isNotEmpty)
+      categoryController = widget.incomeCategories[0];
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
@@ -251,8 +254,34 @@ class _IncomeFormState extends State<IncomeForm> {
     );
   }
 
+  Widget buildWhenListOrCategoryIsEmpty(BuildContext context){
+    //TODO: create error page
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.close, color: Colors.black, size: vw(context, 20),),
+            Text('Empty Wallet :(', style: getTextStyle(context, KTStyle.title, KTSType.large, FontColor.black.getColor()),),
+            Text('Add wallet first.'),
+            dummyHeight(5),
+            SizedBox(
+              width: 100,
+              child: k_button(context, () => closePage(context), text: 'Back'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    if (widget.wallets.isEmpty || widget.incomeCategories.isEmpty){
+      return buildWhenListOrCategoryIsEmpty(context);
+    }
     return content(context);
   }
 }

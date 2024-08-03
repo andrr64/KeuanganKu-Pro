@@ -2,7 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/forms/wallet_form.dart';
-import 'package:keuanganku/frontend/app/home/home_provider.dart';
+import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/userdata_provider.dart';
 import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';

@@ -25,7 +25,7 @@ class WalletCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    kText(context, wallet.name!, KTStyle.display, KTSType.small,
+                    kText(context, wallet.name!, KTStyle.title, KTSType.medium,
                         color: Colors.white),
                     kText(context, currencyFormat(wallet.total_income! - wallet.total_expense!),
                         KTStyle.label, KTSType.large,

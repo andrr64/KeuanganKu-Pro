@@ -11,6 +11,7 @@ import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
+import 'package:quickalert/quickalert.dart';
 
 class WalletForm extends StatefulWidget {
   final void Function(DBModelWallet wallet) callbackWhenDataSaved;
@@ -60,7 +61,7 @@ class _WalletFormState extends State<WalletForm> {
         );
         newIncome.insert().then((_){
           widget.callbackWhenDataSaved(newWallet);
-          alertSuccess(context: context).then((_) => closePage(context));
+          QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
         });
       });
     }

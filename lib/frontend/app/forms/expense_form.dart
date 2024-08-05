@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
-import 'package:keuanganku/frontend/components/alerts/quickalert.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -13,6 +12,7 @@ import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ExpenseForm extends StatefulWidget {
   final void Function(DBModelExpense) callbackWhenDataSaved;
@@ -86,7 +86,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       );
       newExpense.insert().then((_){
         widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
-        alertSuccess(context: context).then((_) => closePage(context));
+        QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
       });
     }
   }

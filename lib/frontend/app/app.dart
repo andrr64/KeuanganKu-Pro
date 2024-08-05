@@ -1,8 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:keuanganku/frontend/app/app_provider.dart';
+import 'package:keuanganku/frontend/app/drawer.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
@@ -10,12 +11,14 @@ import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/keep_alive.dart';
 
-
+final pageIndexProvider = StateProvider<int>((_) => 0);
+final pageControllerProvider = StateProvider<PageController>((_) => PageController());
+final mainPageScaffoldKeyProvider = StateProvider<GlobalKey<ScaffoldState>>((_) => GlobalKey<ScaffoldState>());
 final pageNames = ["Home", "Wallets", "Analysis"];
 final pages = <Widget>[
   const KeepAlivePage(child: Homepage()),
   const KeepAlivePage(child: Homepage()),
-  const KeepAlivePage(child: Homepage()),
+  KeepAlivePage(child: AnalysisPage()),
 ];
 
 class KeuanganKuPro extends HookConsumerWidget {
@@ -73,7 +76,9 @@ class KeuanganKuPro extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(pageNames[pageIndex]),
+        backgroundColor: Colors.white,
       ),
+      drawer: appDrawer(context),
       key: scaffoldKey,
       body: PageView(
         controller: pageController,

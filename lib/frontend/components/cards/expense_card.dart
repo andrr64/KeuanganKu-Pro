@@ -10,7 +10,7 @@ import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/utility/color.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseCard extends StatelessWidget {
@@ -35,7 +35,7 @@ class ExpenseCard extends StatelessWidget {
 
   // Frontend
   Widget content(BuildContext context) {
-    List<Color> generated3color = generate3Color(bgColor);
+    List<Color> generated3color = generate3Color(BaseColor.old_red.color);
     final KDropdown<DateRange> dataRange =
         KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
 
@@ -64,13 +64,13 @@ class ExpenseCard extends StatelessWidget {
                     color: Colors.white),
               ],
             ),
-            k_button(context, () {
+            k_button(context , withoutBg: true, () {
               openPage(
                   context,
                   ExpenseForm(
                       callbackWhenDataSaved: callbackWhenNewExpenseSaved,
                       expenseCategories: expenseCategories,
-                      wallets: wallets));
+                      wallets: wallets), );
             },
                 icon: Icons.add,
                 text: 'Add',
@@ -96,7 +96,7 @@ class ExpenseCard extends StatelessWidget {
       context,
       content(context),
       title: 'Expense',
-      color: bgColor,
+      color: BaseColor.old_red.color,
       icon: const Icon(Icons.arrow_downward, color: Colors.white),
     );
   }

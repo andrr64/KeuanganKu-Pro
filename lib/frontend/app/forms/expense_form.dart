@@ -54,10 +54,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
     dateTextController = TextEditingController();
     descriptionController = TextEditingController();
     timeTextController = TextEditingController();
-    if (widget.wallets.isNotEmpty)
+    if (widget.wallets.isNotEmpty) {
       walletController = widget.wallets[0];
-    if (widget.expenseCategories.isNotEmpty)
+    }
+    if (widget.expenseCategories.isNotEmpty) {
       categoryController = widget.expenseCategories[0];
+    }
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
@@ -260,8 +262,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.close, color: Colors.black, size: vw(context, 20),),
-            Text('Empty Wallet :(', style: getTextStyle(context, KTStyle.title, KTSType.large, FontColor.black.getColor()),),
-            Text('Add wallet first.'),
+            Text('Empty Wallet :(', style: getTextStyle(context, KTStyle.title, KTSType.large, FontColor.black.color),),
+            const Text('Add wallet first.'),
             dummyHeight(5),
             SizedBox(
               width: 100,

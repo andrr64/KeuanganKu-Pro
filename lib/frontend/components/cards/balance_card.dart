@@ -11,11 +11,10 @@ import 'package:keuanganku/frontend/components/cards/wallet_card.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
+import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class BalanceCard extends HookConsumerWidget {
-  final bgColor = const Color(0xff363658);
-
   const BalanceCard({super.key});
 
   @override
@@ -87,8 +86,9 @@ class BalanceCard extends HookConsumerWidget {
               ),
             ],
           ),
-          dummyHeight(10),
+          dummyHeight(20),
           doGenerateWalletCards(),
+          dummyHeight(10),
           k_button(
             context,
             () {
@@ -96,7 +96,7 @@ class BalanceCard extends HookConsumerWidget {
             },
             text: 'Add Wallet',
             icon: Icons.add_box,
-            mainColor: Colors.white.withAlpha(50),
+            mainColor: Colors.white.withAlpha(40),
             withoutBg: true,
           )
         ],
@@ -104,7 +104,7 @@ class BalanceCard extends HookConsumerWidget {
     }
 
     return KCardPlus(context, content(),
-        color: bgColor,
+        color: BaseColor.primary.color,
         title: 'Balance',
         icon: const Icon(
           FluentIcons.text_bullet_list_square_20_filled,

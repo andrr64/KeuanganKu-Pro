@@ -3,12 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/main/page_padding.dart';
 import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/date_range.dart';
-import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 
 class Homepage extends HookConsumerWidget {
@@ -17,24 +17,20 @@ class Homepage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: vh(context, 2.5),
-          horizontal: vw(context, 5),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            dummyHeight(15),
-            const BalanceCard(),
-            dummyHeight(25),
-            _buildIncomeCard(context, ref),
-            dummyHeight(25),
-            _buildExpenseCard(context, ref),
-          ],
-        ),
+        child: PagePadding(
+      context,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          dummyHeight(10),
+          const BalanceCard(),
+          dummyHeight(25),
+          _buildIncomeCard(context, ref),
+          dummyHeight(25),
+          _buildExpenseCard(context, ref),
+        ],
       ),
-    );
+    ));
   }
 
   void _callbackWhenIncomeCardDateChange(DateRange val, WidgetRef ref) {
@@ -49,14 +45,15 @@ class Homepage extends HookConsumerWidget {
     return IncomeCard(
       dateRange: ref.watch(homepageProvider).incomesDateRange,
       incomesAmount: ref.watch(homepageProvider).incomesAmount,
-      callbackWhenDateChange: (val) => _callbackWhenIncomeCardDateChange(val, ref),
+      callbackWhenDateChange: (val) =>
+          _callbackWhenIncomeCardDateChange(val, ref),
       wallets: ref.watch(globalWalletsProvider),
       incomeCategories: ref.watch(globalIncomeCategoriesProvider),
-      callbackWhenNewIncomeSaved: (newIncome) async{
+      callbackWhenNewIncomeSaved: (newIncome) async {
         ref.read(globalWalletsProvider.notifier).addIncome(
-          walletTargetId: newIncome.wallet_id!,
-          newIncome: newIncome,
-        );
+              walletTargetId: newIncome.wallet_id!,
+              newIncome: newIncome,
+            );
         await ref.read(homepageProvider.notifier).updateIncomes();
       },
     );
@@ -68,12 +65,11 @@ class Homepage extends HookConsumerWidget {
       expenseAmount: ref.watch(homepageProvider).expenseAmount,
       wallets: ref.watch(globalWalletsProvider),
       expenseCategories: ref.watch(globalExpenseCategoriesProvider),
-      callbackWhenDataChange: (val) => _callbackWhenExpenseCardDateChange(val, ref),
-      callbackWhenNewExpenseSaved: (newExpense) async{
+      callbackWhenDataChange: (val) =>
+          _callbackWhenExpenseCardDateChange(val, ref),
+      callbackWhenNewExpenseSaved: (newExpense) async {
         ref.read(globalWalletsProvider.notifier).addExpense(
-            walletTargetId: newExpense.wallet_id!,
-            newExpense: newExpense
-        );
+            walletTargetId: newExpense.wallet_id!, newExpense: newExpense);
         await ref.read(homepageProvider.notifier).updateExpense();
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/utility/color.dart';
 
 const int constanta = 0x101797;
@@ -40,15 +41,7 @@ Widget KCardPlus(BuildContext context, Widget child,
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 10, bottom: 3.5, top: 3.5, right: 15),
-              child: Text(
-                title?? 'Widget',
-                style: TextStyle(
-                  fontFamily: Theme.of(context).textTheme.labelMedium?.fontFamily,
-                  fontSize: Theme.of(context).textTheme.labelMedium?.fontSize,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
-                ),
-              ),
+              child: kText(context, title?? 'Widget', KTStyle.label, KTSType.medium, color: Colors.white),
             ),
           )),
       Positioned(

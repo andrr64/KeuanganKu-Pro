@@ -31,8 +31,8 @@ class KeuanganKuPro extends HookConsumerWidget {
   }
 
   Color _iconColor(index, currenIndex) {
-    if (index != currenIndex) return FontColor.black.getColor().withAlpha(150);
-    return FontColor.black.getColor();
+    if (index != currenIndex) return FontColor.black.color.withAlpha(150);
+    return FontColor.black.color;
   }
 
   List<BottomNavigationBarItem> bottomNavigationBarItems(currentIndex) {
@@ -91,8 +91,8 @@ class KeuanganKuPro extends HookConsumerWidget {
         onTap: (value) => whenBottomNavbarChanged(value, ref, pageController),
         backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: FontColor.black.getColor(),
-        unselectedItemColor: FontColor.black.getColor().withAlpha(150),
+        selectedItemColor: FontColor.black.color,
+        unselectedItemColor: FontColor.black.color.withAlpha(150),
         items: bottomNavigationBarItems(pageIndex),
       ),
     );

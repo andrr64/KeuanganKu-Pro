@@ -1,41 +1,39 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 enum BackgroundColor {
-  white(0xffffffff),
-  black(0xff14192b);
+  white(Color(0xffffffff)),
+  black(Color(0xff14192b));
   const BackgroundColor(this.color);
-  final int color;
+  final Color color;
 }
 enum FontColor {
-  black(0xff14192b);
+  black(Color(0xff14192b));
   const FontColor(this.color);
-  final int color;
+  final Color color;
 }
 
 enum BaseColor {
-  old_red(Color(0xff773030)),
-  old_green(Color(0xff1e7154));
-
+  old_red(Color(0xff8f3e3e)),
+  primary(Color(0xff15193a)),
+  old_green(Color(0xff3f8852));
   const BaseColor(this.color);
   final Color color;
 }
 
-extension BackgroundColorExt on BackgroundColor{
-  int value(){
-    return color;
-  }
-
-  Color getColor(){
-    return Color(color);
-  }
+Color invertColor(Color? color) {
+  color = color?? Colors.white;
+  return Color.fromARGB(
+    color.alpha,
+    255 - color.red,
+    255 - color.green,
+    255 - color.blue,
+  );
 }
 
-extension FontColorExt on FontColor {
-int value(){
-  return color;
-}
-
-Color getColor(){
-  return Color(color);
-}
+List<Color> generate3Color(Color mainColor){
+  return [
+    mainColor,
+    Color(mainColor.value + 1249810),
+    Color(mainColor.value + (2* 0x101797))
+  ];
 }

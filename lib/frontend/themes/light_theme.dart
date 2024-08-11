@@ -12,7 +12,7 @@ ThemeData light_theme = ThemeData(
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        backgroundColor: BackgroundColor.black.getColor(),
+        backgroundColor: BackgroundColor.black.color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5)
         )
@@ -20,9 +20,9 @@ ThemeData light_theme = ThemeData(
     ),
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: BackgroundColor.white.getColor(),
+      color: BackgroundColor.white.color,
       shape: const Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
-      iconTheme: IconThemeData(color: FontColor.black.getColor()),
+      iconTheme: IconThemeData(color: FontColor.black.color),
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
     iconTheme: const IconThemeData(

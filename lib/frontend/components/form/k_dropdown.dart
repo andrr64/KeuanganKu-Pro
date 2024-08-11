@@ -42,6 +42,6 @@ Widget kDropdown<T>(
     value: value,
     onChanged: onChanged,
     borderRadius: const BorderRadius.all(Radius.circular(15)),
-    dropdownColor: BackgroundColor.white.getColor()
+    dropdownColor: BackgroundColor.white.color
   );
 }

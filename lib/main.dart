@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:keuanganku/backend/database/database_services.dart';
 import 'package:keuanganku/frontend/app/app.dart';
-import 'package:keuanganku/frontend/app/pages/content_when_x.dart';
+import 'package:keuanganku/frontend/app/content_when_x.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
 
 DatabaseServices db = DatabaseServices();

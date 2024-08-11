@@ -98,7 +98,7 @@ BarChart WeeklyBarChart(
                         axisSide: tileMeta.axisSide,
                         child: Text(
                           xTitles[xVal.toInt()],
-                          style: getTextStyle(context, KTStyle.label, KTSType.medium, FontColor.black.getColor())
+                          style: getTextStyle(context, KTStyle.label, KTSType.medium, FontColor.black.color)
                         )
                     )
                 )

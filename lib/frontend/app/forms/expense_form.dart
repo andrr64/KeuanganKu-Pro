@@ -171,7 +171,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       Row(
         children: [
           SizedBox(
-            width: vw(context, 37.5),
+            width: vw(context, 50),
             child: kTextField(context,
                 title: 'Date',
                 icon: const Icon(Icons.date_range),
@@ -189,7 +189,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
           ),
           dummyWidth(vw(context, 2.5)),
           SizedBox(
-            width: vw(context, 30),
+            width: vw(context, 32.5),
             child: kTextField(context,
                 title: 'Time',
                 icon: const Icon(Icons.access_time_sharp),

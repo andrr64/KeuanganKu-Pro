@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/main/page_padding.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
@@ -15,6 +13,8 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class AnalysisPage extends HookConsumerWidget {
   int currentIndex = 0;
+
+  AnalysisPage({super.key});
   List<BarChartGroupData> data_mingguan(BuildContext context) {
     return [
       weeklyBarData(context, 0, 10, barColor: KGraphColor.red.color),

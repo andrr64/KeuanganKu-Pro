@@ -95,11 +95,11 @@ BarChart WeeklyBarChart(
                 sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (xVal, tileMeta) => SideTitleWidget(
+                        axisSide: tileMeta.axisSide,
                         child: Text(
                           xTitles[xVal.toInt()],
                           style: getTextStyle(context, KTStyle.label, KTSType.medium, FontColor.black.getColor())
-                        ),
-                        axisSide: tileMeta.axisSide
+                        )
                     )
                 )
             )

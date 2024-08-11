@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Drawer appDrawer(BuildContext context){
-  return Drawer(
+  return const Drawer(
     backgroundColor: Colors.white,
   );
 }

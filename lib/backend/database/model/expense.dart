@@ -1,5 +1,6 @@
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
+import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
 
 class DBModelExpense extends DBModel {
@@ -61,4 +62,10 @@ class DBModelExpense extends DBModel {
     await DBHelperWallet().addExpense(walletId: wallet_id!, expense: amount!);
     id = newId;
   }
+}
+
+class DBModelExpenseByCategory {
+  DBModelExpenseCategory category;
+  double total;
+  DBModelExpenseByCategory({required this.category, required this.total});
 }

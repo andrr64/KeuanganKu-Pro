@@ -87,4 +87,20 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
     return result;
   }
+
+  Future<List<Map<String, dynamic>>> readTotalExpenseByCategory({
+    required DateRange dateRange,
+  }) async {
+    String? startDate = dateRange.startDateISO8601;
+    String? endDate = dateRange.endDateISO8601;
+
+    final List<Map<String, dynamic>> result = await db.database.rawQuery('''
+    SELECT category_id, SUM(amount) as total
+    FROM $tableName
+    WHERE datetime >= ? AND datetime <= ?
+    GROUP BY category_id
+  ''', [startDate, endDate]);
+    return result;
+  }
+
 }

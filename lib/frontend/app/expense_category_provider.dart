@@ -35,4 +35,13 @@ class ExpenseCategoryProvider extends Notifier<List<DBModelExpenseCategory>>{
       for (final category in state) if (category.id! != target.id!) category
     ];
   }
+
+  DBModelExpenseCategory getById(int target_id){
+    for (int i = 0; i < state.length; i++){
+      if (state[i].id == target_id) {
+        return  state[i];
+      }
+    }
+    return DBModelExpenseCategory(name: 'Unknown');
+  }
 }

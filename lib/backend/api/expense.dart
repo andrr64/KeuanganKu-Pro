@@ -12,6 +12,6 @@ class APIExpenseData{
     return List.generate(data.length, (index){
       final _ = data[index];
       return DBModelExpenseByCategory(category: expenseCategoryGetter(_['category_id']), total: _['total']);
-    });;
+    });
   }
 }

@@ -1,12 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis_provider.dart';
 import 'package:keuanganku/frontend/app/main/page_padding.dart';
 import 'package:keuanganku/frontend/components/bullet.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/bar_weekly.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/graph_color.dart';
@@ -105,7 +103,7 @@ class AnalysisPage extends HookConsumerWidget {
                           buildLegends(),
                           dummyHeight(10),
                           OutlinedButton(
-                              onPressed: () {}, child: Text('Detail'))
+                              onPressed: () {}, child: const Text('Detail'))
                         ],
                       ),
                     ),
@@ -151,7 +149,7 @@ class AnalysisPage extends HookConsumerWidget {
                                 kText(context, 'Total', KTStyle.title,
                                     KTSType.small,
                                     fontWeight: FontWeight.w600),
-                                kText(context, '${currencyFormat(120000000)}',
+                                kText(context, currencyFormat(120000000),
                                     KTStyle.label, KTSType.small),
                               ],
                             )
@@ -171,7 +169,7 @@ class AnalysisPage extends HookConsumerWidget {
                                       KTSType.small, FontColor.black.color,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                kText(context, '${currencyFormat(120000000)}',
+                                kText(context, currencyFormat(120000000),
                                     KTStyle.label, KTSType.small),
                               ],
                             )
@@ -191,7 +189,7 @@ class AnalysisPage extends HookConsumerWidget {
                                 kText(context, 'Highest', KTStyle.title,
                                     KTSType.small,
                                     fontWeight: FontWeight.w600),
-                                kText(context, '${currencyFormat(120000000)}',
+                                kText(context, currencyFormat(120000000),
                                     KTStyle.label, KTSType.small),
                               ],
                             )
@@ -211,7 +209,7 @@ class AnalysisPage extends HookConsumerWidget {
                                       KTSType.small, FontColor.black.color,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                kText(context, '${currencyFormat(120000000)}',
+                                kText(context, currencyFormat(120000000),
                                     KTStyle.label, KTSType.small),
                               ],
                             )
@@ -246,7 +244,7 @@ class AnalysisPage extends HookConsumerWidget {
                               .getById,
                           context);
                 },
-                child: Text('Hola'))
+                child: const Text('Hola'))
           ],
         ),
       );

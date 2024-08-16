@@ -28,10 +28,10 @@ class AnalysisPageData {
     DateRange? barChartDataRange,
   }) {
     return AnalysisPageData(
-      expensePieChartLegends: pieLegendsData ?? this.expensePieChartLegends,
-      expensePieChartByCategory: pieSectionsData ?? this.expensePieChartByCategory,
-      expensePieChartByCategoryDateRange: pieChartDateRange?? this.expensePieChartByCategoryDateRange,
-      expenseBarChartDataRange: barChartDataRange?? this.expenseBarChartDataRange,
+      expensePieChartLegends: pieLegendsData ?? expensePieChartLegends,
+      expensePieChartByCategory: pieSectionsData ?? expensePieChartByCategory,
+      expensePieChartByCategoryDateRange: pieChartDateRange?? expensePieChartByCategoryDateRange,
+      expenseBarChartDataRange: barChartDataRange?? expenseBarChartDataRange,
     );
   }
 }
@@ -117,7 +117,7 @@ class AnalysisPageExpenseByCategoryData {
       pieChart: pieChart ?? this.pieChart,
       total: total?? this.total,
       sectionColors: sectionColors?? this.sectionColors,
-      textLegends: legends ?? this.textLegends,
+      textLegends: legends ?? textLegends,
       dateRange: dateRange ?? this.dateRange,
       loading: loading ?? this.loading,
     );

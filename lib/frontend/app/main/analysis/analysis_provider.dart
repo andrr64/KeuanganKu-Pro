@@ -158,7 +158,6 @@ class AnalysisPageExpenseByCategoryProvider extends Notifier<AnalysisPageExpense
     }).toList();
 
     final legends = newData.asMap().entries.map((entry) {
-      final i = entry.key;
       final item = entry.value;
       final percentage = (item.total / totalExpense) * 100;
       return  Text(

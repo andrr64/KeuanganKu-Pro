@@ -49,7 +49,7 @@ double findBarChartValue(List<BarChartGroupData> data, {bool highest = true}) {
 }
 
 BarChartGroupData weeklyBarData(BuildContext context, int x, double y1, {double barSpace = 2, required Color barColor}) {
-  final width = (MediaQuery.sizeOf(context).width * 0.050);
+  final width = (MediaQuery.sizeOf(context).width * 0.040);
   return BarChartGroupData(
     barsSpace: barSpace,
     x: x,
@@ -57,7 +57,10 @@ BarChartGroupData weeklyBarData(BuildContext context, int x, double y1, {double 
       BarChartRodData(
         toY: y1,
         width: width,
-        borderRadius: BorderRadius.circular(6.5),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(2.5),
+          topRight: Radius.circular(2.5),
+        ),
         color: barColor
       ),
     ],
@@ -86,7 +89,6 @@ BarChart WeeklyBarChart(
             )
           )
         ),
-        maxY: maxY + (maxY * 0.1),
         titlesData: FlTitlesData(
             show: true,
             topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),

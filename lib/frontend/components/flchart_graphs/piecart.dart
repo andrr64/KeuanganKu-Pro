@@ -13,19 +13,23 @@ class KPieSectionData {
 
   KPieSectionData(
       {required this.value,
-        required this.index,
-        required this.title,
-        required this.color,
-        required this.isTouched,
-        required this.radius,
-        required this.whenTouched});
+      required this.index,
+      required this.title,
+      required this.color,
+      required this.isTouched,
+      required this.radius,
+      required this.whenTouched});
 
-  PieChartSectionData get data =>
-      PieChartSectionData(value: value, title: title, color: color);
+  PieChartSectionData get data => PieChartSectionData(
+      value: value, showTitle: false, color: color, radius: radius);
 }
 
-PieChart KPieChart({List<KPieSectionData>? sections}) {
-  return PieChart(PieChartData(
-    sections: List.generate(sections!.length, (i) => sections[i].data)
-  ));
+Widget KPieChart({List<KPieSectionData>? sections}) {
+  return PieChart(
+    PieChartData(
+      sections: List.generate(sections!.length, (i) => sections[i].data),
+    ),
+    swapAnimationCurve: Curves.easeInOutCubic,
+    swapAnimationDuration: const Duration(milliseconds: 500),
+  );
 }

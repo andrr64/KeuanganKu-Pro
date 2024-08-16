@@ -9,7 +9,9 @@ enum KTSType {
   small, medium, large
 }
 
-TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color color){
+TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color color, {
+  FontWeight? fontWeight
+}){
   TextStyle? textStyle;
   switch (style) {
     case KTStyle.display:
@@ -69,7 +71,7 @@ TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color 
   return TextStyle(
     fontSize: textStyle!.fontSize,
     fontFamily: textStyle.fontFamily,
-    fontWeight: textStyle.fontWeight,
+    fontWeight: fontWeight?? textStyle.fontWeight,
     color: color
   );
 }
@@ -77,6 +79,7 @@ TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color 
 Text kText(BuildContext context, String text, KTStyle style, KTSType type, {
   Color color = BLACK_FONT_COLOR,
   TextAlign? align,
+  FontWeight? fontWeight
 }){
-  return Text(text, style: getTextStyle(context, style, type, color), textAlign: align,);
+  return Text(text, style: getTextStyle(context, style, type, color, fontWeight: fontWeight), textAlign: align,);
 }

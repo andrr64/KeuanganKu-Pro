@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/drawer.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
+import 'package:keuanganku/frontend/app/main/analysis/analysis_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
@@ -58,11 +59,18 @@ class KeuanganKuPro extends HookConsumerWidget {
     ];
   }
 
-  void initData(WidgetRef ref) {
+  void initData(BuildContext context, WidgetRef ref) async{
+    // Data
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseCategoriesProvider.notifier).initData();
+
+    // Homepage
     ref.watch(homepageProvider.notifier).initData();
+
+    // Analysis Page
+    ref.watch(anlpgExpensePieChartByCategoryProvider.notifier)
+        .initData(context, expenseCategoryGetter: ref.watch(globalExpenseCategoriesProvider.notifier).getById);
   }
 
   @override
@@ -71,7 +79,7 @@ class KeuanganKuPro extends HookConsumerWidget {
     var pageIndex = ref.watch(pageIndexProvider);
     var pageController = ref.watch(pageControllerProvider);
 
-    initData(ref);
+    initData(context, ref);
 
     return Scaffold(
       appBar: AppBar(

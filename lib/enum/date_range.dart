@@ -14,7 +14,9 @@ extension DateRangeExtension on DateRange {
       return MapEntry(data.label, data);
     }));
   }
-
+  List<String> get labels {
+    return List.generate(DateRange.values.length, (i) => DateRange.values[i].label);
+  }
   String get startDateISO8601 {
     final now = DateTime.now();
     switch (this) {

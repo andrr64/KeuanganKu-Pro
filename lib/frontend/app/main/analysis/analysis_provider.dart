@@ -12,7 +12,7 @@ class AnalysisPageExpenseBarChartData {
   AnalysisPageExpenseBarChartData({this.dataTimePeriod = DateRange.week});
 
   AnalysisPageExpenseBarChartData copyWith({DateRange? dataPeriod}){
-    return AnalysisPageExpenseBarChartData(dataTimePeriod: dataPeriod?? this.dataTimePeriod);
+    return AnalysisPageExpenseBarChartData(dataTimePeriod: dataPeriod?? dataTimePeriod);
   }
 }
 class AnalysisPageExpenseBarChartProvider extends Notifier<AnalysisPageExpenseBarChartData>{

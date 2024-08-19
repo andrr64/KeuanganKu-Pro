@@ -1,7 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
@@ -19,6 +17,8 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/stringop.dart';
 
 class ExpenseBarChart extends HookConsumerWidget {
+  const ExpenseBarChart({super.key});
+
 
   List<BarChartGroupData> data_mingguan(BuildContext context) {
     return [
@@ -49,7 +49,7 @@ class ExpenseBarChart extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Lorem ipsum dolor sit amet'),
+              const Text('Lorem ipsum dolor sit amet'),
               SizedBox(
                 width: vw(context, 30),
                 child: kDropdown(

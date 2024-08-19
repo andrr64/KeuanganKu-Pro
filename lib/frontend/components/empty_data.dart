@@ -5,7 +5,7 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 
 class EmptyData extends StatelessWidget {
   final IconData? iconData;
-  EmptyData({super.key, this.iconData});
+  const EmptyData({super.key, this.iconData});
 
   @override
   Widget build(BuildContext context) {

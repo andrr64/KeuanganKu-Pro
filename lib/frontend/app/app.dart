@@ -19,7 +19,7 @@ final pageNames = ["Home", "Wallets", "Analysis"];
 final pages = <Widget>[
   const KeepAlivePage(child: Homepage()),
   const KeepAlivePage(child: Homepage()),
-  KeepAlivePage(child: AnalysisPage()),
+  const KeepAlivePage(child: AnalysisPage()),
 ];
 
 class KeuanganKuPro extends HookConsumerWidget {

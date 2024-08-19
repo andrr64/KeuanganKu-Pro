@@ -90,17 +90,26 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
 
   Future<List<Map<String, dynamic>>> readTotalExpenseByCategory({
     required DateRange dateRange,
+    bool lowToHigh = false
   }) async {
     String? startDate = dateRange.startDateISO8601;
     String? endDate = dateRange.endDateISO8601;
 
-    final List<Map<String, dynamic>> result = await db.database.rawQuery('''
+    List<Map<String, dynamic>> result = await db.database.rawQuery('''
     SELECT category_id, SUM(amount) as total
     FROM $tableName
     WHERE datetime >= ? AND datetime <= ?
     GROUP BY category_id
   ''', [startDate, endDate]);
-    return result;
-  }
 
+    // Convert each item to a mutable map
+    List<Map<String, dynamic>> mutableResult = result.map((item) => Map<String, dynamic>.from(item)).toList();
+    mutableResult.sort((a, b){
+      if (lowToHigh){
+        return a['total'].compareTo(b['total']);
+      }
+      return b['total'].compareTo(a['total']);
+    });
+    return mutableResult;
+  }
 }

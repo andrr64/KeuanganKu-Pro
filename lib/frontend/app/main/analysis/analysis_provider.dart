@@ -5,90 +5,30 @@ import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/piecart.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 
-class AnalysisPageData {
-  final List<KPieSectionData> expensePieChartByCategory;
-  final List<Widget>? expensePieChartLegends;
-  final DateRange expensePieChartByCategoryDateRange;
-  final DateRange expenseBarChartDataRange;
+class AnalysisPageExpenseBarChartData {
+  final DateRange dataTimePeriod;
+  AnalysisPageExpenseBarChartData({this.dataTimePeriod = DateRange.week});
 
-  AnalysisPageData({
-    this.expensePieChartByCategoryDateRange = DateRange.month,
-    this.expenseBarChartDataRange = DateRange.week,
-    this.expensePieChartLegends,
-    required this.expensePieChartByCategory,
-  });
-
-  AnalysisPageData copyWith({
-    List<KPieSectionData>? pieSectionsData,
-    DateRange? pieChartDateRange,
-    List<Widget>? pieLegendsData,
-    DateRange? barChartDataRange,
-  }) {
-    return AnalysisPageData(
-      expensePieChartLegends: pieLegendsData ?? expensePieChartLegends,
-      expensePieChartByCategory: pieSectionsData ?? expensePieChartByCategory,
-      expensePieChartByCategoryDateRange: pieChartDateRange?? expensePieChartByCategoryDateRange,
-      expenseBarChartDataRange: barChartDataRange?? expenseBarChartDataRange,
-    );
+  AnalysisPageExpenseBarChartData copyWith({DateRange? dataPeriod}){
+    return AnalysisPageExpenseBarChartData(dataTimePeriod: dataPeriod?? this.dataTimePeriod);
   }
 }
-class AnalysisPageProvider extends Notifier<AnalysisPageData> {
-  bool _init = false;
-
+class AnalysisPageExpenseBarChartProvider extends Notifier<AnalysisPageExpenseBarChartData>{
   @override
-  AnalysisPageData build() => AnalysisPageData(expensePieChartByCategory: []);
-
-  Future<void> initData(DBModelExpenseCategory Function(int) expenseCategoryGetter) async {
-    if (!_init) {
-      await updateExpensePieChartByCategoryData(expenseCategoryGetter);
-      _init = true;
-    }
-  }
-
-  Future<void> updateExpensePieChartByCategoryData(DBModelExpenseCategory Function(int) expenseCategoryGetter) async {
-    final newData = await APIExpenseData.getExpenseTotalByCategories(expenseCategoryGetter: expenseCategoryGetter);
-    final colors = generateSoftPalette(newData.length);
-    final double totalExpense = newData.fold(0, (sum, item) => sum + item.total);
-
-    final sections = newData.asMap().entries.map((entry) {
-      final i = entry.key;
-      final item = entry.value;
-      final percentage = (item.total / totalExpense) * 100;
-      return KPieSectionData(
-        value: item.total,
-        index: i,
-        title: "${percentage.toStringAsFixed(1)}%",
-        color: colors[i],
-        isTouched: true,
-        radius: 27.5,
-        whenTouched: () => (),
-      );
-    }).toList();
-
-    final legends = newData.asMap().entries.map((entry) {
-      final i = entry.key;
-      final item = entry.value;
-      final percentage = (item.total / totalExpense) * 100;
-      return Row(
-        children: [
-          Container(color: colors[i], width: 10, height: 10,),
-          dummyWidth(5),
-          Text('${item.category.name!} ${percentage.toStringAsFixed(1)}%'),
-        ],
-      );
-    }).toList();
-    state = state.copyWith(
-      pieSectionsData: sections,
-      pieLegendsData: legends,
-    );
+  AnalysisPageExpenseBarChartData build() => AnalysisPageExpenseBarChartData();
+  void setBarChartDataPeriod(DateRange period) => state = state.copyWith(dataPeriod: period);
+  Future<void> updateData(DBModelExpenseCategory Function(int) expenseCategoryGetter) async{
+    //TODO: updateData_anlphExpenseBarChart
+    [];
   }
 }
-final analysisPageProvider = NotifierProvider<AnalysisPageProvider, AnalysisPageData>(AnalysisPageProvider.new);
+final anlpgExpenseBarChart =
+NotifierProvider<AnalysisPageExpenseBarChartProvider, AnalysisPageExpenseBarChartData>
+  (AnalysisPageExpenseBarChartProvider.new);
 
-class AnalysisPageExpenseByCategoryData {
+class AnalysisPageExpensePieChartByCategoryData {
   final List<KPieSectionData> pieChart;
   final List<Color> sectionColors;
   final List<Widget> textLegends;
@@ -96,25 +36,26 @@ class AnalysisPageExpenseByCategoryData {
   final bool loading;
   final double total;
 
-  AnalysisPageExpenseByCategoryData({
+  AnalysisPageExpensePieChartByCategoryData({
     this.pieChart = const [],
     this.total = 0,
     this.textLegends = const [],
     this.dateRange = DateRange.month,
     this.loading = false,
-    this.sectionColors = const []
+    this.sectionColors = const [],
   });
 
-  AnalysisPageExpenseByCategoryData copyWith({
+  AnalysisPageExpensePieChartByCategoryData copyWith({
     List<KPieSectionData>? pieChart,
     List<Widget>? legends,
     DateRange? dateRange,
     bool? loading,
     double? total,
-    List<Color>? sectionColors
+    List<Color>? sectionColors,
   }) {
-    return AnalysisPageExpenseByCategoryData(
+    return AnalysisPageExpensePieChartByCategoryData(
       pieChart: pieChart ?? this.pieChart,
+
       total: total?? this.total,
       sectionColors: sectionColors?? this.sectionColors,
       textLegends: legends ?? textLegends,
@@ -123,25 +64,36 @@ class AnalysisPageExpenseByCategoryData {
     );
   }
 }
-class AnalysisPageExpenseByCategoryProvider extends Notifier<AnalysisPageExpenseByCategoryData>{
+class AnalysisPageExpensePieChartByCategoryProvider extends Notifier<AnalysisPageExpensePieChartByCategoryData>{
   bool _init = false;
 
   @override
-  AnalysisPageExpenseByCategoryData build() => AnalysisPageExpenseByCategoryData();
+  AnalysisPageExpensePieChartByCategoryData build() => AnalysisPageExpensePieChartByCategoryData();
+
+  void setTimePeriod(DateRange newPeriod){
+    state = state.copyWith(dateRange: newPeriod);
+  }
   Future<void> initData(BuildContext context, {required DBModelExpenseCategory Function(int) expenseCategoryGetter}) async {
     if (!_init){
       await updateData(expenseCategoryGetter, context);
       _init = true;
     }
   }
-
   Future<void> updateData(DBModelExpenseCategory Function(int) expenseCategoryGetter, BuildContext context) async {
     state.copyWith(loading: true);
-
-    final newData = await APIExpenseData.getExpenseTotalByCategories(expenseCategoryGetter: expenseCategoryGetter);
+    final newData = await APIExpenseData.getExpenseTotalByCategories(range: state.dateRange, expenseCategoryGetter: expenseCategoryGetter);
+    if (newData.isEmpty){
+      state.copyWith(
+        loading: false,
+        legends: [],
+        sectionColors: [],
+        total: 0,
+        pieChart: []
+      );
+      return;
+    }
     final colors = generateSoftPalette(newData.length);
     final double totalExpense = newData.fold(0, (sum, item) => sum + item.total);
-
     final sections = newData.asMap().entries.map((entry) {
       final i = entry.key;
       final item = entry.value;
@@ -156,7 +108,6 @@ class AnalysisPageExpenseByCategoryProvider extends Notifier<AnalysisPageExpense
         whenTouched: () => (),
       );
     }).toList();
-
     final legends = newData.asMap().entries.map((entry) {
       final item = entry.value;
       final percentage = (item.total / totalExpense) * 100;
@@ -174,6 +125,6 @@ class AnalysisPageExpenseByCategoryProvider extends Notifier<AnalysisPageExpense
     );
   }
 }
-final analysisPageExpenseByCategoryProvider =
-NotifierProvider<AnalysisPageExpenseByCategoryProvider, AnalysisPageExpenseByCategoryData>
-  (AnalysisPageExpenseByCategoryProvider.new);
+final anlpgExpensePieChartByCategoryProvider =
+NotifierProvider<AnalysisPageExpensePieChartByCategoryProvider, AnalysisPageExpensePieChartByCategoryData>
+  (AnalysisPageExpensePieChartByCategoryProvider.new);

@@ -67,10 +67,27 @@ class DBHelperExpenseCategory extends DBHelper<DBModelExpenseCategory> {
   /// Returns:
   /// - A [Future<DBModelExpenseCategory>] representing the expense category.
   @override
-  Future<DBModelExpenseCategory> readById({required Database db, required int id}) async {
-    // TODO: implement readById
-    throw UnimplementedError();
+  Future<DBModelExpenseCategory> readById({
+    required Database db,
+    required int id
+  }) async {
+    // Menjalankan query untuk mengambil satu baris berdasarkan id
+    final List<Map<String, dynamic>> result = await db.database.query(
+      tableName,
+      where: 'id = ?', // Filter berdasarkan id
+      whereArgs: [id], // Nilai dari id yang akan dicari
+      limit: 1, // Hanya mengambil satu baris
+    );
+
+    // Jika tidak ada data yang ditemukan, lempar exception atau kembalikan nilai null
+    if (result.isEmpty) {
+      throw Exception('No data found for id $id');
+    }
+
+    // Mengembalikan instance DBModelExpenseCategory dari hasil query
+    return DBModelExpenseCategory().fromJson(result.first);
   }
+
 
   /// Updates an existing expense category in the table.
   /// This method is not yet implemented.

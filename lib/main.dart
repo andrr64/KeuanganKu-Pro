@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:keuanganku/backend/database/database_services.dart';
+import 'package:keuanganku/device_info.dart';
 import 'package:keuanganku/frontend/app/app.dart';
 import 'package:keuanganku/frontend/app/content_when_x.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
@@ -34,6 +35,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DEVICE_initData(context);
+
     return MaterialApp(
       title: 'KeuanganKu Pro',
       home: const KeuanganKuPro(),

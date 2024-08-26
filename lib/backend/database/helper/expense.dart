@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/backend/database/helper/expense_category.dart';
+import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
@@ -150,16 +152,21 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   /// Reads and groups expenses by each day within the specified date range.
+  /// For yearly ranges, expenses are grouped by month.
   ///
   /// Parameters:
   /// - [period]: The [DateRange] object specifying the period to group expenses.
   ///
   /// Returns:
   /// - A [Future<List<DBModelExpenseByTime>>] containing grouped expenses.
-  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate({required DateRange period}) async {
+  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate({
+    required DateRange period,
+  }) async {
     // Retrieve all expenses within the given date range
     final listExpense = await readAll(db: db.database, date: period);
-
+    if (listExpense.isEmpty) {
+      return [];
+    }
     // Create a list to hold expenses grouped by date range
     List<DBModelExpenseByTime> groupedExpenses = [];
 
@@ -167,27 +174,69 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     DateTime startDate = period.startDate;
     DateTime endDate = period.endDate;
 
-    // Iterate over each day in the date range
-    for (DateTime currentDate = startDate; currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate); currentDate = currentDate.add(Duration(days: 1))) {
-      // Create a date range for the current day
-      DateTimeRange dateRangeForDay = DateTimeRange(
-        start: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),
-        end: DateTime(currentDate.year, currentDate.month, currentDate.day, 23, 59, 59),
-      );
+    if (period == DateRange.year) {
+      // Group by month if the period is yearly
+      for (int month = 1; month <= 12; month++) {
+        DateTimeRange dateRangeForMonth;
 
-      // Retrieve all expenses within this date range
-      List<DBModelExpense> expensesForDay = listExpense.where((expense) {
-        DateTime expenseDate = DateTime.parse(expense.datetime!);
-        return dateRangeForDay.start.isBefore(expenseDate) && dateRangeForDay.end.isAfter(expenseDate);
-      }).toList();
+        // Handle edge cases for December
+        if (month == 12) {
+          dateRangeForMonth = DateTimeRange(
+            start: DateTime(startDate.year, month, 1, 0, 0, 0),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(Duration(seconds: 1)),
+          );
+        } else {
+          dateRangeForMonth = DateTimeRange(
+            start: DateTime(startDate.year, month, 1, 0, 0, 0),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(Duration(seconds: 1)),
+          );
+        }
 
-      // Add to the grouped list if there are expenses for the day
-      if (expensesForDay.isNotEmpty) {
-        groupedExpenses.add(DBModelExpenseByTime(dateTimeRange: dateRangeForDay, expenses: expensesForDay));
+        // Retrieve all expenses within this date range
+        List<DBModelExpense> expensesForMonth = listExpense.where((expense) {
+          DateTime expenseDate = DateTime.parse(expense.datetime!);
+          return dateRangeForMonth.start.isBefore(expenseDate) &&
+              dateRangeForMonth.end.isAfter(expenseDate);
+        }).toList();
+
+        // Add the entry for the month
+        groupedExpenses.add(
+          DBModelExpenseByTime(
+            dateTimeRange: dateRangeForMonth,
+            expenses: expensesForMonth.isNotEmpty ? expensesForMonth : [DBModelExpense(amount: 0)], // Add a dummy expense with total 0 if no expenses found
+          ),
+        );
+      }
+    } else {
+      // Group by day for all other cases
+      for (DateTime currentDate = startDate;
+      currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate);
+      currentDate = currentDate.add(Duration(days: 1))) {
+        // Create a date range for the current day
+        DateTimeRange dateRangeForDay = DateTimeRange(
+          start: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),
+          end: DateTime(currentDate.year, currentDate.month, currentDate.day, 23, 59, 59),
+        );
+
+        // Retrieve all expenses within this date range
+        List<DBModelExpense> expensesForDay = listExpense.where((expense) {
+          DateTime expenseDate = DateTime.parse(expense.datetime!);
+          return dateRangeForDay.start.isBefore(expenseDate) &&
+              dateRangeForDay.end.isAfter(expenseDate);
+        }).toList();
+
+        // Add the entry for the day, even if there are no expenses
+        groupedExpenses.add(
+          DBModelExpenseByTime(
+            dateTimeRange: dateRangeForDay,
+            expenses: expensesForDay.isNotEmpty ? expensesForDay : [DBModelExpense(amount: 0)], // Add a dummy expense with total 0 if no expenses found
+          ),
+        );
       }
     }
     return groupedExpenses;
   }
+
 
   /// Reads the total expense amount grouped by category within the specified date range.
   ///
@@ -197,7 +246,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   ///
   /// Returns:
   /// - A [Future<List<Map<String, dynamic>>>] containing the total expenses grouped by category.
-  Future<List<Map<String, dynamic>>> readTotalExpenseByCategory({required DateRange dateRange, bool lowToHigh = false}) async {
+  Future<List<DBModelExpenseByCategory>> readTotalExpenseByCategory({required DateRange dateRange, bool lowToHigh = false}) async {
     String? startDate = dateRange.startDateISO8601;
     String? endDate = dateRange.endDateISO8601;
 
@@ -216,6 +265,12 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
       }
       return b['total'].compareTo(a['total']);
     });
-    return mutableResult;
+    List<DBModelExpenseByCategory> finalData = [];
+
+    for(var _ in mutableResult){
+      final category = await DBHelperExpenseCategory().readById(db: db.database, id: _['category_id']);
+      finalData.add(DBModelExpenseByCategory(category: category, total: _['total']));
+    }
+    return finalData;
   }
 }

@@ -44,4 +44,28 @@ extension DateRangeExtension on DateRange {
         return DateTime(endOfYear.year, endOfYear.month, endOfYear.day, 23, 59, 59).toIso8601String();
     }
   }
+
+  DateTime get startDate {
+    final now = DateTime.now();
+    switch (this) {
+      case DateRange.month:
+        return DateTime(now.year, now.month, 1);
+      case DateRange.week:
+        return now.subtract(Duration(days: now.weekday - 1));
+      case DateRange.year:
+        return DateTime(now.year, 1, 1);
+    }
+  }
+
+  DateTime get endDate {
+    final now = DateTime.now();
+    switch (this) {
+      case DateRange.month:
+        return DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1)).add(const Duration(hours: 23, minutes: 59, seconds: 59));
+      case DateRange.week:
+        return now.subtract(Duration(days: now.weekday - 1)).add(const Duration(days: 6, hours: 23, minutes: 59, seconds: 59));
+      case DateRange.year:
+        return DateTime(now.year, 12, 31, 23, 59, 59);
+    }
+  }
 }

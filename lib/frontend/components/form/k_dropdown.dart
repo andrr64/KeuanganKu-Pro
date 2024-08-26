@@ -35,10 +35,7 @@ Widget kDropdown<T>(
               fontWeight: tStyle.fontWeight,
               fontSize: tStyle.fontSize),
         ),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black87, width: 2)),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black45, width: 2))),
+    ),
     value: value,
     onChanged: onChanged,
     borderRadius: const BorderRadius.all(Radius.circular(15)),

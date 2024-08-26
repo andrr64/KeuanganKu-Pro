@@ -10,7 +10,7 @@ class EmptyData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32),
+      padding: const EdgeInsets.symmetric(vertical: 64),
       child: Center(
           child: Column(
             children: [

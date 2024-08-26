@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/expense_category.dart';
-import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
@@ -183,12 +182,12 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         if (month == 12) {
           dateRangeForMonth = DateTimeRange(
             start: DateTime(startDate.year, month, 1, 0, 0, 0),
-            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(Duration(seconds: 1)),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(const Duration(seconds: 1)),
           );
         } else {
           dateRangeForMonth = DateTimeRange(
             start: DateTime(startDate.year, month, 1, 0, 0, 0),
-            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(Duration(seconds: 1)),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(const Duration(seconds: 1)),
           );
         }
 
@@ -211,7 +210,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
       // Group by day for all other cases
       for (DateTime currentDate = startDate;
       currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate);
-      currentDate = currentDate.add(Duration(days: 1))) {
+      currentDate = currentDate.add(const Duration(days: 1))) {
         // Create a date range for the current day
         DateTimeRange dateRangeForDay = DateTimeRange(
           start: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),

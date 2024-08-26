@@ -8,18 +8,12 @@ import 'package:keuanganku/backend/database/model/model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-/**
- * Enum representing different types of wallets or accounts.
- */
+/// Enum representing different types of wallets or accounts.
 enum WalletType {
-  /**
-   * Represents a general wallet.
-   */
+  /// Represents a general wallet.
   wallet('Wallet', 1),
 
-  /**
-   * Represents a bank account.
-   */
+  /// Represents a bank account.
   bank('Bank Account', 2);
 
   const WalletType(this.name, this.type);
@@ -27,16 +21,12 @@ enum WalletType {
   final int type;
 }
 
-/**
- * Extension methods for `WalletType` enum.
- */
+/// Extension methods for `WalletType` enum.
 extension Get on WalletType {
-  /**
-   * Returns the string representation of a wallet type given its integer value.
-   *
-   * @param type The integer representing the wallet type.
-   * @return A `String` representing the wallet type name.
-   */
+  /// Returns the string representation of a wallet type given its integer value.
+  ///
+  /// @param type The integer representing the wallet type.
+  /// @return A `String` representing the wallet type name.
   String type_str(int type) {
     for (var walletType in WalletType.values) {
       if (walletType.type == type) {
@@ -46,11 +36,9 @@ extension Get on WalletType {
     return 'Unknown';
   }
 
-  /**
-   * Returns a list of wallet type names as strings.
-   *
-   * @return A `List<String>` containing the names of all wallet types.
-   */
+  /// Returns a list of wallet type names as strings.
+  ///
+  /// @return A `List<String>` containing the names of all wallet types.
   List<String> walletTypeValueAsString() {
     return List<String>.generate(WalletType.values.length, (i) => type_str(WalletType.values[i].type));
   }

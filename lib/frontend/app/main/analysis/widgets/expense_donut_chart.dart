@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/enum/date_range.dart';
-import 'package:keuanganku/frontend/app/expense_category_provider.dart';
-import 'package:keuanganku/frontend/app/main/analysis/analysis_provider.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
-import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/piecart.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';

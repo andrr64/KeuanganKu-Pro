@@ -74,7 +74,7 @@ class AnalysisPage extends HookConsumerWidget {
             ),
             ElevatedButton(onPressed: (){
               REFRESH_AnalysisPage();
-            }, child: Text('Hola'))
+            }, child: const Text('Hola'))
           ],
         ),
       );

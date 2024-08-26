@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/components/bullet.dart';
@@ -180,7 +179,7 @@ class ExpenseBarChart extends StatelessWidget {
   }
   Widget buildChart(BuildContext context){
     if (bar_data.isEmpty) {
-      return EmptyData(
+      return const EmptyData(
           iconData: Icons.analytics,
       );
     }
@@ -207,7 +206,7 @@ class ExpenseBarChart extends StatelessWidget {
           dummyHeight(25),
           buildChart(context),
           dummyHeight(20),
-          bar_data.isNotEmpty? buildChartInfo(context) : SizedBox()
+          bar_data.isNotEmpty? buildChartInfo(context) : const SizedBox()
         ],
       ),
     );

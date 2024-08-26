@@ -203,7 +203,7 @@ BarChart WeeklyExpenseBarChart(BuildContext context, {required List<BarChartGrou
 }
 BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGroupData> barGroups}){
   final titles = barGroups.map((val) => val.x.toString()).toList();
-  final showBottomTitles = false;
+  const showBottomTitles = false;
   return BarChart(
     swapAnimationDuration: const Duration(seconds: 1),
     swapAnimationCurve: Curves.easeInOutCubic,
@@ -236,7 +236,7 @@ BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGro
                       child: xVal.toInt() % 7 == 0? Text(
                           titles[xVal.toInt() + 1],
                           style: getTextStyle(context, KTStyle.label, KTSType.medium, FontColor.black.color)
-                      ) : Text('')
+                      ) : const Text('')
                   )
               )
           )
@@ -246,7 +246,7 @@ BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGro
 }
 BarChart YearlyExpenseBarChart(BuildContext context, {required List<BarChartGroupData> barGroups}){
   final titles = <String>['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'];
-  final showBottomTitles = false;
+  const showBottomTitles = false;
   return BarChart(
     swapAnimationDuration: const Duration(seconds: 1),
     swapAnimationCurve: Curves.easeInOutCubic,

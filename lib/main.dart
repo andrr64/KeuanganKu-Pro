@@ -26,6 +26,7 @@ class AppError extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: contentWhenError(context, error),
+      theme: light_theme,
     );
   }
 }

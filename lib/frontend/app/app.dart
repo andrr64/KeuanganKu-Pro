@@ -8,6 +8,7 @@ import 'package:keuanganku/frontend/app/main/analysis/analysis_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/main/test_page.dart';
 import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/keep_alive.dart';
@@ -24,18 +25,15 @@ final pages = <Widget>[
 
 class KeuanganKuPro extends HookConsumerWidget {
   const KeuanganKuPro({super.key});
-
   void whenBottomNavbarChanged(
       int value, WidgetRef ref, PageController pageController) {
     ref.read(pageIndexProvider.notifier).state = value;
     pageController.jumpToPage(value);
   }
-
   Color _iconColor(index, currenIndex) {
     if (index != currenIndex) return FontColor.black.color.withAlpha(150);
     return FontColor.black.color;
   }
-
   List<BottomNavigationBarItem> bottomNavigationBarItems(currentIndex) {
     return [
       BottomNavigationBarItem(
@@ -58,19 +56,14 @@ class KeuanganKuPro extends HookConsumerWidget {
           label: pageNames[2]),
     ];
   }
-
   void initData(BuildContext context, WidgetRef ref) async{
     // Data
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseCategoriesProvider.notifier).initData();
 
-    // Homepage
     ref.watch(homepageProvider.notifier).initData();
-
-    // Analysis Page
-    ref.watch(anlpgExpensePieChartByCategoryProvider.notifier)
-        .initData(context, expenseCategoryGetter: ref.watch(globalExpenseCategoriesProvider.notifier).getById);
+    INITDATA_AnalysisPage(context, ref);
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-late final DEVICE_WIDTH;
-late final DEVICE_HEIGHT;
+double DEVICE_WIDTH = 0;
+double DEVICE_HEIGHT = 0;
 bool _init = false;
 
 void DEVICE_initData(BuildContext context){

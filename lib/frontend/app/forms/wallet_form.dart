@@ -58,9 +58,12 @@ class _WalletFormState extends State<WalletForm> {
           description: 'Wallet Initialization',
           datetime: DateTime.now().toIso8601String()
         );
-        newIncome.insert().then((_){
+        newIncome.insert().then((_)async {
           widget.callbackWhenDataSaved(newWallet);
-          QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
+          if (context.mounted){
+            QuickAlert.show(context: context, type: QuickAlertType.success);
+            closePage(context);
+          }
         });
       });
     }

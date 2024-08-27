@@ -88,7 +88,10 @@ class _IncomeFormState extends State<IncomeForm> {
         );
         newIncome.insertAndUpdateWalletIncome().then((_){
           widget.callbackWhenDataSaved(newIncome);
-          QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
+          if (context.mounted){
+            QuickAlert.show(context: context, type: QuickAlertType.success);
+            closePage(context);
+          }
         });
       }
   }

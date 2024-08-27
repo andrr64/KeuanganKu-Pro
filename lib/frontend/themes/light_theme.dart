@@ -5,7 +5,20 @@ import 'package:keuanganku/frontend/utility/k_color.dart';
 const Color BLACK_FONT_COLOR = Color(0xff14192b);
 
 ThemeData light_theme = ThemeData(
-    textTheme: GoogleFonts.openSansTextTheme(),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(fontFamily: 'OpenSans'),
+      displayMedium: TextStyle(fontFamily: 'OpenSans'),
+      displaySmall: TextStyle(fontFamily: 'OpenSans'),
+      bodyLarge: TextStyle(fontFamily: 'OpenSans'),
+      bodyMedium: TextStyle(fontFamily: 'OpenSans'),
+      bodySmall: TextStyle(fontFamily: 'OpenSans'),
+      titleLarge: TextStyle(fontFamily: 'OpenSans'),
+      titleMedium: TextStyle(fontFamily: 'OpenSans'),
+      titleSmall: TextStyle(fontFamily: 'OpenSans'),
+      labelLarge: TextStyle(fontFamily: 'OpenSans'),
+      labelMedium: TextStyle(fontFamily: 'OpenSans'),
+      labelSmall: TextStyle(fontFamily: 'OpenSans'),
+    ),
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     useMaterial3: true,

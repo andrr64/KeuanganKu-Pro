@@ -76,7 +76,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
   }
 
   // Events
-  void handleSave(BuildContext context) async {
+  void handleSave(BuildContext context)  {
     if(_formKey.currentState!.validate()){
       final newExpense = DBModelExpense(
           title: titleController.text,
@@ -87,7 +87,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
           rate: 0,
           datetime: combineDateTimeAndTimeOfDay(dateController, timeController)
       );
-      newExpense.insert().then((_) async {
+      newExpense.insert().then((_) {
         widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
         REFRESH_AnalysisPage();
         QuickAlert.show(context: context, type: QuickAlertType.success)

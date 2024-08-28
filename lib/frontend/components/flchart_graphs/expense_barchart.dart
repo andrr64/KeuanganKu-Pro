@@ -230,7 +230,7 @@ BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGro
           rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
               sideTitles: SideTitles(
-                  showTitles: true,
+                  showTitles: showBottomTitles,
                   getTitlesWidget: (xVal, tileMeta) => SideTitleWidget(
                       axisSide: tileMeta.axisSide,
                       child: xVal.toInt() % 7 == 0? Text(
@@ -246,7 +246,7 @@ BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGro
 }
 BarChart YearlyExpenseBarChart(BuildContext context, {required List<BarChartGroupData> barGroups}){
   final titles = <String>['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'];
-  const showBottomTitles = false;
+  const showBottomTitles = true;
   return BarChart(
     swapAnimationDuration: const Duration(seconds: 1),
     swapAnimationCurve: Curves.easeInOutCubic,
@@ -268,7 +268,7 @@ BarChart YearlyExpenseBarChart(BuildContext context, {required List<BarChartGrou
             )
         ),
         titlesData: FlTitlesData(
-            show: true,
+            show: showBottomTitles,
             topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             bottomTitles: AxisTitles(
@@ -277,7 +277,7 @@ BarChart YearlyExpenseBarChart(BuildContext context, {required List<BarChartGrou
                     getTitlesWidget: (xVal, tileMeta) => SideTitleWidget(
                         axisSide: tileMeta.axisSide,
                         child: Text(
-                            (xVal + 1).toInt().toString(),
+                            (xVal.toInt() + 1).toString(),
                             style: getTextStyle(context, KTStyle.label, KTSType.medium, FontColor.black.color)
                         )
                     )

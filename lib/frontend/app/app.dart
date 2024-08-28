@@ -5,7 +5,6 @@ import 'package:keuanganku/frontend/app/drawer.dart';
 import 'package:keuanganku/frontend/app/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
-import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/wallet_provider.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
@@ -60,8 +59,8 @@ class KeuanganKuPro extends HookConsumerWidget {
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseCategoriesProvider.notifier).initData();
 
-    ref.watch(homepageProvider.notifier).initData();
     INITDATA_AnalysisPage(context, ref);
+    INITDATA_HomePage(context, ref);
   }
 
   @override

@@ -245,7 +245,6 @@ BarChart MonthlyExpenseBarChart(BuildContext context, {required List<BarChartGro
   );
 }
 BarChart YearlyExpenseBarChart(BuildContext context, {required List<BarChartGroupData> barGroups}){
-  final titles = <String>['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'];
   const showBottomTitles = true;
   return BarChart(
     swapAnimationDuration: const Duration(seconds: 1),

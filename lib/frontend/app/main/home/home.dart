@@ -9,7 +9,24 @@ import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
+bool _initPage = false;
+late WidgetRef _ref;
+
+Future<void> REFRESH_HomePage() async {
+  if (_initPage){
+    await _ref.watch(homepageProvider.notifier).updateExpense();
+    await _ref.watch(homepageProvider.notifier).updateIncomes();
+  }
+}
+void INITDATA_HomePage(BuildContext context, WidgetRef ref) async {
+  if (!_initPage){
+    _ref = ref;
+    await REFRESH_HomePage();
+    _initPage = true;
+  }
+}
 
 class Homepage extends HookConsumerWidget {
   const Homepage({super.key});
@@ -19,25 +36,28 @@ class Homepage extends HookConsumerWidget {
     return SingleChildScrollView(
         child: PagePadding(
       context,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          dummyHeight(10),
-          const BalanceCard(),
-          dummyHeight(25),
-          _buildIncomeCard(context, ref),
-          dummyHeight(25),
-          _buildExpenseCard(context, ref),
-        ],
-      ),
-    ));
+      child: buildContent(context, ref)));
   }
 
-  void _callbackWhenIncomeCardDateChange(DateRange val, WidgetRef ref) {
+  Widget buildContent(BuildContext context, WidgetRef ref){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        dummyHeight(10),
+        const BalanceCard(),
+        dummyHeight(25),
+        _buildIncomeCard(context, ref),
+        dummyHeight(25),
+        _buildExpenseCard(context, ref),
+      ],
+    );
+  }
+
+  void callbackWhenIncomeCardDateChange(DateRange val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setIncomeCardDateRange(val);
   }
 
-  void _callbackWhenExpenseCardDateChange(DateRange? val, WidgetRef ref) {
+  void callbackWhenExpenseCardDateChange(DateRange? val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setExpenseCardDateRange(val!);
   }
 
@@ -46,7 +66,7 @@ class Homepage extends HookConsumerWidget {
       dateRange: ref.watch(homepageProvider).incomesDateRange,
       incomesAmount: ref.watch(homepageProvider).incomesAmount,
       callbackWhenDateChange: (val) =>
-          _callbackWhenIncomeCardDateChange(val, ref),
+          callbackWhenIncomeCardDateChange(val, ref),
       wallets: ref.watch(globalWalletsProvider),
       incomeCategories: ref.watch(globalIncomeCategoriesProvider),
       callbackWhenNewIncomeSaved: (newIncome) async {
@@ -66,7 +86,7 @@ class Homepage extends HookConsumerWidget {
       wallets: ref.watch(globalWalletsProvider),
       expenseCategories: ref.watch(globalExpenseCategoriesProvider),
       callbackWhenDataChange: (val) =>
-          _callbackWhenExpenseCardDateChange(val, ref),
+          callbackWhenExpenseCardDateChange(val, ref),
       callbackWhenNewExpenseSaved: (newExpense) async {
         ref.read(globalWalletsProvider.notifier).addExpense(
             walletTargetId: newExpense.wallet_id!, newExpense: newExpense);

@@ -80,8 +80,8 @@ class IncomeCard extends StatelessWidget {
                   kText(
                     context,
                     'Income this ${dateRange.value}',
-                    KTStyle.title,
-                    KTSType.small,
+                    KTStyle.label,
+                    KTSType.medium,
                     color: Colors.white,
                   ),
                   kText(

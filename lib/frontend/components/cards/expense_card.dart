@@ -56,8 +56,8 @@ class ExpenseCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                kText(context, 'Expense this ${dateRange.value}', KTStyle.title,
-                    KTSType.small,
+                kText(context, 'Expense this ${dateRange.value}', KTStyle.label,
+                    KTSType.medium,
                     color: Colors.white),
                 kText(context, currencyFormat(expenseAmount), KTStyle.title,
                     KTSType.large,

@@ -90,10 +90,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
       newExpense.insert().then((_) async {
         widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
         REFRESH_AnalysisPage();
-        if (context.mounted){
-          QuickAlert.show(context: context, type: QuickAlertType.success);
-          closePage(context);
-        }
+        QuickAlert.show(context: context, type: QuickAlertType.success)
+          .then((_) => closePage(context));
       });
     }
   }

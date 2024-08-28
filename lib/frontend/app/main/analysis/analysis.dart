@@ -24,12 +24,8 @@ void INITDATA_AnalysisPage(BuildContext context, WidgetRef ref) async{
   if (!_initPage){
     _ref = ref;
     DBModelExpenseCategory Function(int) expenseCategoryGetter = _ref.watch(globalExpenseCategoriesProvider.notifier).getById;
-    if (context.mounted){
-      await _ref.watch(_expenseBarChartProvider.notifier).initData(context, expenseCategoryGetter: expenseCategoryGetter);
-    }
-    if (context.mounted){
-      await _ref.watch(_expenseDonutChartProvider.notifier).initData(context, expenseCategoryGetter: expenseCategoryGetter);
-    }
+    await _ref.watch(_expenseBarChartProvider.notifier).initData(context, expenseCategoryGetter: expenseCategoryGetter);
+    await _ref.watch(_expenseDonutChartProvider.notifier).initData(context, expenseCategoryGetter: expenseCategoryGetter);
     _initPage = true;
   }
 }

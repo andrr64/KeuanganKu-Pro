@@ -88,10 +88,7 @@ class _IncomeFormState extends State<IncomeForm> {
         );
         newIncome.insertAndUpdateWalletIncome().then((_){
           widget.callbackWhenDataSaved(newIncome);
-          if (context.mounted){
-            QuickAlert.show(context: context, type: QuickAlertType.success);
-            closePage(context);
-          }
+          QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
         });
       }
   }
@@ -220,21 +217,8 @@ class _IncomeFormState extends State<IncomeForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kText(context, 'Income', KTStyle.title, KTSType.large),
-          kText(context, 'Insert new income data.', KTStyle.label,
-              KTSType.medium),
+          kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
           ...fields(context),
-          Row(
-            children: [
-              k_button(
-                  context, text: 'Save', () => handleSave(context)),
-              dummyWidth(10),
-              k_button(
-                  context,
-                  mainColor: BaseColor.old_red.color,
-                  text: 'Clear',
-                  handleClear)
-            ],
-          )
         ],
       ),
     );
@@ -254,6 +238,22 @@ class _IncomeFormState extends State<IncomeForm> {
           horizontal: vw(context, 5),
         ),
         child: form(context),
+      ),
+      bottomNavigationBar: OverflowBar(
+        alignment: MainAxisAlignment.center,
+        spacing: 20,
+        children: <Widget>[
+          FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: BaseColor.old_green.color),
+              onPressed: () => handleSave(context),
+              child: const Text('Save'),
+          ),
+          FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: BaseColor.old_red.color),
+              onPressed: () => handleClear,
+              child: const Text('Clear'),
+          ),
+        ],
       ),
     );
   }

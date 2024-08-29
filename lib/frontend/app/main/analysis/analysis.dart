@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
-import 'package:keuanganku/frontend/app/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/widgets/expense_barchart.dart';
 import 'package:keuanganku/frontend/app/main/analysis/widgets/expense_donut_chart.dart';

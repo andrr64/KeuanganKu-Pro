@@ -2,11 +2,11 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/drawer.dart';
-import 'package:keuanganku/frontend/app/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
-import 'package:keuanganku/frontend/app/income_category_provider.dart';
-import 'package:keuanganku/frontend/app/wallet_provider.dart';
+import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
 import 'package:keuanganku/frontend/utility/k_color.dart';
 import 'package:keuanganku/frontend/utility/keep_alive.dart';
 
@@ -27,10 +27,12 @@ class KeuanganKuPro extends HookConsumerWidget {
     ref.read(pageIndexProvider.notifier).state = value;
     pageController.jumpToPage(value);
   }
+
   Color _iconColor(index, currenIndex) {
     if (index != currenIndex) return FontColor.black.color.withAlpha(150);
     return FontColor.black.color;
   }
+
   List<BottomNavigationBarItem> bottomNavigationBarItems(currentIndex) {
     return [
       BottomNavigationBarItem(
@@ -53,7 +55,8 @@ class KeuanganKuPro extends HookConsumerWidget {
           label: pageNames[2]),
     ];
   }
-  void initData(BuildContext context, WidgetRef ref) async{
+
+  void initData(BuildContext context, WidgetRef ref) async {
     // Data
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();

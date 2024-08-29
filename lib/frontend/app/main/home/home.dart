@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:keuanganku/frontend/app/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
-import 'package:keuanganku/frontend/app/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/page_padding.dart';
-import 'package:keuanganku/frontend/app/wallet_provider.dart';
+import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
 import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
@@ -15,14 +15,13 @@ late WidgetRef _ref;
 
 Future<void> REFRESH_HomePage() async {
   if (_initPage){
-    await _ref.watch(homepageProvider.notifier).updateExpense();
-    await _ref.watch(homepageProvider.notifier).updateIncomes();
+    await _ref.watch(homepageProvider.notifier).initData();
   }
 }
 void INITDATA_HomePage(BuildContext context, WidgetRef ref) async {
   if (!_initPage){
     _ref = ref;
-    await REFRESH_HomePage();
+    await _ref.watch(homepageProvider.notifier).initData();
     _initPage = true;
   }
 }

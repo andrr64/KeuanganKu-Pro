@@ -4,6 +4,7 @@ import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
@@ -131,6 +132,7 @@ class _IncomeFormState extends State<IncomeForm> {
           maxVal: 10000000000),
       dummyHeight(22.5),
       Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: vw(context, 60),
@@ -149,7 +151,8 @@ class _IncomeFormState extends State<IncomeForm> {
             ),
           ),
           dummyWidth(vw(context, 2.5)),
-          k_button(context, () {}, text: 'Add', icon: Icons.add_box)
+          //TODO: handle when user want to add new category
+          KOutlinedButton(onPressed: (){}, text: 'Add', icon: const Icon(Icons.add)),
         ],
       ),
       dummyHeight(22.5),
@@ -220,6 +223,21 @@ class _IncomeFormState extends State<IncomeForm> {
           kText(context, 'Income', KTStyle.title, KTSType.large),
           kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
           ...fields(context),
+          Row(
+            children: [
+              KOutlinedButton(
+                onPressed: () => handleSave(context), 
+                color: const Color(0xff377550), 
+                text: 'Save'
+              ),
+              dummyWidth(10),
+              KOutlinedButton(
+                onPressed: handleClear, 
+                color: BaseColor.old_red.color, 
+                text: 'Clear'
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -239,22 +257,6 @@ class _IncomeFormState extends State<IncomeForm> {
           horizontal: vw(context, 5),
         ),
         child: form(context),
-      ),
-      bottomNavigationBar: OverflowBar(
-        alignment: MainAxisAlignment.center,
-        spacing: 20,
-        children: <Widget>[
-          FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: BaseColor.old_green.color),
-              onPressed: () => handleSave(context),
-              child: const Text('Save'),
-          ),
-          FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: BaseColor.old_red.color),
-              onPressed: () => handleClear,
-              child: const Text('Clear'),
-          ),
-        ],
       ),
     );
   }

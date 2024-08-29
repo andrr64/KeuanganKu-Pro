@@ -5,6 +5,7 @@ import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
@@ -151,7 +152,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
             ),
           ),
           dummyWidth(vw(context, 2.5)),
-          k_button(context, () {}, text: 'Add', icon: Icons.add_box)
+          //TODO: handle when user want to add new category
+          KOutlinedButton(onPressed: (){}, text: 'Add', icon: const Icon(Icons.add)),
         ],
       ),
       dummyHeight(22.5),
@@ -225,13 +227,17 @@ class _ExpenseFormState extends State<ExpenseForm> {
           ...fields(context),
           Row(
             children: [
-              k_button(context, text: 'Save', () => handleSave(context)),
+              KOutlinedButton(
+                onPressed: () => handleSave(context), 
+                color: const Color(0xff377550), 
+                text: 'Save'
+              ),
               dummyWidth(10),
-              k_button(
-                  context,
-                  mainColor: BaseColor.old_red.color,
-                  text: 'Clear',
-                  handleClear)
+              KOutlinedButton(
+                onPressed: handleClear, 
+                color: BaseColor.old_red.color, 
+                text: 'Clear'
+              ),
             ],
           )
         ],

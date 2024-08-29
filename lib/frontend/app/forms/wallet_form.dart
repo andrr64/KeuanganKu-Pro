@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
@@ -49,18 +50,18 @@ class _WalletFormState extends State<WalletForm> {
         type: _walletType.type,
         total_income: initAmount,
       );
-      newWallet.insert().then((_){
+      newWallet.insert().then((_) {
         final newIncome = DBModelIncome(
-          wallet_id: newWallet.id,
-          title: 'Wallet Init',
-          amount: initAmount,
-          category_id: 1,
-          description: 'Wallet Initialization',
-          datetime: DateTime.now().toIso8601String()
-        );
-        newIncome.insert().then((_)async {
+            wallet_id: newWallet.id,
+            title: 'Wallet Init',
+            amount: initAmount,
+            category_id: 1,
+            description: 'Wallet Initialization',
+            datetime: DateTime.now().toIso8601String());
+        newIncome.insert().then((_) async {
           widget.callbackWhenDataSaved(newWallet);
-          QuickAlert.show(context: context, type: QuickAlertType.success).then((_) => closePage(context));
+          QuickAlert.show(context: context, type: QuickAlertType.success)
+              .then((_) => closePage(context));
         });
       });
     }
@@ -71,7 +72,7 @@ class _WalletFormState extends State<WalletForm> {
     _initialAmountController.clear();
   }
 
-  List<Widget> _buildFormFields(BuildContext context) {
+  List<Widget> fields(BuildContext context) {
     return [
       dummyHeight(22.5),
       kTextField(
@@ -117,7 +118,7 @@ class _WalletFormState extends State<WalletForm> {
     ];
   }
 
-  Widget _buildForm(BuildContext context) {
+  Widget form(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -126,21 +127,18 @@ class _WalletFormState extends State<WalletForm> {
           kText(context, 'Wallet', KTStyle.title, KTSType.large),
           kText(context, 'Insert new wallet data.', KTStyle.label,
               KTSType.medium),
-          ..._buildFormFields(context),
+          ...fields(context),
           Row(
             children: [
-              k_button(
-                context,
-                text: 'Save',
-                () => handleSave(context),
-              ),
+              KOutlinedButton(
+                  onPressed: () => handleSave(context),
+                  color: const Color(0xff377550),
+                  text: 'Save'),
               dummyWidth(10),
-              k_button(
-                context,
-                mainColor: BaseColor.old_red.color,
-                text: 'Clear',
-                handleClear,
-              ),
+              KOutlinedButton(
+                  onPressed: () => handleSave(context),
+                  color: BaseColor.old_red.color,
+                  text: 'Clear'),
             ],
           ),
         ],
@@ -157,8 +155,10 @@ class _WalletFormState extends State<WalletForm> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-            vertical: vh(context, 2.5), horizontal: vw(context, 5)),
-        child: _buildForm(context),
+          vertical: vh(context, 2.5), 
+          horizontal: vw(context, 5)
+        ),
+        child: form(context),
       ),
     );
   }

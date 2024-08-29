@@ -76,10 +76,12 @@ TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color 
   );
 }
 
-Text kText(BuildContext context, String text, KTStyle style, KTSType type, {
+Text kText(BuildContext context, String text, KTStyle? style, KTSType? type, {
   Color color = BLACK_FONT_COLOR,
   TextAlign? align,
   FontWeight? fontWeight
 }){
+  type = type?? KTSType.medium;
+  style = style?? KTStyle.label;
   return Text(text, style: getTextStyle(context, style, type, color, fontWeight: fontWeight), textAlign: align,);
 }

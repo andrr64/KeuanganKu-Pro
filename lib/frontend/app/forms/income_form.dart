@@ -3,7 +3,6 @@ import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';

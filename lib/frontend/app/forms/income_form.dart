@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -259,25 +260,7 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   Widget buildWhenListOrCategoryIsEmpty(BuildContext context){
-    //TODO: create error page
-    return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.close, color: Colors.black, size: vw(context, 20),),
-            Text('Empty Wallet :(', style: getTextStyle(context, KTStyle.title, KTSType.large, FontColor.black.color),),
-            const Text('Add wallet first.'),
-            dummyHeight(5),
-            SizedBox(
-              width: 100,
-              child: k_button(context, () => closePage(context), text: 'Back'),
-            )
-          ],
-        ),
-      ),
-    );
+    return const EmptyWalletWarning();
   }
 
 

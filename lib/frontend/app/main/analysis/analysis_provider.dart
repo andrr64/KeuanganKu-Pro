@@ -8,7 +8,7 @@ import 'package:keuanganku/frontend/components/flchart_graphs/expense_barchart.d
 import 'package:keuanganku/frontend/components/flchart_graphs/graph_color.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/piecart.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 
 class AnalysisPageExpenseBarChartData {
   final DateRange dataTimePeriod;

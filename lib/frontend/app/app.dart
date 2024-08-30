@@ -7,8 +7,8 @@ import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
 import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
-import 'package:keuanganku/frontend/utility/keep_alive.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/app/keep_alive.dart';
 
 final pageIndexProvider = StateProvider<int>((_) => 0);
 final pageControllerProvider = StateProvider<PageController>((_) => PageController());

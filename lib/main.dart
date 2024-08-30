@@ -7,6 +7,7 @@ import 'package:keuanganku/frontend/app/content_when_x.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
 
 DatabaseServices db = DatabaseServices();
+late final ThemeData appTheme;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DEVICE_initData(context);
+    appTheme = Theme.of(context);
 
     return MaterialApp(
       title: 'KeuanganKu Pro',

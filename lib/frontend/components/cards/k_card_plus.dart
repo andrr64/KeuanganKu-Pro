@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 
 const int constanta = 0x101797;
 

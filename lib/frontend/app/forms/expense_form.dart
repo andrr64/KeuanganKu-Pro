@@ -12,7 +12,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 import 'package:quickalert/quickalert.dart';
 

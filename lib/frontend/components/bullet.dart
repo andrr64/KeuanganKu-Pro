@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 
 Widget KBullet(double d, {Color? color}){
   return Container(

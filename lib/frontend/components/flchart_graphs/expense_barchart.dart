@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/device_info.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 
 double findValue(List<double> numbers, {bool highest = true}) {
   if (numbers.isEmpty) {

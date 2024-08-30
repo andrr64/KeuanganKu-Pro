@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
-import 'package:keuanganku/frontend/utility/k_color.dart';
+import 'package:keuanganku/frontend/colors/k_color.dart';
 
 Widget contentWhenError(BuildContext context, Object? error) {
   return Scaffold(

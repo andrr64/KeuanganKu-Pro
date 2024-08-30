@@ -1,5 +1,6 @@
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/expense_category.dart';
+import 'package:keuanganku/backend/database/helper/expense_limiter.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/backend/database/helper/income_category.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
@@ -19,6 +20,8 @@ class DatabaseServices {
 
     DBHelperIncome().checkIfNotExistThenCreate(db);
     DBHelperIncomeCategory().checkIfNotExistThenCreate(db);
+
+    DBHelperExpenseLimiter().checkIfNotExistThenCreate(db);
   }
 
   Future<void> openDb() async {

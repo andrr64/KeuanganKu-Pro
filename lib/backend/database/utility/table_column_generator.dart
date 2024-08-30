@@ -2,14 +2,18 @@ Map<String, String> createSql3Column({
   required String name,
   required String dtype,
   String? constraint,
-  bool? primary,
-  bool? required
+  bool primary = false,
+  bool required = false,
+  bool unique = false
 }){
-  if (required == true){
+  if (required){
     constraint = '$constraint NOT NULL';
   }
-  if (primary == true){
+  if (primary){
     constraint = 'PRIMARY KEY $constraint';
+  }
+  if (unique){
+    constraint = '$constraint UNIQUE';
   }
   return <String, String>{
     'name': name,

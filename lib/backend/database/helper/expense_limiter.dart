@@ -22,6 +22,9 @@ class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   @override
   Future<List<DBModelExpenseLimiter>> readAll() async{
     final query_result = await db.database.query(tableName);
+    if (query_result.isEmpty){
+      return [];
+    }
     final modelGenerator = DBModelExpenseLimiter();
     List<DBModelExpenseLimiter> result = [];
     for (final e in query_result){

@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/enum/date_range.dart';
-import 'package:keuanganku/main.dart';
 
 class HomepageData {
   final DateRange incomesDateRange;
@@ -48,12 +47,12 @@ class HomepageProvider extends Notifier<HomepageData> {
     }
   }
 
-  Future<void> updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: state.incomesDateRange));
-  Future<void> updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: state.expenseDateRange));
+  Future<void> updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(date: state.incomesDateRange));
+  Future<void> updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpenseByPeriod(dateRange: state.expenseDateRange));
   Future<void> setIncomeCardDateRange(DateRange dateRange) async{
     if (dateRange != state.incomesDateRange) {
       state = state.copyWith(
-        incomesAmount: await DBHelperIncome().readTotalIncome(db: db.database, date: dateRange),
+        incomesAmount: await DBHelperIncome().readTotalIncome(date: dateRange),
         incomeCardDateRange: dateRange
       );
     }
@@ -61,7 +60,7 @@ class HomepageProvider extends Notifier<HomepageData> {
   Future<void> setExpenseCardDateRange(DateRange dateRange) async{
     if (dateRange != state.expenseDateRange){
       state = state.copyWith(
-          expenseAmount: await DBHelperExpense().readTotalExpense(dateRange: dateRange),
+          expenseAmount: await DBHelperExpense().readTotalExpenseByPeriod(dateRange: dateRange),
           expenseDateRange: dateRange
       );
     }

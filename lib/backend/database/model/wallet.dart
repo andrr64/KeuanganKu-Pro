@@ -126,7 +126,7 @@ class DBModelWallet extends DBModel {
     String? endDate
   }) async {
     if (id != null) {
-      return await DBHelperIncome().readByWalletId(db: db, wallet_id: id!);
+      return await DBHelperIncome().readByWalletId(wallet_id: id!);
     }
     throw ('Invalid Wallet');
   }

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// The [DBHelper] class provides an abstract interface for database operations.
@@ -46,7 +48,7 @@ abstract class DBHelper<T> {
   ///
   /// Returns:
   /// - A [Future<bool>] indicating whether the update operation was successful.
-  Future<bool> update ({required Database db, required T data});
+  Future<bool> update ({required T data});
 
   /// Deletes a record from the table.
   ///
@@ -56,7 +58,7 @@ abstract class DBHelper<T> {
   ///
   /// Returns:
   /// - A [Future<bool>] indicating whether the delete operation was successful.
-  Future<bool> delete({required Database db, required T data});
+  Future<bool> delete({required T data});
 
   /// Reads a specific record by its ID.
   ///
@@ -66,7 +68,7 @@ abstract class DBHelper<T> {
   ///
   /// Returns:
   /// - A [Future<T>] representing the record.
-  Future<T> readById({required Database db, required int id});
+  Future<T> readById({required int id});
 
   /// Reads all records from the table.
   ///
@@ -75,7 +77,7 @@ abstract class DBHelper<T> {
   ///
   /// Returns:
   /// - A [Future<List<T>>] containing all records.
-  Future<List<T>> readAll({required Database db});
+  Future<List<T>> readAll();
 
   /// Creates the table in the database and populates it with initial data if available.
   ///
@@ -89,7 +91,7 @@ abstract class DBHelper<T> {
     if (initData.isNotEmpty){
       for (var item in initData) {
         DBModel data = item as DBModel;
-        await db.insert(tableName, (data).toJson());
+        await db.database.insert(tableName, (data).toJson());
       }
     }
   }

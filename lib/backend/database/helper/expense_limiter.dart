@@ -4,11 +4,10 @@ import 'package:keuanganku/backend/database/model/expense_limiter.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/main.dart';
-import 'package:sqflite/sqflite.dart';
 
 class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   @override
-  Future<bool> delete({required Database db, required DBModelExpenseLimiter data}) {
+  Future<bool> delete({required DBModelExpenseLimiter data}) {
     throw UnimplementedError();
   }
 
@@ -21,8 +20,8 @@ class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   }
 
   @override
-  Future<List<DBModelExpenseLimiter>> readAll({required Database db}) async{
-    final query_result = await db.query(tableName);
+  Future<List<DBModelExpenseLimiter>> readAll() async{
+    final query_result = await db.database.query(tableName);
     final modelGenerator = DBModelExpenseLimiter();
     List<DBModelExpenseLimiter> result = [];
     for (final e in query_result){
@@ -38,8 +37,11 @@ class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   }
 
   @override
-  Future<DBModelExpenseLimiter> readById({required Database db, required int id}) async {
-    final query_result = await db.query(tableName, where: 'id = ?', whereArgs: [id]);
+  Future<DBModelExpenseLimiter> readById({required int id}) async {
+    final query_result = await db.database.query(tableName, where: 'id = ?', whereArgs: [id]);
+    if (query_result.isEmpty){
+      throw Exception('Empty data');
+    }
     DBModelExpenseLimiter data = DBModelExpenseLimiter().fromJson(query_result.first);
     if (query_result.isEmpty) throw Exception('No data found for the given ID.');
     final expense_amount = await DBHelperExpense().readWithWhereClause(
@@ -63,7 +65,7 @@ class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   String get tableName => 'expense_limiter';
 
   @override
-  Future<bool> update({required Database db, required DBModelExpenseLimiter data}) {
+  Future<bool> update({required DBModelExpenseLimiter data}) {
     // TODO: implement update
     throw UnimplementedError();
   }

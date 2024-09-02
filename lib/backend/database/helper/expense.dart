@@ -7,15 +7,10 @@ import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
 
-/// The [DBHelperExpense] class provides methods for interacting with the
-/// expenses table in the SQLite database. It extends the generic [DBHelper]
-/// class with [DBModelExpense] as the data model.
 class DBHelperExpense extends DBHelper<DBModelExpense> {
-  /// The name of the table in the database.
   @override
   String get tableName => 'expenses';
 
-  /// Defines the columns of the expenses table.
   @override
   List<Map<String, String>> get tableColumns => [
     createSql3Column(
@@ -31,37 +26,17 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
   ];
 
-  /// Initializes the data for the expenses table. Returns an empty list as
-  /// the initial data.
   @override
   List<DBModelExpense> get initData => [];
 
-  /// Deletes an expense record from the database.
-  ///
-  /// Parameters:
-  /// - [db]: The database instance.
-  /// - [data]: The [DBModelExpense] instance to be deleted.
-  ///
-  /// Returns:
-  /// - A [Future<bool>] indicating whether the delete operation was successful.
   @override
-  Future<bool> delete(
-      {required Database db, required DBModelExpense data}) async {
+  Future<bool> delete({required DBModelExpense data}) async {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
-  /// Reads all expense records from the database within the specified date range.
-  ///
-  /// Parameters:
-  /// - [db]: The database instance.
-  /// - [date]: An optional [DateRange] object to filter records by date.
-  /// - [oldToNew]: A boolean indicating whether to sort results from oldest to newest.
-  ///
-  /// Returns:
-  /// - A [Future<List<DBModelExpense>>] containing all expense records.
   @override
-  Future<List<DBModelExpense>> readAll({required Database db, DateRange? date, bool oldToNew = true}) async {
+  Future<List<DBModelExpense>> readAll({DateRange? date, bool oldToNew = true}) async {
     String? startDate = date?.startDateISO8601;
     String? endDate = date?.endDateISO8601;
 
@@ -71,7 +46,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     final whereArgs = (startDate != null && endDate != null)
         ? [startDate, endDate]
         : null;
-    final List<Map<String, dynamic>> data = await db.query(
+    final List<Map<String, dynamic>> data = await db.database.query(
       tableName,
       where: whereClause,
       whereArgs: whereArgs,
@@ -85,28 +60,12 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     return query_result.map((e) => DBModelExpense().fromJson(e)).toList();
   }
 
-  /// Reads a specific expense record by its ID.
-  ///
-  /// Parameters:
-  /// - [db]: The database instance.
-  /// - [id]: The unique ID of the expense.
-  ///
-  /// Returns:
-  /// - A [Future<DBModelExpense>] representing the expense record.
   @override
-  Future<DBModelExpense> readById({required Database db, required int id}) async {
+  Future<DBModelExpense> readById({required int id}) async {
     // TODO: implement readById
     throw UnimplementedError();
   }
 
-  /// Reads expense records filtered by wallet ID.
-  ///
-  /// Parameters:
-  /// - [db]: The database instance.
-  /// - [wallet_id]: The ID of the wallet.
-  ///
-  /// Returns:
-  /// - A [Future<List<DBModelExpense>>] containing the expense records.
   Future<List<DBModelExpense>> readByWalletId({required Database db, required int wallet_id}) async {
     return await db.query(tableName,
         where: 'wallet_id = ?', whereArgs: [wallet_id]).then((expenses) {
@@ -115,58 +74,26 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     });
   }
 
-  /// Updates an existing expense record in the database.
-  ///
-  /// Parameters:
-  /// - [db]: The database instance.
-  /// - [data]: The [DBModelExpense] instance with updated data.
-  ///
-  /// Returns:
-  /// - A [Future<bool>] indicating whether the update operation was successful.
   @override
-  Future<bool> update({required Database db, required DBModelExpense data}) async {
+  Future<bool> update({required DBModelExpense data}) async {
     // TODO: implement update
     throw UnimplementedError();
   }
 
-  /// Inserts a new expense record into the database.
-  ///
-  /// Parameters:
-  /// - [data]: The [DBModelExpense] instance to be inserted.
-  ///
-  /// Returns:
-  /// - A [Future<int>] representing the ID of the newly inserted record.
   @override
   Future<int> insert({required DBModelExpense data}) async{
     return await db.database.insert(tableName, data.toJson());
   }
 
-  /// Calculates the total amount of expenses within the specified date range.
-  ///
-  /// Parameters:
-  /// - [dateRange]: The [DateRange] object specifying the date range.
-  ///
-  /// Returns:
-  /// - A [Future<double>] representing the total amount of expenses.
   Future<double> readTotalExpenseByPeriod({required DateRange dateRange}) async {
-    final listExpense = await readAll(db: db.database, date: dateRange);
+    final listExpense = await readAll(date: dateRange);
     final result =listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
     return result;
   }
 
-  /// Reads and groups expenses by each day within the specified date range.
-  /// For yearly ranges, expenses are grouped by month.
-  ///
-  /// Parameters:
-  /// - [period]: The [DateRange] object specifying the period to group expenses.
-  ///
-  /// Returns:
-  /// - A [Future<List<DBModelExpenseByTime>>] containing grouped expenses.
-  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate({
-    required DateRange period,
-  }) async {
+  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate({required DateRange period}) async {
     // Retrieve all expenses within the given date range
-    final listExpense = await readAll(db: db.database, date: period);
+    final listExpense = await readAll(date: period);
     if (listExpense.isEmpty) {
       return [];
     }
@@ -202,7 +129,6 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
               dateRangeForMonth.end.isAfter(expenseDate);
         }).toList();
 
-        // Add the entry for the month
         groupedExpenses.add(
           DBModelExpenseByTime(
             dateTimeRange: dateRangeForMonth,
@@ -211,24 +137,20 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         );
       }
     } else {
-      // Group by day for all other cases
       for (DateTime currentDate = startDate;
       currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate);
       currentDate = currentDate.add(const Duration(days: 1))) {
-        // Create a date range for the current day
         DateTimeRange dateRangeForDay = DateTimeRange(
           start: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),
           end: DateTime(currentDate.year, currentDate.month, currentDate.day, 23, 59, 59),
         );
 
-        // Retrieve all expenses within this date range
         List<DBModelExpense> expensesForDay = listExpense.where((expense) {
           DateTime expenseDate = DateTime.parse(expense.datetime!);
           return dateRangeForDay.start.isBefore(expenseDate) &&
               dateRangeForDay.end.isAfter(expenseDate);
         }).toList();
 
-        // Add the entry for the day, even if there are no expenses
         groupedExpenses.add(
           DBModelExpenseByTime(
             dateTimeRange: dateRangeForDay,
@@ -240,14 +162,6 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     return groupedExpenses;
   }
 
-  /// Reads the total expense amount grouped by category within the specified date range.
-  ///
-  /// Parameters:
-  /// - [dateRange]: The [DateRange] object specifying the date range.
-  /// - [lowToHigh]: A boolean indicating whether to sort results from lowest to highest.
-  ///
-  /// Returns:
-  /// - A [Future<List<Map<String, dynamic>>>] containing the total expenses grouped by category.
   Future<List<DBModelExpenseByCategory>> readTotalExpenseByCategory({required DateRange dateRange, bool lowToHigh = false}) async {
     String? startDate = dateRange.startDateISO8601;
     String? endDate = dateRange.endDateISO8601;
@@ -270,7 +184,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     List<DBModelExpenseByCategory> finalData = [];
 
     for(var _ in mutableResult){
-      final category = await DBHelperExpenseCategory().readById(db: db.database, id: _['category_id']);
+      final category = await DBHelperExpenseCategory().readById(id: _['category_id']);
       finalData.add(DBModelExpenseByCategory(category: category, total: _['total']));
     }
     return finalData;

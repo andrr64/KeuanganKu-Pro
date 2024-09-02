@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:keuanganku/backend/database/helper/expense_category.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
-import 'package:keuanganku/main.dart';
 
 final globalExpenseCategoriesProvider = NotifierProvider<ExpenseCategoryProvider, List<DBModelExpenseCategory>>(ExpenseCategoryProvider.new);
 
@@ -16,13 +15,13 @@ class ExpenseCategoryProvider extends Notifier<List<DBModelExpenseCategory>>{
 
   void initData() async {
     if (!init){
-      state = await DBHelperExpenseCategory().readAll(db: db.database);
+      state = await DBHelperExpenseCategory().readAll();
       init = true;
     }
   }
 
   void updateFromDatabase() async {
-    state = await DBHelperExpenseCategory().readAll(db: db.database);
+    state = await DBHelperExpenseCategory().readAll();
   }
 
   void add(DBModelExpenseCategory newExpenseCategory) async{

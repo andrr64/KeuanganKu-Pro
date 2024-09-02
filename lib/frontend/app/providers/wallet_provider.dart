@@ -3,7 +3,6 @@ import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
-import 'package:keuanganku/main.dart';
 
 final globalWalletsProvider = NotifierProvider<WalletListProvider, List<DBModelWallet>>(WalletListProvider.new);
 
@@ -22,7 +21,7 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
   }
 
   void updateFromDatabase() async{
-    state = await DBHelperWallet().readAll(db: db.database);
+    state = await DBHelperWallet().readAll();
   }
 
   void add(DBModelWallet wallet){

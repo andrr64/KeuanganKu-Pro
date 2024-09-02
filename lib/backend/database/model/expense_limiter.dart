@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:keuanganku/backend/database/helper/expense.dart';
+import 'package:keuanganku/backend/database/helper/expense_limiter.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
 import 'package:keuanganku/enum/date_range.dart';
 
@@ -7,12 +9,14 @@ class DBModelExpenseLimiter extends DBModel {
   int category_id;
   double limit_amount;
   int period_id;
+  double current_amount;
 
   DBModelExpenseLimiter({
-    this.id = -1,
-    this.category_id = -1,
-    this.limit_amount = -1,
-    this.period_id = -1,
+    this.id = 0,
+    this.category_id = 0,
+    this.limit_amount = 0,
+    this.period_id = 0,
+    this.current_amount = 0,
   });
 
   DateRange get period {
@@ -29,13 +33,20 @@ class DBModelExpenseLimiter extends DBModel {
 
   @override
   fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    throw UnimplementedError();
+    return DBModelExpenseLimiter(
+      id: json['id'],
+      category_id: json['category_id'],
+      limit_amount: json['limit_amount'],
+      period_id: json['period_id'],
+    );
   }
 
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
+    return {
+      'category_id': category_id,
+      'limit_amount': limit_amount,
+      'period_id': period_id,
+    };
   }
 }

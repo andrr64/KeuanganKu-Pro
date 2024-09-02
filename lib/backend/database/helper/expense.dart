@@ -80,6 +80,11 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     return data.map((item) => DBModelExpense().fromJson(item)).toList();
   }
 
+  Future<List<DBModelExpense>> readWithWhereClause({required String where, required List whereArgs}) async{
+    final query_result = await db.database.query(tableName, where: where, whereArgs: whereArgs);
+    return query_result.map((e) => DBModelExpense().fromJson(e)).toList();
+  }
+
   /// Reads a specific expense record by its ID.
   ///
   /// Parameters:
@@ -143,10 +148,9 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   ///
   /// Returns:
   /// - A [Future<double>] representing the total amount of expenses.
-  Future<double> readTotalExpense({required DateRange dateRange}) async {
+  Future<double> readTotalExpenseByPeriod({required DateRange dateRange}) async {
     final listExpense = await readAll(db: db.database, date: dateRange);
-    final result =
-    listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
+    final result =listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
     return result;
   }
 
@@ -235,7 +239,6 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     }
     return groupedExpenses;
   }
-
 
   /// Reads the total expense amount grouped by category within the specified date range.
   ///

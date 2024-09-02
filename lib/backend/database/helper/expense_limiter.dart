@@ -1,37 +1,55 @@
+import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/helper/helper.dart';
+import 'package:keuanganku/backend/database/model/expense_limiter.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
+import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DBHelperExpenseLimiter extends DBHelper {
+class DBHelperExpenseLimiter extends DBHelper<DBModelExpenseLimiter> {
   @override
-  Future<bool> delete({required Database db, required data}) {
-    // TODO: implement delete
+  Future<bool> delete({required Database db, required DBModelExpenseLimiter data}) {
     throw UnimplementedError();
   }
 
   @override
-  List get initData => [
-
-  ];
+  List<DBModelExpenseLimiter> get initData => [];
 
   @override
-  Future<int> insert({required data}) {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<int> insert({required DBModelExpenseLimiter data}) async{
+    return await db.database.insert(tableName, data.toJson());
   }
 
   @override
-  Future<List> readAll({required Database db}) {
-    // TODO: implement readAll
-    throw UnimplementedError();
+  Future<List<DBModelExpenseLimiter>> readAll({required Database db}) async{
+    final query_result = await db.query(tableName);
+    final modelGenerator = DBModelExpenseLimiter();
+    List<DBModelExpenseLimiter> result = [];
+    for (final e in query_result){
+      DBModelExpenseLimiter x = modelGenerator.fromJson(e);
+      final expenses_amount = await DBHelperExpense().readWithWhereClause(
+        where: 'datetime >= ? AND datetime <= ? AND category_id = ?', 
+        whereArgs: [x.period.startDateISO8601, x.period.endDateISO8601, x.category_id]
+      );
+      x.current_amount = expenses_amount.fold(0.0, (sum, i) => sum + i.amount!);
+      result.add(x);
+    }
+    return result;
   }
 
   @override
-  Future readById({required Database db, required int id}) {
-    // TODO: implement readById
-    throw UnimplementedError();
+  Future<DBModelExpenseLimiter> readById({required Database db, required int id}) async {
+    final query_result = await db.query(tableName, where: 'id = ?', whereArgs: [id]);
+    DBModelExpenseLimiter data = DBModelExpenseLimiter().fromJson(query_result.first);
+    if (query_result.isEmpty) throw Exception('No data found for the given ID.');
+    final expense_amount = await DBHelperExpense().readWithWhereClause(
+      where: 'datetime >= ? AND datetime <= ? AND category_id = ?', 
+      whereArgs: [data.period.startDateISO8601, data.period.endDateISO8601, data.category_id]
+    );
+    data.current_amount = expense_amount.fold(0.0, (sum, i) => sum + i.amount!);
+    return data;
   }
-
+  
   @override
   List<Map<String, String>> get tableColumns => [
     createSql3Column(name: 'id', dtype: 'INTEGER', primary: true, required: true),
@@ -40,13 +58,13 @@ class DBHelperExpenseLimiter extends DBHelper {
     createSql3Column(name: 'period_id', dtype: 'INTEGER', required: true)
   ];
 
+
   @override
   String get tableName => 'expense_limiter';
 
   @override
-  Future<bool> update({required Database db, required data}) {
+  Future<bool> update({required Database db, required DBModelExpenseLimiter data}) {
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:keuanganku/device_info.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 
@@ -53,8 +52,8 @@ double findBarChartValue(List<BarChartGroupData> data, {bool highest = true}) {
   return result;
 }
 
-BarChartGroupData weeklyBarData(int x, double y1, {double barSpace = 2, required Color barColor}) {
-  final width = (DEVICE_WIDTH * 0.040);
+BarChartGroupData weeklyBarData(int x, double y1, BuildContext context, {double barSpace = 2, required Color barColor}) {
+  final width = (MediaQuery.sizeOf(context).width * 0.040);
   return BarChartGroupData(
     barsSpace: barSpace,
     x: x,
@@ -71,8 +70,8 @@ BarChartGroupData weeklyBarData(int x, double y1, {double barSpace = 2, required
     ],
   );
 }
-BarChartGroupData monthlyBarData(int x, double y1, {required Color barColor}) {
-  final width = (DEVICE_WIDTH * 0.020);
+BarChartGroupData monthlyBarData(int x, double y1, BuildContext context, {required Color barColor}) {
+  final width = (MediaQuery.sizeOf(context).width * 0.020);
   return BarChartGroupData(
     x: x,
     barRods: [
@@ -88,8 +87,8 @@ BarChartGroupData monthlyBarData(int x, double y1, {required Color barColor}) {
     ],
   );
 }
-BarChartGroupData yearlyBarData(int x, double y1, {double barSpace = 2, required Color barColor}) {
-  final width = (DEVICE_WIDTH * 0.030);
+BarChartGroupData yearlyBarData(int x, double y1, BuildContext context, {double barSpace = 2, required Color barColor}) {
+  final width = (MediaQuery.sizeOf(context).width * 0.030);
   return BarChartGroupData(
     x: x,
     barRods: [

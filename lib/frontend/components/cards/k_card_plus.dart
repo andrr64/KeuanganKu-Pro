@@ -5,9 +5,26 @@ import 'package:keuanganku/frontend/colors/k_color.dart';
 const int constanta = 0x101797;
 
 Widget KCardPlus(BuildContext context, Widget child,
-    {String? title, Icon? icon, Color? color}) {
+    {String? title, Icon? icon, Color? color, bool? withoutTitle}) {
   color = color ?? Colors.white;
   List<Color> generated3Color = generate3Color(color);
+
+  if (withoutTitle == true) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: generated3Color[0],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          child,
+        ],
+      ),
+    );
+  }
 
   return Stack(
     clipBehavior: Clip.none,
@@ -21,10 +38,13 @@ Widget KCardPlus(BuildContext context, Widget child,
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(padding: const EdgeInsets.symmetric(vertical: 8.5), child: child,),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.5),
+                child: child,
+              ),
             ],
           ),
         ),
@@ -41,7 +61,9 @@ Widget KCardPlus(BuildContext context, Widget child,
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 10, bottom: 3.5, top: 3.5, right: 15),
-              child: kText(context, title?? 'Widget', KTStyle.label, KTSType.medium, color: Colors.white),
+              child: kText(
+                  context, title ?? 'Widget', KTStyle.label, KTSType.medium,
+                  color: Colors.white),
             ),
           )),
       Positioned(

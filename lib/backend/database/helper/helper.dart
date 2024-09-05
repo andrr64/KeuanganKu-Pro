@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
-import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// The [DBHelper] class provides an abstract interface for database operations.

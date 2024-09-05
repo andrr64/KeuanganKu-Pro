@@ -1,9 +1,10 @@
 enum DateRange {
-  week('This Week', 'week'),
-  month('This Month', 'month'),
-  year('This Year', 'year');
+  week('Weekly', 'This Week', 'week'),
+  month('Monthly', 'This Month', 'month'),
+  year('Yearly', 'This Year', 'year');
 
-  const DateRange(this.label, this.value);
+  const DateRange(this.dropdownString, this.label, this.value);
+  final String dropdownString;
   final String label;
   final String value;
 }

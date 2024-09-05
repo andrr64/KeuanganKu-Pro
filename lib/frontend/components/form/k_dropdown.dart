@@ -7,11 +7,12 @@ Widget kDropdown<T>(
   required List<String> itemsAsString,
   required T? value,
   required ValueChanged<T?> onChanged,
-      required label,
+  required label,
 }) {
   TextStyle? tStyle = Theme.of(context).textTheme.bodyMedium;
 
-  List<DropdownMenuItem<T>> dropdownItems = List.generate(items.length, (index) {
+  List<DropdownMenuItem<T>> dropdownItems =
+      List.generate(items.length, (index) {
     return DropdownMenuItem<T>(
       value: items[index],
       child: Text(
@@ -26,8 +27,8 @@ Widget kDropdown<T>(
   });
 
   return DropdownButtonFormField<T>(
-    items: dropdownItems,
-    decoration: InputDecoration(
+      items: dropdownItems,
+      decoration: InputDecoration(
         label: Text(
           label,
           style: TextStyle(
@@ -35,10 +36,12 @@ Widget kDropdown<T>(
               fontWeight: tStyle.fontWeight,
               fontSize: tStyle.fontSize),
         ),
-    ),
-    value: value,
-    onChanged: onChanged,
-    borderRadius: const BorderRadius.all(Radius.circular(15)),
-    dropdownColor: BackgroundColor.white.color
-  );
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+      ),
+      value: value,
+      onChanged: onChanged,
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      dropdownColor: BackgroundColor.white.color);
 }

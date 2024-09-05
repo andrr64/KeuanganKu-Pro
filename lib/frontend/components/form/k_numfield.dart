@@ -13,7 +13,7 @@ Widget kNumField(
   void Function()? successCallback,
   void Function()? failCallback,
   double minVal = 0,
-  double? maxVal,
+  required double maxVal
 }) {
   TextStyle? tStyle = Theme.of(context).textTheme.bodyMedium;
   String maxValue = _formatted.format((maxVal));
@@ -40,14 +40,9 @@ Widget kNumField(
             fontSize: tStyle.fontSize),
       ),
       prefixIcon: icon,
-      focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black87, width: 2)),
-      enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black45, width: 2)),
-      errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 2)),
-      focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 2)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10)
+      ),
     ),
     onChanged: (val) {
       if (onChange != null) {

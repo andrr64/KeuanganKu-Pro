@@ -41,12 +41,11 @@ class Homepage extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        dummyHeight(10),
         const BalanceCard(),
         dummyHeight(25),
-        _buildIncomeCard(context, ref),
+        buildIncomeCard(context, ref),
         dummyHeight(25),
-        _buildExpenseCard(context, ref),
+        buildExpenseCard(context, ref),
       ],
     );
   }
@@ -59,7 +58,7 @@ class Homepage extends HookConsumerWidget {
     ref.read(homepageProvider.notifier).setExpenseCardDateRange(val!);
   }
 
-  Widget _buildIncomeCard(BuildContext context, WidgetRef ref) {
+  Widget buildIncomeCard(BuildContext context, WidgetRef ref) {
     return IncomeCard(
       dateRange: ref.watch(homepageProvider).incomesDateRange,
       incomesAmount: ref.watch(homepageProvider).incomesAmount,
@@ -77,7 +76,7 @@ class Homepage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildExpenseCard(BuildContext context, WidgetRef ref) {
+  Widget buildExpenseCard(BuildContext context, WidgetRef ref) {
     return ExpenseCard(
       dateRange: ref.watch(homepageProvider).expenseDateRange,
       expenseAmount: ref.watch(homepageProvider).expenseAmount,

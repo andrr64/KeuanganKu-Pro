@@ -36,8 +36,7 @@ class ExpenseCard extends StatelessWidget {
   // Frontend
   Widget content(BuildContext context) {
     List<Color> generated3color = generate3Color(BaseColor.old_red.color);
-    final KDropdown<DateRange> dataRange =
-        KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
+    final KDropdown<DateRange> dataRange = KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

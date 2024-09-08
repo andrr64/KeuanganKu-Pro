@@ -14,10 +14,10 @@ final _expenseBarChartProvider = NotifierProvider<AnalysisPageExpenseBarChartPro
 final _expenseDonutChartProvider = NotifierProvider<AnalysisPageExpensePieChartByCategoryProvider, AnalysisPageExpensePieChartByCategoryData>(
     AnalysisPageExpensePieChartByCategoryProvider.new);
 
-Future<void> REFRESH_AnalysisPage() async{
+Future<void> REFRESH_AnalysisPage(BuildContext context) async{
   if (_initPage){
     await _ref.watch(_expenseDonutChartProvider.notifier).updateData();
-    await _ref.watch(_expenseBarChartProvider.notifier).updateData();
+    await _ref.watch(_expenseBarChartProvider.notifier).updateData(context);
   }
 }
 void INITDATA_AnalysisPage(BuildContext context, WidgetRef ref) async{
@@ -57,7 +57,7 @@ class AnalysisPage extends HookConsumerWidget {
                 average: 0,
                 callbackWhenDataTimePeriodChanged: (val) async {
                   await barChartNotifier.setBarChartDataTimePeriod(val);
-                  barChartNotifier.updateData();
+                  barChartNotifier.updateData(context);
                 },
             ),
             dummyHeight(15),
@@ -73,7 +73,7 @@ class AnalysisPage extends HookConsumerWidget {
                 },
             ),
             ElevatedButton(onPressed: (){
-              REFRESH_AnalysisPage();
+              REFRESH_AnalysisPage(context);
             }, child: const Text('Hola'))
           ],
         ),

@@ -90,7 +90,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       );
       newExpense.insert().then((_) {
         widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
-        REFRESH_AnalysisPage();
+        REFRESH_AnalysisPage(context);
         QuickAlert.show(context: context, type: QuickAlertType.success)
           .then((_) => closePage(context));
       });
@@ -221,8 +221,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kText(context, 'Expense', KTStyle.title, KTSType.large),
-          kText(context, 'Insert new expense data.', KTStyle.label,
-              KTSType.medium),
+          kText(context, 'Insert new expense data.', KTStyle.label, KTSType.medium),
           ...fields(context),
           Row(
             children: [
@@ -268,7 +267,6 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.wallets.isEmpty || widget.expenseCategories.isEmpty){
       return buildWhenListOrCategoryIsEmpty(context);
     }

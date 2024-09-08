@@ -53,7 +53,7 @@ class AnalysisPageExpenseBarChartProvider extends Notifier<AnalysisPageExpenseBa
   Future<void> initData(BuildContext context,{required DBModelExpenseCategory Function(int) expenseCategoryGetter}) async {
     if (!_init) {
       this.expenseCategoryGetter = expenseCategoryGetter;
-      await updateData();
+      await updateData(context);
       _init = true;
     }
   }
@@ -73,14 +73,14 @@ class AnalysisPageExpenseBarChartProvider extends Notifier<AnalysisPageExpenseBa
         );
     }
   }
-  Future<void> updateData() async {
+  Future<void> updateData(BuildContext context) async {
     final data_weekly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.week);
     final data_monthly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.month);
     final data_yearly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.year);
 
-    final result_weekly = List.generate(data_weekly.length, (i) => weeklyBarData(i, data_weekly[i].total, barColor: KGraphColor.pastel_red.color));
-    final result_monthly = List.generate(data_monthly.length, (i) => monthlyBarData(i, data_monthly[i].total, barColor: KGraphColor.pastel_red.color));
-    final result_yearly = List.generate(data_yearly.length, (i) => yearlyBarData(i, data_yearly[i].total, barColor: KGraphColor.pastel_red.color));
+    final result_weekly = List.generate(data_weekly.length, (i) => weeklyBarData(i, data_weekly[i].total, context, barColor: KGraphColor.pastel_red.color));
+    final result_monthly = List.generate(data_monthly.length, (i) => monthlyBarData(i, data_monthly[i].total, context, barColor: KGraphColor.pastel_red.color));
+    final result_yearly = List.generate(data_yearly.length, (i) => yearlyBarData(i, data_yearly[i].total, context, barColor: KGraphColor.pastel_red.color));
 
     state = state.copyWith(
       weekly_bar: result_weekly,

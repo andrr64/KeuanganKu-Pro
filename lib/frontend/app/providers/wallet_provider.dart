@@ -41,6 +41,15 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
       return wallet;
     }).toList();
   }
+  
+  DBModelWallet getById(int id){
+    for(DBModelWallet e in state){
+      if (e.id == id){
+        return e;
+      }
+    }
+    throw Exception('Not found');
+  }
 
   void addExpense({required int walletTargetId, required DBModelExpense newExpense}){
     state = state.map((wallet) {

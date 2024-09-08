@@ -5,10 +5,13 @@ import 'package:keuanganku/frontend/app/drawer.dart';
 import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
+import 'package:keuanganku/frontend/app/providers/expense_limiter.dart';
 import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/app/keep_alive.dart';
+import 'package:keuanganku/frontend/app/main/wallet/wallet.dart';
+
 
 final pageIndexProvider = StateProvider<int>((_) => 0);
 final pageControllerProvider = StateProvider<PageController>((_) => PageController());
@@ -16,10 +19,9 @@ final mainPageScaffoldKeyProvider = StateProvider<GlobalKey<ScaffoldState>>((_) 
 final pageNames = ["Home", "Wallets", "Analysis"];
 final pages = <Widget>[
   const KeepAlivePage(child: Homepage()),
-  const KeepAlivePage(child: Homepage()),
+  const KeepAlivePage(child: WalletPage()),
   const KeepAlivePage(child: AnalysisPage()),
 ];
-
 class KeuanganKuPro extends HookConsumerWidget {
   const KeuanganKuPro({super.key});
   void whenBottomNavbarChanged(
@@ -37,13 +39,13 @@ class KeuanganKuPro extends HookConsumerWidget {
     return [
       BottomNavigationBarItem(
           icon: Icon(
-            Icons.home,
+            FluentIcons.home_12_filled,
             color: _iconColor(0, currentIndex),
           ),
           label: pageNames[0]),
       BottomNavigationBarItem(
           icon: Icon(
-            Icons.wallet,
+            FluentIcons.wallet_16_filled,
             color: _iconColor(1, currentIndex),
           ),
           label: pageNames[1]),
@@ -57,13 +59,16 @@ class KeuanganKuPro extends HookConsumerWidget {
   }
 
   void initData(BuildContext context, WidgetRef ref) async {
-    // Data
+    // Initialize Global Data
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseCategoriesProvider.notifier).initData();
+    ref.watch(globalExpenseLimiterNotifierProvider.notifier).initData();
 
+    // Initialize Main Page Data
     INITDATA_AnalysisPage(context, ref);
     INITDATA_HomePage(context, ref);
+    INITDATA_WalletPage(context, ref);
   }
 
   @override

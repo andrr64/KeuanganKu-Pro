@@ -21,13 +21,11 @@ Widget kNumField(
     keyboardType: TextInputType.number,
     controller: controller,
     validator: (val){
-      if  (maxVal != null){
-        try {
-          double value = double.parse(val!);
-          if (value > maxVal) return 'Maximum value is $maxValue';
-        } catch(e){
-          return 'Input an number!';
-        }
+      try {
+        double value = double.parse(val!);
+        if (value > maxVal) return 'Maximum value is $maxValue';
+      } catch(e){
+        return 'Input an number!';
       }
       return null;
     },

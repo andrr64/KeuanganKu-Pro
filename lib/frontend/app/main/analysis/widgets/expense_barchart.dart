@@ -59,11 +59,11 @@ class ExpenseBarChart extends StatelessWidget {
 
   //EVERYTHING IS: Ok
   Widget buildTitle(BuildContext context){
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Lorem ipsum dolor sit amet'),
+        Text("Check your expense chart. It’s very helpful."),
       ],
     );
   }
@@ -183,7 +183,7 @@ class ExpenseBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return KCard(
       context,
-      title: '${capitalizeFirstLetter(dataTimePeriod.value)}ly Expense',
+      title: 'Expense Chart',
       color: BaseColor.old_red.color,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

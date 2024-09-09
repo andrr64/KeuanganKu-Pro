@@ -95,10 +95,10 @@ class KExpenseDonutChart extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: vw(context, 50),
+              width: vw(context, 80),
               child: const Text(
-                'Lorem ipsum dolor sit amet',
-                overflow: TextOverflow.visible,
+                'Which category is the most excessive?',
+                overflow: TextOverflow.clip,
               ),
             ),
           ],

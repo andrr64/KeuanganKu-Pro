@@ -14,7 +14,7 @@ Widget KCardPlus(BuildContext context, Widget child,
       width: double.infinity,
       decoration: BoxDecoration(
         color: generated3Color[0],
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +33,7 @@ Widget KCardPlus(BuildContext context, Widget child,
         width: double.infinity,
         decoration: BoxDecoration(
           color: generated3Color[0],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
           padding: const EdgeInsets.all(15),

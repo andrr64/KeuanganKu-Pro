@@ -53,7 +53,11 @@ class DBModelExpenseCategory extends DBModel {
   /// Returns:
   /// - A [Future<void>] indicating the completion of the operation.
   Future<void> insert() async {
-    final newId = await DBHelperExpenseCategory().insert(data: this);
-    id = newId;
+    try {
+      final newId = await DBHelperExpenseCategory().insert(data: this);
+      id = newId;
+    } catch (e){
+      throw Exception('backend.database.model.expense_category.insert');
+    }
   }
 }

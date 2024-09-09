@@ -24,7 +24,11 @@ class ExpenseCategoryProvider extends Notifier<List<DBModelExpenseCategory>>{
     state = await DBHelperExpenseCategory().readAll();
   }
 
-  void add(DBModelExpenseCategory newExpenseCategory) async{
+  void add(DBModelExpenseCategory category){
+    state = [...state, category];
+  }
+
+  void addToDB(DBModelExpenseCategory newExpenseCategory) async{
     await newExpenseCategory.insert();
     state = [...state, newExpenseCategory];
   }

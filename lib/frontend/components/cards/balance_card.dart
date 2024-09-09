@@ -79,13 +79,13 @@ class BalanceCard extends HookConsumerWidget {
               ],
             ),
             dummyHeight(15),
-            Padding(padding: EdgeInsets.only(top: 10),
+            Padding(padding: const EdgeInsets.only(top: 10),
                 child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white12
                     ),
-                    child: Padding(padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35),
+                    child: Padding(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 35),
                       child: Column(
                         children: [
                           kText(context, 'Total Balance', KTStyle.label, KTSType.medium, color: Colors.white),

@@ -5,7 +5,7 @@ import 'package:keuanganku/backend/database/model/expense_limiter.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/app/k_page.dart';
-import 'package:keuanganku/frontend/app/snackbar';
+import 'package:keuanganku/frontend/app/snackbar.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
@@ -77,7 +77,7 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
   }
 
   void handleClear() {
-    /// TODO: handle clear
+    limitAmountController.clear();
   }
   void handlePeriod(DateRange? val) {
     if (val != null) {

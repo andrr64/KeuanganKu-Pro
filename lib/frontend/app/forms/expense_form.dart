@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/backend/database/helper/expense_category.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/app/forms/category_form.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
+import 'package:keuanganku/frontend/app/snackbar.dart';
 import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -14,16 +17,18 @@ import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
-import 'package:quickalert/quickalert.dart';
 
 class ExpenseForm extends StatefulWidget {
-  final void Function(DBModelExpense) callbackWhenDataSaved;
+  final void Function(DBModelExpense) callbackWhenSubmitNewExpense;
   final List<DBModelExpenseCategory> expenseCategories;
   final List<DBModelWallet> wallets;
+  final void Function(DBModelExpenseCategory)
+      callbackWhenSubmitNewExpenseCategory;
 
   const ExpenseForm(
       {super.key,
-      required this.callbackWhenDataSaved,
+      required this.callbackWhenSubmitNewExpenseCategory,
+      required this.callbackWhenSubmitNewExpense,
       required this.expenseCategories,
       required this.wallets});
 
@@ -46,7 +51,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   late TimeOfDay timeController;
   late TextEditingController timeTextController;
-
+  bool loading = false;
 
   @override
   void initState() {
@@ -76,46 +81,91 @@ class _ExpenseFormState extends State<ExpenseForm> {
     super.dispose();
   }
 
-  // Events
-  void handleSave(BuildContext context)  {
-    if(_formKey.currentState!.validate()){
-      final newExpense = DBModelExpense(
-          title: titleController.text,
-          amount: double.parse(amountController.text),
-          description: titleController.text,
-          wallet_id: walletController.id,
-          category_id: categoryController.id,
-          rate: 0,
-          datetime: combineDateTimeAndTimeOfDay(dateController, timeController)
-      );
-      newExpense.insert().then((_) {
-        widget.callbackWhenDataSaved(newExpense); // update local.wallet total_expense
-        REFRESH_AnalysisPage(context);
-        QuickAlert.show(context: context, type: QuickAlertType.success)
-          .then((_) => closePage(context));
-      });
+  void whenButtonSavePressed(BuildContext context) {
+    if (!loading) {
+      loading = true;
+      if (_formKey.currentState!.validate()) {
+        try {
+          final newExpense = DBModelExpense(
+              title: titleController.text,
+              amount: double.parse(amountController.text),
+              description: titleController.text,
+              wallet_id: walletController.id,
+              category_id: categoryController.id,
+              rate: 0,
+              datetime:
+                  combineDateTimeAndTimeOfDay(dateController, timeController));
+          newExpense.insert().then((_) {
+            widget.callbackWhenSubmitNewExpense(
+                newExpense); // update local.wallet total_expense
+            REFRESH_AnalysisPage(context);
+            closePage(context);
+            showSnackbar(context, successSnackBar('Data saved'));
+          });
+        } catch (e) {
+          showSnackbar(context,
+              successSnackBar('Error: $e'));
+        }
+      }
+      loading = false;
     }
   }
-
-  void handleClear() {
+  void whenButtonClearPressed() {
     titleController.clear();
     amountController.clear();
     descriptionController.clear();
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
+  void whenButtonAddCategoryPressed(BuildContext context) {
+    GlobalKey<FormState> key = GlobalKey<FormState>();
+    TextEditingController nameController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxHeight: 200.0, // Batas tinggi maksimal
+                  maxWidth: vw(dialogContext, 80)),
+              child: categoryForm(key, dialogContext,
+                  controller: nameController,
+                  callbackWhenSubmit: () async {
+                    if (key.currentState!.validate()){
+                      if (!loading){
+                        loading = true;
+                        DBModelExpenseCategory newCategory = DBModelExpenseCategory(name: nameController.text);
+                        closePage(dialogContext);
+                        try {
+                          await newCategory.insert();
+                          widget.callbackWhenSubmitNewExpenseCategory(newCategory);
+                          widget.expenseCategories.add(newCategory);
+                          showSnackbar(context, successSnackBar('Data saved'));
+                          setState(() {
+
+                          });
+                        } catch (e){
+                          showSnackbar(context, errorSnackBar('Error: $e'));
+                        }
+                        loading = false;
+                      }
+                    }
+                  }),
+            ),
+          );
+        });
+  }
 
   void whenDatePicked(DateTime date) {
     dateController = date;
     dateTextController.text = dateFormat(date, 'dd/M/yyyy');
   }
-
   void whenTimePicked(TimeOfDay time) {
     timeController = time;
     timeTextController.text = formatTimeOfDay(time, is24HourFormat: true);
   }
 
-  // Components
   List<Widget> fields(BuildContext context) {
     return [
       dummyHeight(22.5),
@@ -131,7 +181,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
           controller: amountController,
           title: 'Amount',
           icon: const Icon(Icons.attach_money),
-          maxVal: walletController.total_income! - walletController.total_expense!),
+          maxVal:
+              walletController.total_income! - walletController.total_expense!),
       dummyHeight(22.5),
       Row(
         children: [
@@ -141,7 +192,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
               context,
               label: 'Category',
               items: widget.expenseCategories,
-              itemsAsString: widget.expenseCategories.map((e){
+              itemsAsString: widget.expenseCategories.map((e) {
                 return e.name!;
               }).toList(),
               value: categoryController,
@@ -152,7 +203,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
           ),
           dummyWidth(vw(context, 2.5)),
           //TODO: handle when user want to add new category
-          KOutlinedButton(onPressed: (){}, text: 'Add', icon: const Icon(Icons.add)),
+          KOutlinedButton(
+              onPressed: () {
+                whenButtonAddCategoryPressed(context);
+              },
+              text: 'Add',
+              icon: const Icon(Icons.add)),
         ],
       ),
       dummyHeight(22.5),
@@ -160,7 +216,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
         context,
         label: 'Wallets',
         items: widget.wallets,
-        itemsAsString: widget.wallets.map((e){
+        itemsAsString: widget.wallets.map((e) {
           return e.name!;
         }).toList(),
         value: walletController,
@@ -221,21 +277,20 @@ class _ExpenseFormState extends State<ExpenseForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kText(context, 'Expense', KTStyle.title, KTSType.large),
-          kText(context, 'Insert new expense data.', KTStyle.label, KTSType.medium),
+          kText(context, 'Insert new expense data.', KTStyle.label,
+              KTSType.medium),
           ...fields(context),
           Row(
             children: [
               KOutlinedButton(
-                onPressed: () => handleSave(context), 
-                color: const Color(0xff377550), 
-                text: 'Save'
-              ),
+                  onPressed: () => whenButtonSavePressed(context),
+                  color: const Color(0xff377550),
+                  text: 'Save'),
               dummyWidth(10),
               KOutlinedButton(
-                onPressed: handleClear, 
-                color: BaseColor.old_red.color, 
-                text: 'Clear'
-              ),
+                  onPressed: whenButtonClearPressed,
+                  color: BaseColor.old_red.color,
+                  text: 'Clear'),
             ],
           )
         ],
@@ -243,7 +298,6 @@ class _ExpenseFormState extends State<ExpenseForm> {
     );
   }
 
-  // Frontend
   Widget content(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -261,13 +315,13 @@ class _ExpenseFormState extends State<ExpenseForm> {
     );
   }
 
-  Widget buildWhenListOrCategoryIsEmpty(BuildContext context){
+  Widget buildWhenListOrCategoryIsEmpty(BuildContext context) {
     return const EmptyWalletWarning();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.wallets.isEmpty || widget.expenseCategories.isEmpty){
+    if (widget.wallets.isEmpty || widget.expenseCategories.isEmpty) {
       return buildWhenListOrCategoryIsEmpty(context);
     }
     return content(context);

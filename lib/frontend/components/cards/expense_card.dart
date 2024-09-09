@@ -21,16 +21,18 @@ class ExpenseCard extends StatelessWidget {
   final List<DBModelExpenseCategory> expenseCategories;
   final List<DBModelWallet> wallets;
 
-  final void Function(DateRange?) callbackWhenDataChange;
-  final void Function(DBModelExpense) callbackWhenNewExpenseSaved;
+  final void Function(DateRange?) callbackWhenDateChange;
+  final void Function(DBModelExpense) callbackWhenSubmitNewExpense;
+  final void Function(DBModelExpenseCategory) callbackWhenSubmitNewExpenseCategory;
 
   const ExpenseCard(
       {super.key,
       required this.expenseCategories,
       required this.wallets,
-      required this.callbackWhenDataChange,
+      required this.callbackWhenDateChange,
       required this.dateRange,
-      required this.callbackWhenNewExpenseSaved,
+      required this.callbackWhenSubmitNewExpense,
+      required this.callbackWhenSubmitNewExpenseCategory,
       required this.expenseAmount});
 
   // Frontend
@@ -44,10 +46,11 @@ class ExpenseCard extends StatelessWidget {
       children: [
         dataRange.dropdownButton(
           dateRange,
-          callbackWhenDataChange,
+          callbackWhenDateChange,
           icon_theme: Theme.of(context).iconTheme,
           dropdown_bg_color: generated3color[1],
-          text_style: getTextStyle(context, KTStyle.label, KTSType.medium, Colors.white),
+          text_style: getTextStyle(
+              context, KTStyle.label, KTSType.medium, Colors.white),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,13 +66,16 @@ class ExpenseCard extends StatelessWidget {
                     color: Colors.white),
               ],
             ),
-            k_button(context , withoutBg: true, () {
+            k_button(context, withoutBg: true, () {
               openPage(
-                  context,
-                  ExpenseForm(
-                      callbackWhenDataSaved: callbackWhenNewExpenseSaved,
-                      expenseCategories: expenseCategories,
-                      wallets: wallets), );
+                context,
+                ExpenseForm(
+                  callbackWhenSubmitNewExpense: callbackWhenSubmitNewExpense,
+                  callbackWhenSubmitNewExpenseCategory: callbackWhenSubmitNewExpenseCategory,
+                  expenseCategories: expenseCategories,
+                  wallets: wallets,
+                ),
+              );
             },
                 icon: Icons.add,
                 text: 'Add',

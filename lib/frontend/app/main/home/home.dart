@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keuanganku/backend/database/model/expense.dart';
+import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
@@ -77,18 +79,22 @@ class Homepage extends HookConsumerWidget {
   }
 
   Widget buildExpenseCard(BuildContext context, WidgetRef ref) {
+    void callbackWhenSubmitNewExpense(DBModelExpense expense) {
+      ref.read(globalWalletsProvider.notifier).addExpense(walletTargetId: expense.wallet_id!, newExpense: expense);
+      ref.read(homepageProvider.notifier).updateExpense();
+    }
+    void callbackWhenSubmitNewExpenseCategory(DBModelExpenseCategory category){
+      ref.read(globalExpenseCategoriesProvider.notifier).add(category);
+    }
+
     return ExpenseCard(
       dateRange: ref.watch(homepageProvider).expenseDateRange,
       expenseAmount: ref.watch(homepageProvider).expenseAmount,
       wallets: ref.watch(globalWalletsProvider),
       expenseCategories: ref.watch(globalExpenseCategoriesProvider),
-      callbackWhenDataChange: (val) =>
-          callbackWhenExpenseCardDateChange(val, ref),
-      callbackWhenNewExpenseSaved: (newExpense) async {
-        ref.read(globalWalletsProvider.notifier).addExpense(
-            walletTargetId: newExpense.wallet_id!, newExpense: newExpense);
-        await ref.read(homepageProvider.notifier).updateExpense();
-      },
+      callbackWhenDateChange: (val) => callbackWhenExpenseCardDateChange(val, ref),
+      callbackWhenSubmitNewExpense: callbackWhenSubmitNewExpense,
+      callbackWhenSubmitNewExpenseCategory: callbackWhenSubmitNewExpenseCategory
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/cards/wallet_card.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
+import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
@@ -38,7 +39,7 @@ class BalanceCard extends HookConsumerWidget {
       }
       return Column(
         children: [
-          dummyHeight(20),
+          dummyHeight(10),
           ...List<Widget>.generate(walletsProvider.length,
               (i) => WalletCard(wallet: walletsProvider[i]))
         ],
@@ -77,16 +78,32 @@ class BalanceCard extends HookConsumerWidget {
                 ),
               ],
             ),
+            dummyHeight(15),
+            Padding(padding: EdgeInsets.only(top: 10),
+                child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white12
+                    ),
+                    child: Padding(padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35),
+                      child: Column(
+                        children: [
+                          kText(context, 'Total Balance', KTStyle.label, KTSType.medium, color: Colors.white),
+                          kText(context, currencyFormat(walletsProviderNotifier.totalBalance), KTStyle.title, KTSType.medium,fontWeight: FontWeight.w600, color: Colors.white),
+                        ],
+                      ),)
+                )
+            ),
             buildWallets(),
-            dummyHeight(10),
             k_button(
               context,
               () {
                 whenAddButtonPressed(context);
               },
               text: 'Add Wallet',
-              mainColor: Colors.white.withAlpha(40),
-            )
+              mainColor: Colors.white12,
+            ),
+            dummyHeight(15),
           ],
         ),
       );

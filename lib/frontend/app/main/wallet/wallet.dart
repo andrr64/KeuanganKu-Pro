@@ -36,16 +36,12 @@ class WalletPage extends HookConsumerWidget {
             dummyHeight(10),
             ExpenseLimiterCard(
               callbackWhenNewLimiterSaved: (newExpenseLimiter){
-                print(newExpenseLimiter.category!.name);
                 callbackWhenDataSaved(ref, newExpenseLimiter);
               },
               limiter_data: expenseLimiterProvider, 
               expenseCategories: expenseCategoryProvider, 
               wallets: walletsProvider,
             ),
-            ElevatedButton(onPressed: () async{
-
-            }, child: const Text('kick me'))
           ],
         ),
       ),

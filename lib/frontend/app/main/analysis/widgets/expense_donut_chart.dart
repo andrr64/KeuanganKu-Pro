@@ -101,16 +101,22 @@ class KExpenseDonutChart extends StatelessWidget {
                 overflow: TextOverflow.visible,
               ),
             ),
+          ],
+        ),
+        dummyHeight(15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
             SizedBox(
               width: vw(context, 30),
               child: kDropdown(context,
                   items: DateRange.values,
                   itemsAsString: DateRange.month.labels,
                   value: dateRange, onChanged: (val) {
-                if (val != null && val != dateRange) {
-                  callbackWhenTimePeriodChanged(val);
-                }
-              }, label: 'Time Period'),
+                    if (val != null && val != dateRange) {
+                      callbackWhenTimePeriodChanged(val);
+                    }
+                  }, label: 'Time Period'),
             ),
           ],
         ),

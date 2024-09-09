@@ -64,20 +64,6 @@ class ExpenseBarChart extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Lorem ipsum dolor sit amet'),
-        SizedBox(
-          width: vw(context, 30),
-          child: kDropdown(
-              context,
-              items: DateRange.values,
-              itemsAsString: DateRange.month.labels,
-              value: dataTimePeriod,
-              onChanged: (val) {
-                if (val != null && val != dataTimePeriod){
-                  callbackWhenDataTimePeriodChanged(val);
-                }
-              },
-              label: 'Time Period'),
-        ),
       ],
     );
   }
@@ -203,6 +189,26 @@ class ExpenseBarChart extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildTitle(context),
+          dummyHeight(15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: vw(context, 35),
+                child: kDropdown(
+                    context,
+                    items: DateRange.values,
+                    itemsAsString: DateRange.month.labels,
+                    value: dataTimePeriod,
+                    onChanged: (val) {
+                      if (val != null && val != dataTimePeriod){
+                        callbackWhenDataTimePeriodChanged(val);
+                      }
+                    },
+                    label: 'Time Period'),
+              ),
+            ],
+          ),
           dummyHeight(25),
           buildChart(context),
           dummyHeight(20),

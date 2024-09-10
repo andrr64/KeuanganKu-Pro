@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/app/snackbar.dart';
 import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
@@ -10,7 +11,6 @@ import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
-import 'package:quickalert/quickalert.dart';
 
 class WalletForm extends StatefulWidget {
   final void Function(DBModelWallet wallet) callbackWhenDataSaved;
@@ -59,8 +59,8 @@ class _WalletFormState extends State<WalletForm> {
             datetime: DateTime.now().toIso8601String());
         newIncome.insert().then((_) async {
           widget.callbackWhenDataSaved(newWallet);
-          QuickAlert.show(context: context, type: QuickAlertType.success)
-              .then((_) => closePage(context));
+          closePage(context);
+          showSnackbar(context, successSnackBar('Data saved.'));
         });
       });
     }

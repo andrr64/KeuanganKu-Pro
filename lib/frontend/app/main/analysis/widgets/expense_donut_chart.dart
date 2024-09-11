@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/piecart.dart';
@@ -14,9 +14,9 @@ class KExpenseDonutChart extends StatelessWidget {
   final List<KPieSectionData> sections;
   final List<Widget> legends;
   final List<Color> sectionColors;
-  final DateRange dateRange;
+  final TimePeriod dateRange;
   final double total;
-  final void Function(DateRange) callbackWhenTimePeriodChanged;
+  final void Function(TimePeriod) callbackWhenTimePeriodChanged;
 
   const KExpenseDonutChart(
       {super.key,
@@ -110,8 +110,8 @@ class KExpenseDonutChart extends StatelessWidget {
             SizedBox(
               width: vw(context, 30),
               child: kDropdown(context,
-                  items: DateRange.values,
-                  itemsAsString: DateRange.month.labels,
+                  items: TimePeriod.values,
+                  itemsAsString: TimePeriod.month.labels,
                   value: dateRange, onChanged: (val) {
                 if (val != null && val != dateRange) {
                   callbackWhenTimePeriodChanged(val);

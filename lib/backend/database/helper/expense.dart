@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/expense_category.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:keuanganku/backend/database/helper/helper.dart';
@@ -37,7 +37,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
 
   @override
   Future<List<DBModelExpense>> readAll(
-      {DateRange? date, bool oldToNew = true}) async {
+      {TimePeriod? date, bool oldToNew = true}) async {
     String? startDate = date?.startDateISO8601;
     String? endDate = date?.endDateISO8601;
 
@@ -89,7 +89,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   Future<double> readTotalExpenseByPeriod(
-      {required DateRange dateRange}) async {
+      {required TimePeriod dateRange}) async {
     final listExpense = await readAll(date: dateRange);
     final result =
         listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
@@ -97,7 +97,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate(
-      {required DateRange period}) async {
+      {required TimePeriod period}) async {
     // Retrieve all expenses within the given date range
     final listExpense = await readAll(date: period);
     if (listExpense.isEmpty) {
@@ -110,7 +110,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     DateTime startDate = period.startDate;
     DateTime endDate = period.endDate;
 
-    if (period == DateRange.year) {
+    if (period == TimePeriod.year) {
       // Group by month if the period is yearly
       for (int month = 1; month <= 12; month++) {
         DateTimeRange dateRangeForMonth;
@@ -182,7 +182,7 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   Future<List<DBModelExpenseByCategory>> readTotalExpenseByCategory(
-      {required DateRange dateRange, bool lowToHigh = false}) async {
+      {required TimePeriod dateRange, bool lowToHigh = false}) async {
     String? startDate = dateRange.startDateISO8601;
     String? endDate = dateRange.endDateISO8601;
 

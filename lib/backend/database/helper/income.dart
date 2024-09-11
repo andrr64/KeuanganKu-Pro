@@ -1,7 +1,7 @@
 import 'package:keuanganku/backend/database/helper/helper.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/utility/table_column_generator.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/main.dart';
 
 class DBHelperIncome extends DBHelper<DBModelIncome> {
@@ -30,14 +30,14 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
     throw UnimplementedError();
   }
 
-  Future<double> readTotalIncome({DateRange? date}) async {
+  Future<double> readTotalIncome({TimePeriod? date}) async {
     List<DBModelIncome> data = await readAll(date: date);
     double result = data.fold(0, (sum, income) => sum + income.amount!);
     return result;
   }
 
   @override
-  Future<List<DBModelIncome>> readAll({DateRange? date}) async {
+  Future<List<DBModelIncome>> readAll({TimePeriod? date}) async {
     String? startDate = date?.startDateISO8601;
     String? endDate = date?.endDateISO8601;
 

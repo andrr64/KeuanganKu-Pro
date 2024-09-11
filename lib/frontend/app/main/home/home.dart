@@ -11,7 +11,7 @@ import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
@@ -109,11 +109,11 @@ class Homepage extends HookConsumerWidget {
     );
   }
 
-  void callbackWhenIncomeCardDateChange(DateRange val, WidgetRef ref) {
+  void callbackWhenIncomeCardDateChange(TimePeriod val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setIncomeCardDateRange(val);
   }
 
-  void callbackWhenExpenseCardDateChange(DateRange? val, WidgetRef ref) {
+  void callbackWhenExpenseCardDateChange(TimePeriod? val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setExpenseCardDateRange(val!);
   }
 

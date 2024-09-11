@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/model.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 
 class DBModelExpenseLimiter extends DBModel {
   int id;
@@ -20,14 +20,14 @@ class DBModelExpenseLimiter extends DBModel {
       this.wallet_id = 0,
       this.category});
 
-  DateRange get period {
+  TimePeriod get period {
     switch (period_id) {
       case 1:
-        return DateRange.week;
+        return TimePeriod.week;
       case 2:
-        return DateRange.month;
+        return TimePeriod.month;
       case 3:
-        return DateRange.year;
+        return TimePeriod.year;
     }
     throw ErrorDescription('period_id is invalid: $period_id');
   }

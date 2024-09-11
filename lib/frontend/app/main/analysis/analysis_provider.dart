@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/expense_barchart.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/graph_color.dart';
@@ -12,7 +12,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/colors/base_color.dart';
 
 class AnalysisPageExpenseBarChartData {
-  final DateRange dataTimePeriod;
+  final TimePeriod dataTimePeriod;
   final List<BarChartGroupData> weekly_bar;
   final List<BarChartGroupData> monthly_bar;
   final List<BarChartGroupData> yearly_bar;
@@ -21,15 +21,15 @@ class AnalysisPageExpenseBarChartData {
     this.weekly_bar = const [],
     this.monthly_bar = const [],
     this.yearly_bar = const [],
-    this.dataTimePeriod = DateRange.week,
+    this.dataTimePeriod = TimePeriod.week,
   });
   List<BarChartGroupData> get bar_data {
     switch (dataTimePeriod) {
-      case DateRange.week:
+      case TimePeriod.week:
         return weekly_bar;
-      case DateRange.month:
+      case TimePeriod.month:
         return monthly_bar;
-      case DateRange.year:
+      case TimePeriod.year:
         return yearly_bar;
     }
   }
@@ -38,7 +38,7 @@ class AnalysisPageExpenseBarChartData {
     List<BarChartGroupData>? weekly_bar,
     List<BarChartGroupData>? monthly_bar,
     List<BarChartGroupData>? yearly_bar,
-    DateRange? dataPeriod,
+    TimePeriod? dataPeriod,
   }) {
     return AnalysisPageExpenseBarChartData(
       dataTimePeriod: dataPeriod ?? dataTimePeriod,
@@ -67,17 +67,17 @@ class AnalysisPageExpenseBarChartProvider
     }
   }
 
-  Future<void> setBarChartDataTimePeriod(DateRange period) async {
+  Future<void> setBarChartDataTimePeriod(TimePeriod period) async {
     switch (period) {
-      case DateRange.week:
+      case TimePeriod.week:
         state = state.copyWith(
           dataPeriod: period,
         );
-      case DateRange.month:
+      case TimePeriod.month:
         state = state.copyWith(
           dataPeriod: period,
         );
-      case DateRange.year:
+      case TimePeriod.year:
         state = state.copyWith(
           dataPeriod: period,
         );
@@ -86,11 +86,11 @@ class AnalysisPageExpenseBarChartProvider
 
   Future<void> updateData(BuildContext context) async {
     final data_weekly = await DBHelperExpense()
-        .readExpenseThenGroupByDate(period: DateRange.week);
+        .readExpenseThenGroupByDate(period: TimePeriod.week);
     final data_monthly = await DBHelperExpense()
-        .readExpenseThenGroupByDate(period: DateRange.month);
+        .readExpenseThenGroupByDate(period: TimePeriod.month);
     final data_yearly = await DBHelperExpense()
-        .readExpenseThenGroupByDate(period: DateRange.year);
+        .readExpenseThenGroupByDate(period: TimePeriod.year);
 
     final result_weekly = List.generate(
         data_weekly.length,
@@ -116,7 +116,7 @@ class AnalysisPageExpensePieChartByCategoryData {
   final List<KPieSectionData> pieChart;
   final List<Color> sectionColors;
   final List<Widget> textLegends;
-  final DateRange dateRange;
+  final TimePeriod dateRange;
   final bool loading;
   final double total;
 
@@ -124,7 +124,7 @@ class AnalysisPageExpensePieChartByCategoryData {
     this.pieChart = const [],
     this.total = 0,
     this.textLegends = const [],
-    this.dateRange = DateRange.month,
+    this.dateRange = TimePeriod.month,
     this.loading = false,
     this.sectionColors = const [],
   });
@@ -132,7 +132,7 @@ class AnalysisPageExpensePieChartByCategoryData {
   AnalysisPageExpensePieChartByCategoryData copyWith({
     List<KPieSectionData>? pieChart,
     List<Widget>? legends,
-    DateRange? dateRange,
+    TimePeriod? dateRange,
     bool? loading,
     double? total,
     List<Color>? sectionColors,
@@ -216,7 +216,7 @@ class AnalysisPageExpensePieChartByCategoryProvider
         loading: false);
   }
 
-  void setTimePeriod(DateRange newPeriod) {
+  void setTimePeriod(TimePeriod newPeriod) {
     state = state.copyWith(dateRange: newPeriod);
   }
 }

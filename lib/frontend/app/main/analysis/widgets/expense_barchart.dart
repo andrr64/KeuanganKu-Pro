@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/bullet.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
@@ -30,8 +30,8 @@ class ExpenseBarChart extends StatelessWidget {
   final double maxVal;
   final double lowestVal;
   final double average;
-  final DateRange dataTimePeriod;
-  final void Function(DateRange) callbackWhenDataTimePeriodChanged;
+  final TimePeriod dataTimePeriod;
+  final void Function(TimePeriod) callbackWhenDataTimePeriodChanged;
 
   Widget buildWeeklyBars(BuildContext context) {
     return SizedBox(
@@ -171,11 +171,11 @@ class ExpenseBarChart extends StatelessWidget {
       );
     }
     switch (dataTimePeriod) {
-      case DateRange.week:
+      case TimePeriod.week:
         return buildWeeklyBars(context);
-      case DateRange.month:
+      case TimePeriod.month:
         return buildMonthlyBars(context);
-      case DateRange.year:
+      case TimePeriod.year:
         return buildYearlyBars(context);
     }
   }
@@ -197,8 +197,8 @@ class ExpenseBarChart extends StatelessWidget {
               SizedBox(
                 width: vw(context, 35),
                 child: kDropdown(context,
-                    items: DateRange.values,
-                    itemsAsString: DateRange.month.labels,
+                    items: TimePeriod.values,
+                    itemsAsString: TimePeriod.month.labels,
                     value: dataTimePeriod, onChanged: (val) {
                   if (val != null && val != dataTimePeriod) {
                     callbackWhenDataTimePeriodChanged(val);

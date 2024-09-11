@@ -6,7 +6,7 @@ import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/expense_form.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
@@ -18,12 +18,12 @@ import 'package:keuanganku/frontend/utility/page.dart';
 class ExpenseCard extends StatelessWidget {
   final Color bgColor = const Color(0xffa64646);
 
-  final DateRange dateRange;
+  final TimePeriod dateRange;
   final double expenseAmount;
   final List<DBModelExpenseCategory> expenseCategories;
   final List<DBModelWallet> wallets;
 
-  final void Function(DateRange?) callbackWhenDateChange;
+  final void Function(TimePeriod?) callbackWhenDateChange;
   final void Function(DBModelExpense) callbackWhenSubmitNewExpense;
   final void Function(DBModelExpenseCategory)
       callbackWhenSubmitNewExpenseCategory;
@@ -38,9 +38,9 @@ class ExpenseCard extends StatelessWidget {
       required this.callbackWhenSubmitNewExpenseCategory,
       required this.expenseAmount});
 
-  void whenDateRangeChanged(DateRange val) {
+  void whenDateRangeChanged(TimePeriod val) {
     callbackWhenDateChange(val);
-    }
+  }
 
   void whenAddButtonPressed(BuildContext context) {
     openPage(
@@ -93,9 +93,9 @@ class ExpenseCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: kDropdown(
                     context,
-                    items: DateRange.values,
+                    items: TimePeriod.values,
                     itemsAsString:
-                        DateRange.values.map((e) => e.dropdownString).toList(),
+                        TimePeriod.values.map((e) => e.dropdownString).toList(),
                     value: dateRange,
                     borderColor: Colors.white60,
                     foregroundColor: Colors.white,

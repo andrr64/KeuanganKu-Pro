@@ -6,7 +6,7 @@ import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/income_form.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
-import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
@@ -16,12 +16,12 @@ import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class IncomeCard extends StatelessWidget {
-  final DateRange dateRange;
+  final TimePeriod dateRange;
   final double incomesAmount;
   final List<DBModelWallet> wallets;
   final List<DBModelIncomeCategory> incomeCategories;
 
-  final void Function(DateRange val) callbackWhenDateChange;
+  final void Function(TimePeriod val) callbackWhenDateChange;
   final void Function(DBModelIncome) callbackWhenNewIncomeSaved;
 
   const IncomeCard({
@@ -73,8 +73,8 @@ class IncomeCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: kDropdown(
                       context,
-                      items: DateRange.values,
-                      itemsAsString: DateRange.values
+                      items: TimePeriod.values,
+                      itemsAsString: TimePeriod.values
                           .map((e) => e.dropdownString)
                           .toList(),
                       value: dateRange,
@@ -138,7 +138,7 @@ class IncomeCard extends StatelessWidget {
         ));
   }
 
-  void whenDropdownDateRangeChange(DateRange? val) {
+  void whenDropdownDateRangeChange(TimePeriod? val) {
     if (val != null && val != dateRange) {
       callbackWhenDateChange(val);
     }

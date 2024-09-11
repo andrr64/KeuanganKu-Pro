@@ -8,7 +8,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 
 class KExpenseDonutChart extends StatelessWidget {
   final List<KPieSectionData> sections;
@@ -113,10 +113,10 @@ class KExpenseDonutChart extends StatelessWidget {
                   items: DateRange.values,
                   itemsAsString: DateRange.month.labels,
                   value: dateRange, onChanged: (val) {
-                    if (val != null && val != dateRange) {
-                      callbackWhenTimePeriodChanged(val);
-                    }
-                  }, label: 'Time Period'),
+                if (val != null && val != dateRange) {
+                  callbackWhenTimePeriodChanged(val);
+                }
+              }, label: 'Time Period'),
             ),
           ],
         ),
@@ -135,7 +135,7 @@ class KExpenseDonutChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return KCard(context,
         title: 'Expense by Category',
-        color: BaseColor.old_red.color,
+        color: baseColor_dark_red,
         child: buildDonutChart(context));
   }
 }

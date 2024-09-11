@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/background_color.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 
 const Color BLACK_FONT_COLOR = Color(0xff14192b);
 const String FONT_FAMILY = 'OpenSans';
@@ -22,11 +23,11 @@ ThemeData light_theme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     useMaterial3: true,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       centerTitle: true,
-      color: BackgroundColor.white.color,
-      shape: const Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
-      iconTheme: IconThemeData(color: FontColor.black.color),
+      color: backgroundColor_white,
+      shape: Border(bottom: BorderSide(color: Colors.grey, width: 0.35)),
+      iconTheme: IconThemeData(color: fontColor_black),
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
     iconTheme: const IconThemeData(

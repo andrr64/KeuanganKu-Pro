@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
-import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
@@ -46,7 +46,7 @@ Form categoryForm(GlobalKey<FormState> key, BuildContext context, {
               dummyWidth(10),
               KOutlinedButton(
                   onPressed: () => closePage(context),
-                  color: BaseColor.old_red.color,
+                  color: baseColor_dark_red,
                   text: 'Cancel'),
             ],
           )

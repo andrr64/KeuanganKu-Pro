@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
 
 Widget contentWhenError(BuildContext context, Object? error) {
   return Scaffold(
@@ -26,10 +26,10 @@ Widget contentWhenError(BuildContext context, Object? error) {
 }
 
 Widget contentWhenWaiting(BuildContext context) {
-  return Scaffold(
+  return const Scaffold(
     body: Center(
       child: CircularProgressIndicator(
-        color: BackgroundColor.black.color,
+        color: fontColor_black,
       ),
     ),
   );

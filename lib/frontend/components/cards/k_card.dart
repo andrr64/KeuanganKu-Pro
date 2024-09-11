@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
 
 Widget KCard(BuildContext context,
     {required Widget child, required String title, Color? color, Icon? icon}) {
-  TextStyle textStyle = getTextStyle(context, KTStyle.title, KTSType.medium, FontColor.black.color);
+  TextStyle textStyle =
+      getTextStyle(context, KTStyle.title, KTSType.medium, fontColor_black);
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
@@ -25,12 +26,12 @@ Widget KCard(BuildContext context,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title, style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: textStyle.fontSize,
-            fontFamily: textStyle.fontFamily,
-            color: textStyle.color
-          )),
+          Text(title,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: textStyle.fontSize,
+                  fontFamily: textStyle.fontFamily,
+                  color: textStyle.color)),
           child,
         ],
       ),

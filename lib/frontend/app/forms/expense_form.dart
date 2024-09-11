@@ -6,7 +6,7 @@ import 'package:keuanganku/frontend/app/forms/category_form.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/app/snackbar.dart';
-import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
@@ -14,7 +14,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseForm extends StatefulWidget {
@@ -102,13 +102,13 @@ class _ExpenseFormState extends State<ExpenseForm> {
             showSnackbar(context, successSnackBar('Data saved'));
           });
         } catch (e) {
-          showSnackbar(context,
-              successSnackBar('Error: $e'));
+          showSnackbar(context, successSnackBar('Error: $e'));
         }
       }
       loading = false;
     }
   }
+
   void whenButtonClearPressed() {
     titleController.clear();
     amountController.clear();
@@ -116,6 +116,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     whenDatePicked(DateTime.now());
     whenTimePicked(TimeOfDay.fromDateTime(dateController));
   }
+
   void whenButtonAddCategoryPressed(BuildContext context) {
     GlobalKey<FormState> key = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
@@ -129,28 +130,26 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   maxHeight: 200.0, // Batas tinggi maksimal
                   maxWidth: vw(dialogContext, 80)),
               child: categoryForm(key, dialogContext,
-                  controller: nameController,
-                  callbackWhenSubmit: () async {
-                    if (key.currentState!.validate()){
-                      if (!loading){
-                        loading = true;
-                        DBModelExpenseCategory newCategory = DBModelExpenseCategory(name: nameController.text);
-                        closePage(dialogContext);
-                        try {
-                          await newCategory.insert();
-                          widget.callbackWhenSubmitNewExpenseCategory(newCategory);
-                          widget.expenseCategories.add(newCategory);
-                          showSnackbar(context, successSnackBar('Data saved'));
-                          setState(() {
-
-                          });
-                        } catch (e){
-                          showSnackbar(context, errorSnackBar('Error: $e'));
-                        }
-                        loading = false;
-                      }
+                  controller: nameController, callbackWhenSubmit: () async {
+                if (key.currentState!.validate()) {
+                  if (!loading) {
+                    loading = true;
+                    DBModelExpenseCategory newCategory =
+                        DBModelExpenseCategory(name: nameController.text);
+                    closePage(dialogContext);
+                    try {
+                      await newCategory.insert();
+                      widget.callbackWhenSubmitNewExpenseCategory(newCategory);
+                      widget.expenseCategories.add(newCategory);
+                      showSnackbar(context, successSnackBar('Data saved'));
+                      setState(() {});
+                    } catch (e) {
+                      showSnackbar(context, errorSnackBar('Error: $e'));
                     }
-                  }),
+                    loading = false;
+                  }
+                }
+              }),
             ),
           );
         });
@@ -160,6 +159,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     dateController = date;
     dateTextController.text = dateFormat(date, 'dd/M/yyyy');
   }
+
   void whenTimePicked(TimeOfDay time) {
     timeController = time;
     timeTextController.text = formatTimeOfDay(time, is24HourFormat: true);
@@ -288,7 +288,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
               dummyWidth(10),
               KOutlinedButton(
                   onPressed: whenButtonClearPressed,
-                  color: BaseColor.old_red.color,
+                  color: baseColor_dark_red,
                   text: 'Clear'),
             ],
           )

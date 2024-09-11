@@ -1,16 +1,18 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/expense_form.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
-import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
+import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseCard extends StatelessWidget {
@@ -23,7 +25,8 @@ class ExpenseCard extends StatelessWidget {
 
   final void Function(DateRange?) callbackWhenDateChange;
   final void Function(DBModelExpense) callbackWhenSubmitNewExpense;
-  final void Function(DBModelExpenseCategory) callbackWhenSubmitNewExpenseCategory;
+  final void Function(DBModelExpenseCategory)
+      callbackWhenSubmitNewExpenseCategory;
 
   const ExpenseCard(
       {super.key,
@@ -35,63 +38,123 @@ class ExpenseCard extends StatelessWidget {
       required this.callbackWhenSubmitNewExpenseCategory,
       required this.expenseAmount});
 
-  // Frontend
-  Widget content(BuildContext context) {
-    List<Color> generated3color = generate3Color(BaseColor.old_red.color);
-    final KDropdown<DateRange> dataRange = KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
+  void whenDateRangeChanged(DateRange val) {
+    callbackWhenDateChange(val);
+    }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        dataRange.dropdownButton(
-          dateRange,
-          callbackWhenDateChange,
-          icon_theme: Theme.of(context).iconTheme,
-          dropdown_bg_color: generated3color[1],
-          text_style: getTextStyle(
-              context, KTStyle.label, KTSType.medium, Colors.white),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                kText(context, 'Expense this ${dateRange.value}', KTStyle.label,
-                    KTSType.medium,
-                    color: Colors.white),
-                kText(context, currencyFormat(expenseAmount), KTStyle.title,
-                    KTSType.large,
-                    color: Colors.white),
-              ],
-            ),
-            k_button(context, withoutBg: true, () {
-              openPage(
-                context,
-                ExpenseForm(
-                  callbackWhenSubmitNewExpense: callbackWhenSubmitNewExpense,
-                  callbackWhenSubmitNewExpenseCategory: callbackWhenSubmitNewExpenseCategory,
-                  expenseCategories: expenseCategories,
-                  wallets: wallets,
+  void whenAddButtonPressed(BuildContext context) {
+    openPage(
+      context,
+      ExpenseForm(
+        callbackWhenSubmitNewExpense: callbackWhenSubmitNewExpense,
+        callbackWhenSubmitNewExpenseCategory:
+            callbackWhenSubmitNewExpenseCategory,
+        expenseCategories: expenseCategories,
+        wallets: wallets,
+      ),
+    );
+  }
+
+  // Frontend
+  Widget buildContent(BuildContext context) {
+    List<Color> generated3color = generate3Color(baseColor_dark_red);
+
+    List<Widget> buildTitle() {
+      const TEXT = ['Expense', 'Lorem ipsum'];
+      return [
+        kText(context, TEXT[0], KTStyle.title, KTSType.large,
+            fontWeight: FontWeight.w500, color: Colors.white),
+        kText(context, TEXT[1], KTStyle.label, KTSType.medium,
+            color: Colors.white),
+      ];
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22.5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: vw(context, 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [...buildTitle()],
                 ),
-              );
-            },
-                icon: Icons.add,
-                text: 'Add',
-                mainColor: generated3color[1],
-                iconColor: Colors.white),
-          ],
-        ),
-        dummyHeight(5),
-        Center(
-          child: k_button(context, () {},
-              text: 'Detail',
-              withoutBg: true,
-              mainColor: generated3color[1],
-              iconColor: Colors.white),
-        )
-      ],
+              ),
+              SizedBox(
+                width: vw(context, 30),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: kDropdown(
+                    context,
+                    items: DateRange.values,
+                    itemsAsString:
+                        DateRange.values.map((e) => e.dropdownString).toList(),
+                    value: dateRange,
+                    borderColor: Colors.white60,
+                    foregroundColor: Colors.white,
+                    borderWidth: 0.25,
+                    backgroundColor: generated3color[1],
+                    dropdownTextColor: Colors.white,
+                    onChanged: callbackWhenDateChange,
+                    label: 'Period',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  kText(
+                    context,
+                    dateRange.label,
+                    KTStyle.label,
+                    KTSType.medium,
+                    color: Colors.white,
+                  ),
+                  kText(
+                    context,
+                    currencyFormat(expenseAmount),
+                    KTStyle.title,
+                    KTSType.large,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              KOutlinedButton(
+                  onPressed: () => whenAddButtonPressed(context),
+                  text: 'Add',
+                  color: Colors.white12,
+                  textColor: Colors.white,
+                  icon: const Icon(FluentIcons.add_12_filled),
+                  withOutline: false),
+            ],
+          ),
+          dummyHeight(5),
+          Center(
+            child: KOutlinedButton(
+                onPressed: () {
+                  ///TODO: income_card.buildContent.KOutlinedButton(Detail Page)
+                },
+                paddingHorizontal: vw(context, 10),
+                text: 'Detail',
+                color: Colors.white12,
+                withOutline: false,
+                textColor: Colors.white),
+          ),
+          dummyHeight(10),
+        ],
+      ),
     );
   }
 
@@ -99,10 +162,10 @@ class ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return KCardPlus(
       context,
-      content(context),
+      buildContent(context),
       title: 'Expense',
-      color: BaseColor.old_red.color,
-      icon: const Icon(Icons.arrow_downward, color: Colors.white),
+      withoutTitle: true,
+      color: baseColor_dark_red,
     );
   }
 }

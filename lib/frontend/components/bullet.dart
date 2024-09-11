@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 
 Widget KBullet(double d, {Color? color}){
   return Container(
@@ -7,7 +7,7 @@ Widget KBullet(double d, {Color? color}){
     width: d,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(d),
-      color: color?? FontColor.black.color
+      color: color?? fontColor_black
     ),
   );
 }

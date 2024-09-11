@@ -12,14 +12,13 @@ class DBModelExpenseLimiter extends DBModel {
   double current_amount;
   DBModelExpenseCategory? category;
 
-  DBModelExpenseLimiter({
-    this.id = 0,
-    this.limit_amount = 0,
-    this.period_id = 0,
-    this.current_amount = 0,
-    this.wallet_id = 0,
-    this.category
-  });
+  DBModelExpenseLimiter(
+      {this.id = 0,
+      this.limit_amount = 0,
+      this.period_id = 0,
+      this.current_amount = 0,
+      this.wallet_id = 0,
+      this.category});
 
   DateRange get period {
     switch (period_id) {
@@ -36,34 +35,42 @@ class DBModelExpenseLimiter extends DBModel {
   @override
   fromJson(Map<String, dynamic> json) {
     return DBModelExpenseLimiter(
-      id: json['id'],
-      wallet_id: json['wallet_id'],
-      limit_amount: json['limit_amount'],
-      period_id: json['period_id'],
-      category: json['category']
-    );
+        id: json['id'],
+        wallet_id: json['wallet_id'],
+        limit_amount: json['limit_amount'],
+        period_id: json['period_id'],
+        category: json['category']);
   }
-  
+
   Future<void> updateCurrentAmount() async {
     var expenses_amount = [];
-    if (wallet_id == 0){
-      String where = 'datetime >= ? AND datetime <= ? AND category_id = ?'; 
+    if (wallet_id == 0) {
+      String where = 'datetime >= ? AND datetime <= ? AND category_id = ?';
       expenses_amount = await DBHelperExpense().readWithWhereClause(
-        where: where, whereArgs: [period.startDateISO8601, period.endDateISO8601, category!.id]);
+          where: where,
+          whereArgs: [
+            period.startDateISO8601,
+            period.endDateISO8601,
+            category!.id
+          ]);
     } else {
-      String where = 'datetime >= ? AND datetime <= ? AND category_id = ? AND wallet_id = ?'; 
-      List whereArgs = [period.startDateISO8601, period.endDateISO8601, category!.id, wallet_id];
-      expenses_amount = await DBHelperExpense().readWithWhereClause(
-          where: where, 
-          whereArgs: whereArgs
-      );
+      String where =
+          'datetime >= ? AND datetime <= ? AND category_id = ? AND wallet_id = ?';
+      List whereArgs = [
+        period.startDateISO8601,
+        period.endDateISO8601,
+        category!.id,
+        wallet_id
+      ];
+      expenses_amount = await DBHelperExpense()
+          .readWithWhereClause(where: where, whereArgs: whereArgs);
     }
     current_amount = expenses_amount.fold(0.0, (sum, e) => sum + e.amount!);
   }
 
   void addCurrentAmount(double amount) => current_amount += amount;
 
-  Future<bool> updateData(){
+  Future<bool> updateData() {
     //TODO: model.expenseLimiter.updateData
     throw UnimplementedError();
   }
@@ -71,7 +78,7 @@ class DBModelExpenseLimiter extends DBModel {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'category_id': category == null? -1 : category!.id,
+      'category_id': category == null ? -1 : category!.id,
       'wallet_id': wallet_id,
       'limit_amount': limit_amount,
       'period_id': period_id,

@@ -6,8 +6,8 @@ import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/enum/date_range.dart';
 import 'package:keuanganku/frontend/app/k_page.dart';
 import 'package:keuanganku/frontend/app/snackbar.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
-import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
@@ -54,23 +54,21 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
     super.dispose();
   }
 
-  void handleSave(BuildContext context) async{
+  void handleSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       DBModelExpenseLimiter newLimiter = DBModelExpenseLimiter(
-        category: expenseCategoryController,
-        wallet_id: walletController.id!,
-        limit_amount: double.parse(limitAmountController.text),
-        current_amount: 0,
-        period_id: periodController.intVal
-      );
+          category: expenseCategoryController,
+          wallet_id: walletController.id!,
+          limit_amount: double.parse(limitAmountController.text),
+          current_amount: 0,
+          period_id: periodController.intVal);
       try {
         await DBHelperExpenseLimiter().insert(data: newLimiter);
         widget.callbackWhenDataSaved(newLimiter);
-        ScaffoldMessenger.of(context).showSnackBar(
-          successSnackBar('Data successfully saved')
-        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(successSnackBar('Data successfully saved'));
         closePage(context);
-      } catch (e){
+      } catch (e) {
         ///TODO: when failed to save new expense limiter data
       }
     }
@@ -79,6 +77,7 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
   void handleClear() {
     limitAmountController.clear();
   }
+
   void handlePeriod(DateRange? val) {
     if (val != null) {
       if (val != periodController) {
@@ -120,13 +119,14 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
           ),
           SizedBox(
             width: vw(context, 50),
-            child: kDropdown<DBModelWallet>(context,
-                label: 'Wallet',
-                items: walletDropDown,
-                itemsAsString: walletDropDown.map((x) => x.name!).toList(),
-                value: walletController,
-                onChanged: handleWalletChanged,
-              ),
+            child: kDropdown<DBModelWallet>(
+              context,
+              label: 'Wallet',
+              items: walletDropDown,
+              itemsAsString: walletDropDown.map((x) => x.name!).toList(),
+              value: walletController,
+              onChanged: handleWalletChanged,
+            ),
           ),
         ],
       ),
@@ -153,7 +153,7 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
                 dummyWidth(10),
                 KOutlinedButton(
                     onPressed: handleClear,
-                    color: BaseColor.old_red.color,
+                    color: baseColor_dark_red,
                     text: 'Clear'),
               ],
             )

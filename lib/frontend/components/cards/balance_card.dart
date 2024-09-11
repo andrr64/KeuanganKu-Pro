@@ -4,14 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/forms/wallet_form.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/cards/wallet_card.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class BalanceCard extends HookConsumerWidget {
@@ -24,7 +22,7 @@ class BalanceCard extends HookConsumerWidget {
     var walletsProvider = ref.watch(globalWalletsProvider);
     var walletsProviderNotifier = ref.read(globalWalletsProvider.notifier);
 
-    void whenAddButtonPressed(BuildContext context) {
+    void whenAddButtonPressed() {
       openPage(context, WalletForm(
         callbackWhenDataSaved: (wallet) {
           walletsProviderNotifier.add(wallet);
@@ -47,18 +45,14 @@ class BalanceCard extends HookConsumerWidget {
     }
 
     List<Widget> buildTitle() {
-      const TEXT = [
-        'Wallets',
-        'All your wallet information.'
-      ];
+      const TEXT = ['Wallets', 'All your wallet information.'];
 
       return [
         kText(context, TEXT[0], KTStyle.title, KTSType.large,
-            color: Colors.white),
+            fontWeight: FontWeight.w500, color: Colors.white),
         SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.7,
-          child: kText(context, TEXT[1], KTStyle.label,
-              KTSType.medium,
+          child: kText(context, TEXT[1], KTStyle.label, KTSType.medium,
               color: Colors.white),
         )
       ];
@@ -78,39 +72,24 @@ class BalanceCard extends HookConsumerWidget {
                 ),
               ],
             ),
-            dummyHeight(15),
-            Padding(padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white12
-                    ),
-                    child: Padding(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 35),
-                      child: Column(
-                        children: [
-                          kText(context, 'Total Balance', KTStyle.label, KTSType.medium, color: Colors.white),
-                          kText(context, currencyFormat(walletsProviderNotifier.totalBalance), KTStyle.title, KTSType.medium,fontWeight: FontWeight.w600, color: Colors.white),
-                        ],
-                      ),)
-                )
-            ),
+            dummyHeight(5),
             buildWallets(),
-            k_button(
-              context,
-              () {
-                whenAddButtonPressed(context);
-              },
-              text: 'Add Wallet',
-              mainColor: Colors.white12,
-            ),
-            dummyHeight(15),
+            KOutlinedButton(
+                onPressed: () {
+                  whenAddButtonPressed();
+                },
+                text: 'Add Wallet',
+                color: Colors.white12,
+                textColor: Colors.white,
+                icon: const Icon(FluentIcons.add_12_filled),
+                withOutline: false),
           ],
         ),
       );
     }
 
     return KCardPlus(context, buildContent(),
-        color: BaseColor.primary.color,
+        color: const Color(0xff222831),
         title: 'Balance',
         withoutTitle: true,
         icon: const Icon(

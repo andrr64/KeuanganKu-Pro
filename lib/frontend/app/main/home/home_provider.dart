@@ -9,19 +9,17 @@ class HomepageData {
   final double incomesAmount;
   final double expenseAmount;
 
-  HomepageData({
-    this.incomesDateRange = DateRange.week,
-    this.expenseDateRange = DateRange.week,
-    this.incomesAmount = 0,
-    this.expenseAmount = 0
-  });
+  HomepageData(
+      {this.incomesDateRange = DateRange.week,
+      this.expenseDateRange = DateRange.week,
+      this.incomesAmount = 0,
+      this.expenseAmount = 0});
 
-  HomepageData copyWith({
-    DateRange? incomeCardDateRange,
-    double? incomesAmount,
-    DateRange? expenseDateRange,
-    double? expenseAmount
-  }) {
+  HomepageData copyWith(
+      {DateRange? incomeCardDateRange,
+      double? incomesAmount,
+      DateRange? expenseDateRange,
+      double? expenseAmount}) {
     return HomepageData(
       incomesDateRange: incomeCardDateRange ?? incomesDateRange,
       incomesAmount: incomesAmount ?? this.incomesAmount,
@@ -39,32 +37,38 @@ class HomepageProvider extends Notifier<HomepageData> {
     return HomepageData();
   }
 
-  Future<void> initData() async{
-    if (!_init){
+  Future<void> initData() async {
+    if (!_init) {
       await updateIncomes();
       await updateExpense();
       _init = true;
     }
   }
 
-  Future<void> updateIncomes() async => state = state.copyWith(incomesAmount: await DBHelperIncome().readTotalIncome(date: state.incomesDateRange));
-  Future<void> updateExpense() async => state = state.copyWith(expenseAmount: await DBHelperExpense().readTotalExpenseByPeriod(dateRange: state.expenseDateRange));
-  Future<void> setIncomeCardDateRange(DateRange dateRange) async{
+  Future<void> updateIncomes() async => state = state.copyWith(
+      incomesAmount:
+          await DBHelperIncome().readTotalIncome(date: state.incomesDateRange));
+  Future<void> updateExpense() async => state = state.copyWith(
+      expenseAmount: await DBHelperExpense()
+          .readTotalExpenseByPeriod(dateRange: state.expenseDateRange));
+  Future<void> setIncomeCardDateRange(DateRange dateRange) async {
     if (dateRange != state.incomesDateRange) {
       state = state.copyWith(
-        incomesAmount: await DBHelperIncome().readTotalIncome(date: dateRange),
-        incomeCardDateRange: dateRange
-      );
+          incomesAmount:
+              await DBHelperIncome().readTotalIncome(date: dateRange),
+          incomeCardDateRange: dateRange);
     }
   }
-  Future<void> setExpenseCardDateRange(DateRange dateRange) async{
-    if (dateRange != state.expenseDateRange){
+
+  Future<void> setExpenseCardDateRange(DateRange dateRange) async {
+    if (dateRange != state.expenseDateRange) {
       state = state.copyWith(
-          expenseAmount: await DBHelperExpense().readTotalExpenseByPeriod(dateRange: dateRange),
-          expenseDateRange: dateRange
-      );
+          expenseAmount: await DBHelperExpense()
+              .readTotalExpenseByPeriod(dateRange: dateRange),
+          expenseDateRange: dateRange);
     }
   }
 }
 
-final homepageProvider = NotifierProvider<HomepageProvider, HomepageData>(HomepageProvider.new);
+final homepageProvider =
+    NotifierProvider<HomepageProvider, HomepageData>(HomepageProvider.new);

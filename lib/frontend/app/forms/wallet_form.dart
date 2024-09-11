@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/snackbar.dart';
-import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class WalletForm extends StatefulWidget {
@@ -136,7 +136,7 @@ class _WalletFormState extends State<WalletForm> {
               dummyWidth(10),
               KOutlinedButton(
                   onPressed: () => handleSave(context),
-                  color: BaseColor.old_red.color,
+                  color: baseColor_dark_red,
                   text: 'Clear'),
             ],
           ),
@@ -154,9 +154,7 @@ class _WalletFormState extends State<WalletForm> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          vertical: vh(context, 2.5), 
-          horizontal: vw(context, 5)
-        ),
+            vertical: vh(context, 2.5), horizontal: vw(context, 5)),
         child: form(context),
       ),
     );

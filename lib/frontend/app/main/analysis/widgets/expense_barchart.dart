@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/bullet.dart';
 import 'package:keuanganku/frontend/components/cards/k_card.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
@@ -11,19 +12,18 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 
 class ExpenseBarChart extends StatelessWidget {
-  const ExpenseBarChart({
-    super.key,
-    required this.bar_data,
-    required this.dataTimePeriod,
-    required this.maxVal,
-    required this.total,
-    required this.average,
-    required this.callbackWhenDataTimePeriodChanged,
-    required this.lowestVal
-  });
+  const ExpenseBarChart(
+      {super.key,
+      required this.bar_data,
+      required this.dataTimePeriod,
+      required this.maxVal,
+      required this.total,
+      required this.average,
+      required this.callbackWhenDataTimePeriodChanged,
+      required this.lowestVal});
 
   final List<BarChartGroupData> bar_data;
   final double total;
@@ -33,7 +33,7 @@ class ExpenseBarChart extends StatelessWidget {
   final DateRange dataTimePeriod;
   final void Function(DateRange) callbackWhenDataTimePeriodChanged;
 
-  Widget buildWeeklyBars(BuildContext context){
+  Widget buildWeeklyBars(BuildContext context) {
     return SizedBox(
       height: 225,
       child: WeeklyExpenseBarChart(
@@ -43,13 +43,15 @@ class ExpenseBarChart extends StatelessWidget {
       ),
     );
   }
-  Widget buildMonthlyBars(BuildContext context){
+
+  Widget buildMonthlyBars(BuildContext context) {
     return SizedBox(
       height: 225,
       child: MonthlyExpenseBarChart(context, barGroups: bar_data),
     );
   }
-  Widget buildYearlyBars(BuildContext context){
+
+  Widget buildYearlyBars(BuildContext context) {
     return SizedBox(
       height: 225,
       child: YearlyExpenseBarChart(context, barGroups: bar_data),
@@ -57,7 +59,7 @@ class ExpenseBarChart extends StatelessWidget {
   }
 
   //EVERYTHING IS: Ok
-  Widget buildTitle(BuildContext context){
+  Widget buildTitle(BuildContext context) {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,8 +68,9 @@ class ExpenseBarChart extends StatelessWidget {
       ],
     );
   }
-  Widget buildChartInfo(BuildContext context){
-    const widthPctg = 80/2;
+
+  Widget buildChartInfo(BuildContext context) {
+    const widthPctg = 80 / 2;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -84,11 +87,10 @@ class ExpenseBarChart extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      kText(context, 'Total', KTStyle.title,
-                          KTSType.small,
+                      kText(context, 'Total', KTStyle.title, KTSType.small,
                           fontWeight: FontWeight.w600),
-                      kText(context, currencyFormat(total),
-                          KTStyle.label, KTSType.small),
+                      kText(context, currencyFormat(total), KTStyle.label,
+                          KTSType.small),
                     ],
                   )
                 ],
@@ -104,11 +106,11 @@ class ExpenseBarChart extends StatelessWidget {
                       Text(
                         'Average',
                         style: getTextStyle(context, KTStyle.title,
-                            KTSType.small, FontColor.black.color,
+                            KTSType.small, fontColor_black,
                             fontWeight: FontWeight.w600),
                       ),
-                      kText(context, currencyFormat(average),
-                          KTStyle.label, KTSType.small),
+                      kText(context, currencyFormat(average), KTStyle.label,
+                          KTSType.small),
                     ],
                   )
                 ],
@@ -127,11 +129,10 @@ class ExpenseBarChart extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      kText(context, 'Highest', KTStyle.title,
-                          KTSType.small,
+                      kText(context, 'Highest', KTStyle.title, KTSType.small,
                           fontWeight: FontWeight.w600),
-                      kText(context, currencyFormat(maxVal),
-                          KTStyle.label, KTSType.small),
+                      kText(context, currencyFormat(maxVal), KTStyle.label,
+                          KTSType.small),
                     ],
                   )
                 ],
@@ -147,11 +148,11 @@ class ExpenseBarChart extends StatelessWidget {
                       Text(
                         'Lowest',
                         style: getTextStyle(context, KTStyle.title,
-                            KTSType.small, FontColor.black.color,
+                            KTSType.small, fontColor_black,
                             fontWeight: FontWeight.w600),
                       ),
-                      kText(context, currencyFormat(lowestVal),
-                          KTStyle.label, KTSType.small),
+                      kText(context, currencyFormat(lowestVal), KTStyle.label,
+                          KTSType.small),
                     ],
                   )
                 ],
@@ -162,13 +163,14 @@ class ExpenseBarChart extends StatelessWidget {
       ],
     );
   }
-  Widget buildChart(BuildContext context){
+
+  Widget buildChart(BuildContext context) {
     if (bar_data.isEmpty) {
       return const EmptyData(
-          iconData: Icons.analytics,
+        iconData: Icons.analytics,
       );
     }
-    switch(dataTimePeriod){
+    switch (dataTimePeriod) {
       case DateRange.week:
         return buildWeeklyBars(context);
       case DateRange.month:
@@ -183,7 +185,7 @@ class ExpenseBarChart extends StatelessWidget {
     return KCard(
       context,
       title: 'Expense Chart',
-      color: BaseColor.old_red.color,
+      color: baseColor_dark_red,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,24 +196,21 @@ class ExpenseBarChart extends StatelessWidget {
             children: [
               SizedBox(
                 width: vw(context, 35),
-                child: kDropdown(
-                    context,
+                child: kDropdown(context,
                     items: DateRange.values,
                     itemsAsString: DateRange.month.labels,
-                    value: dataTimePeriod,
-                    onChanged: (val) {
-                      if (val != null && val != dataTimePeriod){
-                        callbackWhenDataTimePeriodChanged(val);
-                      }
-                    },
-                    label: 'Time Period'),
+                    value: dataTimePeriod, onChanged: (val) {
+                  if (val != null && val != dataTimePeriod) {
+                    callbackWhenDataTimePeriodChanged(val);
+                  }
+                }, label: 'Time Period'),
               ),
             ],
           ),
           dummyHeight(25),
           buildChart(context),
           dummyHeight(20),
-          bar_data.isNotEmpty? buildChartInfo(context) : const SizedBox()
+          bar_data.isNotEmpty ? buildChartInfo(context) : const SizedBox()
         ],
       ),
     );

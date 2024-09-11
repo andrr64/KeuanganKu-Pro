@@ -4,14 +4,15 @@ import 'package:keuanganku/backend/database/model/income.dart';
 import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/forms/income_form.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
-import 'package:keuanganku/frontend/components/dropdown/k_dropdown.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
+import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class IncomeCard extends StatelessWidget {
@@ -33,90 +34,133 @@ class IncomeCard extends StatelessWidget {
     required this.incomeCategories,
   });
 
+  final Color backgroundColor = const Color(0xff1B4242);
+
+  Widget buildContent(BuildContext context) {
+    List<Widget> buildTitle() {
+      const TEXT = ['Income', 'Lorem ipsum.'];
+      return [
+        kText(context, TEXT[0], KTStyle.title, KTSType.large,
+            fontWeight: FontWeight.w500, color: Colors.white),
+        kText(context, TEXT[1], KTStyle.label, KTSType.medium,
+            color: Colors.white),
+      ];
+    }
+
+    final List<Color> generated3color = generate3Color(backgroundColor);
+
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22.5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: vw(context, 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [...buildTitle()],
+                  ),
+                ),
+                SizedBox(
+                  width: vw(context, 30),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: kDropdown(
+                      context,
+                      items: DateRange.values,
+                      itemsAsString: DateRange.values
+                          .map((e) => e.dropdownString)
+                          .toList(),
+                      value: dateRange,
+                      borderColor: Colors.white60,
+                      foregroundColor: Colors.white,
+                      borderWidth: 0.25,
+                      backgroundColor: generated3color[1],
+                      dropdownTextColor: Colors.white,
+                      onChanged: whenDropdownDateRangeChange,
+                      label: 'Period',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    kText(
+                      context,
+                      dateRange.label,
+                      KTStyle.label,
+                      KTSType.medium,
+                      color: Colors.white,
+                    ),
+                    kText(
+                      context,
+                      currencyFormat(incomesAmount),
+                      KTStyle.title,
+                      KTSType.large,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                KOutlinedButton(
+                    onPressed: () => whenAddButtonPressed(context),
+                    text: 'Add',
+                    color: Colors.white12,
+                    textColor: Colors.white,
+                    icon: const Icon(FluentIcons.add_12_filled),
+                    withOutline: false),
+              ],
+            ),
+            Center(
+              child: KOutlinedButton(
+                  onPressed: () {
+                    ///TODO: income_card.buildContent.KOutlinedButton(Detail Page)
+                  },
+                  paddingHorizontal: vw(context, 10),
+                  text: 'Detail',
+                  color: Colors.white12,
+                  withOutline: false,
+                  textColor: Colors.white),
+            ),
+            dummyHeight(10),
+          ],
+        ));
+  }
+
+  void whenDropdownDateRangeChange(DateRange? val) {
+    if (val != null && val != dateRange) {
+      callbackWhenDateChange(val);
+    }
+  }
+
+  void whenAddButtonPressed(BuildContext context) {
+    openPage(
+        context,
+        IncomeForm(
+            wallets: wallets,
+            incomeCategories: incomeCategories,
+            callbackWhenDataSaved: callbackWhenNewIncomeSaved));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final KDropdown<DateRange> dataRangeDropdown =
-        KDropdown(KDropdownItem(DateRange.week.getDateRangeMap()));
-    final List<Color> generated3color =
-        generate3Color(BaseColor.old_green.color);
-
-    void whenDropdownDateRangeChange(DateRange? val) {
-      if (val != null && val != dateRange) {
-        callbackWhenDateChange(val);
-      }
-    }
-
-    void whenAddButtonPressed() {
-      openPage(
-          context,
-          IncomeForm(
-              wallets: wallets,
-              incomeCategories: incomeCategories,
-              callbackWhenDataSaved: callbackWhenNewIncomeSaved));
-    }
-
     return KCardPlus(
-      title: 'Income',
-      icon: const Icon(FluentIcons.arrow_up_20_filled),
       context,
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          dataRangeDropdown.dropdownButton(
-            dateRange,
-            whenDropdownDateRangeChange,
-            icon_theme: Theme.of(context).iconTheme,
-            dropdown_bg_color: generated3color[1],
-            text_style: getTextStyle(context, KTStyle.label, KTSType.medium, Colors.white),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  kText(
-                    context,
-                    'Income this ${dateRange.value}',
-                    KTStyle.label,
-                    KTSType.medium,
-                    color: Colors.white,
-                  ),
-                  kText(
-                    context,
-                    currencyFormat(incomesAmount),
-                    KTStyle.title,
-                    KTSType.large,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              k_button(
-                context,
-                whenAddButtonPressed,
-                icon: Icons.add,
-                text: 'Add',
-                mainColor: generated3color[1],
-                iconColor: Colors.white,
-              ),
-            ],
-          ),
-          dummyHeight(5),
-          Center(
-            child: k_button(
-              context,
-              whenAddButtonPressed,
-              text: 'Detail',
-              withoutBg: true,
-              mainColor: generated3color[1],
-              iconColor: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      color: BaseColor.old_green.color,
+      buildContent(context),
+      title: 'Income',
+      withoutTitle: true,
+      color: backgroundColor,
     );
   }
 }

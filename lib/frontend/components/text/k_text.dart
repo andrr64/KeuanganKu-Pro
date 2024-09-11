@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:keuanganku/frontend/themes/light_theme.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 
-enum KTStyle {
-  display, body, label, title
-}
+enum KTStyle { display, body, label, title }
 
-enum KTSType {
-  small, medium, large
-}
+enum KTSType { small, medium, large }
 
-TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color color, {
-  FontWeight? fontWeight
-}){
+TextStyle getTextStyle(
+    BuildContext context, KTStyle style, KTSType type, Color color,
+    {FontWeight? fontWeight}) {
   TextStyle? textStyle;
   switch (style) {
     case KTStyle.display:
@@ -69,19 +65,19 @@ TextStyle getTextStyle(BuildContext context, KTStyle style, KTSType type, Color 
   }
 
   return TextStyle(
-    fontSize: textStyle!.fontSize,
-    fontFamily: textStyle.fontFamily,
-    fontWeight: fontWeight?? textStyle.fontWeight,
-    color: color
-  );
+      fontSize: textStyle!.fontSize,
+      fontFamily: textStyle.fontFamily,
+      fontWeight: fontWeight ?? textStyle.fontWeight,
+      color: color);
 }
 
-Text kText(BuildContext context, String text, KTStyle? style, KTSType? type, {
-  Color color = BLACK_FONT_COLOR,
-  TextAlign? align,
-  FontWeight? fontWeight
-}){
-  type = type?? KTSType.medium;
-  style = style?? KTStyle.label;
-  return Text(text, style: getTextStyle(context, style, type, color, fontWeight: fontWeight), textAlign: align,);
+Text kText(BuildContext context, String text, KTStyle? style, KTSType? type,
+    {Color color = fontColor_black, TextAlign? align, FontWeight? fontWeight}) {
+  type = type ?? KTSType.medium;
+  style = style ?? KTStyle.label;
+  return Text(
+    text,
+    style: getTextStyle(context, style, type, color, fontWeight: fontWeight),
+    textAlign: align,
+  );
 }

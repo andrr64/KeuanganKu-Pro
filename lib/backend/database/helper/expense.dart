@@ -13,18 +13,18 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
 
   @override
   List<Map<String, String>> get tableColumns => [
-    createSql3Column(
-        name: 'id',
-        dtype: 'INTEGER',
-        constraint: 'PRIMARY KEY AUTOINCREMENT'),
-    createSql3Column(name: 'title', dtype: 'TEXT', required: true),
-    createSql3Column(name: 'amount', dtype: 'REAL', required: true),
-    createSql3Column(name: 'description', dtype: 'TEXT'),
-    createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'rate', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
-  ];
+        createSql3Column(
+            name: 'id',
+            dtype: 'INTEGER',
+            constraint: 'PRIMARY KEY AUTOINCREMENT'),
+        createSql3Column(name: 'title', dtype: 'TEXT', required: true),
+        createSql3Column(name: 'amount', dtype: 'REAL', required: true),
+        createSql3Column(name: 'description', dtype: 'TEXT'),
+        createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
+        createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),
+        createSql3Column(name: 'rate', dtype: 'INTEGER', required: true),
+        createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
+      ];
 
   @override
   List<DBModelExpense> get initData => [];
@@ -36,16 +36,16 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   @override
-  Future<List<DBModelExpense>> readAll({DateRange? date, bool oldToNew = true}) async {
+  Future<List<DBModelExpense>> readAll(
+      {DateRange? date, bool oldToNew = true}) async {
     String? startDate = date?.startDateISO8601;
     String? endDate = date?.endDateISO8601;
 
     final whereClause = (startDate != null && endDate != null)
         ? 'datetime >= ? AND datetime <= ?'
         : null;
-    final whereArgs = (startDate != null && endDate != null)
-        ? [startDate, endDate]
-        : null;
+    final whereArgs =
+        (startDate != null && endDate != null) ? [startDate, endDate] : null;
     final List<Map<String, dynamic>> data = await db.database.query(
       tableName,
       where: whereClause,
@@ -55,8 +55,10 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     return data.map((item) => DBModelExpense().fromJson(item)).toList();
   }
 
-  Future<List<DBModelExpense>> readWithWhereClause({required String where, required List whereArgs}) async{
-    final query_result = await db.database.query(tableName, where: where, whereArgs: whereArgs);
+  Future<List<DBModelExpense>> readWithWhereClause(
+      {required String where, required List whereArgs}) async {
+    final query_result =
+        await db.database.query(tableName, where: where, whereArgs: whereArgs);
     return query_result.map((e) => DBModelExpense().fromJson(e)).toList();
   }
 
@@ -66,11 +68,12 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     throw UnimplementedError();
   }
 
-  Future<List<DBModelExpense>> readByWalletId({required Database db, required int wallet_id}) async {
+  Future<List<DBModelExpense>> readByWalletId(
+      {required Database db, required int wallet_id}) async {
     return await db.query(tableName,
         where: 'wallet_id = ?', whereArgs: [wallet_id]).then((expenses) {
       return List<DBModelExpense>.generate(expenses.length,
-              (index) => DBModelExpense().fromJson(expenses[index]));
+          (index) => DBModelExpense().fromJson(expenses[index]));
     });
   }
 
@@ -81,17 +84,20 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   }
 
   @override
-  Future<int> insert({required DBModelExpense data}) async{
+  Future<int> insert({required DBModelExpense data}) async {
     return await db.database.insert(tableName, data.toJson());
   }
 
-  Future<double> readTotalExpenseByPeriod({required DateRange dateRange}) async {
+  Future<double> readTotalExpenseByPeriod(
+      {required DateRange dateRange}) async {
     final listExpense = await readAll(date: dateRange);
-    final result =listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
+    final result =
+        listExpense.fold(0.0, (sum, expense) => sum + expense.amount!);
     return result;
   }
 
-  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate({required DateRange period}) async {
+  Future<List<DBModelExpenseByTime>> readExpenseThenGroupByDate(
+      {required DateRange period}) async {
     // Retrieve all expenses within the given date range
     final listExpense = await readAll(date: period);
     if (listExpense.isEmpty) {
@@ -113,12 +119,14 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         if (month == 12) {
           dateRangeForMonth = DateTimeRange(
             start: DateTime(startDate.year, month, 1, 0, 0, 0),
-            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(const Duration(seconds: 1)),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0)
+                .subtract(const Duration(seconds: 1)),
           );
         } else {
           dateRangeForMonth = DateTimeRange(
             start: DateTime(startDate.year, month, 1, 0, 0, 0),
-            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0).subtract(const Duration(seconds: 1)),
+            end: DateTime(startDate.year, month + 1, 1, 0, 0, 0)
+                .subtract(const Duration(seconds: 1)),
           );
         }
 
@@ -132,17 +140,24 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         groupedExpenses.add(
           DBModelExpenseByTime(
             dateTimeRange: dateRangeForMonth,
-            expenses: expensesForMonth.isNotEmpty ? expensesForMonth : [DBModelExpense(amount: 0)], // Add a dummy expense with total 0 if no expenses found
+            expenses: expensesForMonth.isNotEmpty
+                ? expensesForMonth
+                : [
+                    DBModelExpense(amount: 0)
+                  ], // Add a dummy expense with total 0 if no expenses found
           ),
         );
       }
     } else {
       for (DateTime currentDate = startDate;
-      currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate);
-      currentDate = currentDate.add(const Duration(days: 1))) {
+          currentDate.isBefore(endDate) ||
+              currentDate.isAtSameMomentAs(endDate);
+          currentDate = currentDate.add(const Duration(days: 1))) {
         DateTimeRange dateRangeForDay = DateTimeRange(
-          start: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),
-          end: DateTime(currentDate.year, currentDate.month, currentDate.day, 23, 59, 59),
+          start: DateTime(
+              currentDate.year, currentDate.month, currentDate.day, 0, 0, 0),
+          end: DateTime(
+              currentDate.year, currentDate.month, currentDate.day, 23, 59, 59),
         );
 
         List<DBModelExpense> expensesForDay = listExpense.where((expense) {
@@ -154,7 +169,11 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
         groupedExpenses.add(
           DBModelExpenseByTime(
             dateTimeRange: dateRangeForDay,
-            expenses: expensesForDay.isNotEmpty ? expensesForDay : [DBModelExpense(amount: 0)], // Add a dummy expense with total 0 if no expenses found
+            expenses: expensesForDay.isNotEmpty
+                ? expensesForDay
+                : [
+                    DBModelExpense(amount: 0)
+                  ], // Add a dummy expense with total 0 if no expenses found
           ),
         );
       }
@@ -162,7 +181,8 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
     return groupedExpenses;
   }
 
-  Future<List<DBModelExpenseByCategory>> readTotalExpenseByCategory({required DateRange dateRange, bool lowToHigh = false}) async {
+  Future<List<DBModelExpenseByCategory>> readTotalExpenseByCategory(
+      {required DateRange dateRange, bool lowToHigh = false}) async {
     String? startDate = dateRange.startDateISO8601;
     String? endDate = dateRange.endDateISO8601;
 
@@ -174,18 +194,21 @@ class DBHelperExpense extends DBHelper<DBModelExpense> {
   ''', [startDate, endDate]);
 
     // Convert each item to a mutable map
-    List<Map<String, dynamic>> mutableResult = result.map((item) => Map<String, dynamic>.from(item)).toList();
-    mutableResult.sort((a, b){
-      if (lowToHigh){
+    List<Map<String, dynamic>> mutableResult =
+        result.map((item) => Map<String, dynamic>.from(item)).toList();
+    mutableResult.sort((a, b) {
+      if (lowToHigh) {
         return a['total'].compareTo(b['total']);
       }
       return b['total'].compareTo(a['total']);
     });
     List<DBModelExpenseByCategory> finalData = [];
 
-    for(var _ in mutableResult){
-      final category = await DBHelperExpenseCategory().readById(id: _['category_id']);
-      finalData.add(DBModelExpenseByCategory(category: category, total: _['total']));
+    for (var _ in mutableResult) {
+      final category =
+          await DBHelperExpenseCategory().readById(id: _['category_id']);
+      finalData
+          .add(DBModelExpenseByCategory(category: category, total: _['total']));
     }
     return finalData;
   }

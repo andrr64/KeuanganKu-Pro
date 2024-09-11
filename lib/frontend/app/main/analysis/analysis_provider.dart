@@ -4,11 +4,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:keuanganku/backend/database/helper/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/enum/date_range.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/expense_barchart.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/graph_color.dart';
 import 'package:keuanganku/frontend/components/flchart_graphs/piecart.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 
 class AnalysisPageExpenseBarChartData {
   final DateRange dataTimePeriod;
@@ -17,18 +18,22 @@ class AnalysisPageExpenseBarChartData {
   final List<BarChartGroupData> yearly_bar;
 
   AnalysisPageExpenseBarChartData({
-    this.weekly_bar = const[],
-    this.monthly_bar = const[],
-    this.yearly_bar = const[],
+    this.weekly_bar = const [],
+    this.monthly_bar = const [],
+    this.yearly_bar = const [],
     this.dataTimePeriod = DateRange.week,
   });
   List<BarChartGroupData> get bar_data {
-    switch(dataTimePeriod){
-      case DateRange.week: return weekly_bar;
-      case DateRange.month: return monthly_bar;
-      case DateRange.year: return yearly_bar;
+    switch (dataTimePeriod) {
+      case DateRange.week:
+        return weekly_bar;
+      case DateRange.month:
+        return monthly_bar;
+      case DateRange.year:
+        return yearly_bar;
     }
   }
+
   AnalysisPageExpenseBarChartData copyWith({
     List<BarChartGroupData>? weekly_bar,
     List<BarChartGroupData>? monthly_bar,
@@ -36,57 +41,74 @@ class AnalysisPageExpenseBarChartData {
     DateRange? dataPeriod,
   }) {
     return AnalysisPageExpenseBarChartData(
-        dataTimePeriod: dataPeriod ?? dataTimePeriod,
-        weekly_bar: weekly_bar?? this.weekly_bar,
-        monthly_bar: monthly_bar?? this.monthly_bar,
-        yearly_bar: yearly_bar?? this.yearly_bar,
+      dataTimePeriod: dataPeriod ?? dataTimePeriod,
+      weekly_bar: weekly_bar ?? this.weekly_bar,
+      monthly_bar: monthly_bar ?? this.monthly_bar,
+      yearly_bar: yearly_bar ?? this.yearly_bar,
     );
   }
 }
-class AnalysisPageExpenseBarChartProvider extends Notifier<AnalysisPageExpenseBarChartData> {
+
+class AnalysisPageExpenseBarChartProvider
+    extends Notifier<AnalysisPageExpenseBarChartData> {
   bool _init = false;
   late DBModelExpenseCategory Function(int) expenseCategoryGetter;
   late BuildContext context;
 
   @override
   AnalysisPageExpenseBarChartData build() => AnalysisPageExpenseBarChartData();
-  Future<void> initData(BuildContext context,{required DBModelExpenseCategory Function(int) expenseCategoryGetter}) async {
+  Future<void> initData(BuildContext context,
+      {required DBModelExpenseCategory Function(int)
+          expenseCategoryGetter}) async {
     if (!_init) {
       this.expenseCategoryGetter = expenseCategoryGetter;
       await updateData(context);
       _init = true;
     }
   }
-  Future<void> setBarChartDataTimePeriod(DateRange period) async{
-    switch(period){
+
+  Future<void> setBarChartDataTimePeriod(DateRange period) async {
+    switch (period) {
       case DateRange.week:
         state = state.copyWith(
-            dataPeriod: period,
+          dataPeriod: period,
         );
       case DateRange.month:
         state = state.copyWith(
-            dataPeriod: period,
+          dataPeriod: period,
         );
       case DateRange.year:
         state = state.copyWith(
-            dataPeriod: period,
+          dataPeriod: period,
         );
     }
   }
-  Future<void> updateData(BuildContext context) async {
-    final data_weekly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.week);
-    final data_monthly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.month);
-    final data_yearly = await DBHelperExpense().readExpenseThenGroupByDate(period: DateRange.year);
 
-    final result_weekly = List.generate(data_weekly.length, (i) => weeklyBarData(i, data_weekly[i].total, context, barColor: KGraphColor.pastel_red.color));
-    final result_monthly = List.generate(data_monthly.length, (i) => monthlyBarData(i, data_monthly[i].total, context, barColor: KGraphColor.pastel_red.color));
-    final result_yearly = List.generate(data_yearly.length, (i) => yearlyBarData(i, data_yearly[i].total, context, barColor: KGraphColor.pastel_red.color));
+  Future<void> updateData(BuildContext context) async {
+    final data_weekly = await DBHelperExpense()
+        .readExpenseThenGroupByDate(period: DateRange.week);
+    final data_monthly = await DBHelperExpense()
+        .readExpenseThenGroupByDate(period: DateRange.month);
+    final data_yearly = await DBHelperExpense()
+        .readExpenseThenGroupByDate(period: DateRange.year);
+
+    final result_weekly = List.generate(
+        data_weekly.length,
+        (i) => weeklyBarData(i, data_weekly[i].total, context,
+            barColor: KGraphColor.pastel_red.color));
+    final result_monthly = List.generate(
+        data_monthly.length,
+        (i) => monthlyBarData(i, data_monthly[i].total, context,
+            barColor: KGraphColor.pastel_red.color));
+    final result_yearly = List.generate(
+        data_yearly.length,
+        (i) => yearlyBarData(i, data_yearly[i].total, context,
+            barColor: KGraphColor.pastel_red.color));
 
     state = state.copyWith(
-      weekly_bar: result_weekly,
-      monthly_bar: result_monthly,
-      yearly_bar: result_yearly
-    );
+        weekly_bar: result_weekly,
+        monthly_bar: result_monthly,
+        yearly_bar: result_yearly);
   }
 }
 
@@ -125,14 +147,19 @@ class AnalysisPageExpensePieChartByCategoryData {
     );
   }
 }
-class AnalysisPageExpensePieChartByCategoryProvider extends Notifier<AnalysisPageExpensePieChartByCategoryData> {
+
+class AnalysisPageExpensePieChartByCategoryProvider
+    extends Notifier<AnalysisPageExpensePieChartByCategoryData> {
   bool _init = false;
   late DBModelExpenseCategory Function(int) expenseCategoryGetter;
   late BuildContext context;
 
   @override
-  AnalysisPageExpensePieChartByCategoryData build() => AnalysisPageExpensePieChartByCategoryData();
-  Future<void> initData(BuildContext context, {required DBModelExpenseCategory Function(int) expenseCategoryGetter}) async {
+  AnalysisPageExpensePieChartByCategoryData build() =>
+      AnalysisPageExpensePieChartByCategoryData();
+  Future<void> initData(BuildContext context,
+      {required DBModelExpenseCategory Function(int)
+          expenseCategoryGetter}) async {
     if (!_init) {
       this.expenseCategoryGetter = expenseCategoryGetter;
       this.context = context;
@@ -143,7 +170,8 @@ class AnalysisPageExpensePieChartByCategoryProvider extends Notifier<AnalysisPag
 
   Future<void> updateData() async {
     state.copyWith(loading: true);
-    final newData = await DBHelperExpense().readTotalExpenseByCategory(dateRange: state.dateRange);
+    final newData = await DBHelperExpense()
+        .readTotalExpenseByCategory(dateRange: state.dateRange);
     if (newData.isEmpty) {
       state = state.copyWith(
           loading: false,
@@ -177,7 +205,7 @@ class AnalysisPageExpensePieChartByCategoryProvider extends Notifier<AnalysisPag
         '${item.category.name!} (${percentage.toStringAsFixed(1)}%)',
         overflow: TextOverflow.clip,
         style: getTextStyle(
-            context, KTStyle.label, KTSType.medium, FontColor.black.color),
+            context, KTStyle.label, KTSType.medium, fontColor_black),
       );
     }).toList();
     state = state.copyWith(

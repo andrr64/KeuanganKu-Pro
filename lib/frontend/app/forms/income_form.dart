@@ -4,7 +4,7 @@ import 'package:keuanganku/backend/database/model/income_category.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/app/snackbar.dart';
-import 'package:keuanganku/frontend/components/buttons/kbutton_outlined.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
@@ -12,7 +12,7 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
-import 'package:keuanganku/frontend/colors/k_color.dart';
+import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class IncomeForm extends StatefulWidget {
@@ -79,20 +79,20 @@ class _IncomeFormState extends State<IncomeForm> {
   // Events
   void handleSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-        DBModelIncome newIncome = DBModelIncome(
-          title: titleController.text,
-          amount: double.tryParse(amountController.text),
-          description: descriptionController.text,
-          wallet_id: walletController.id,
-          datetime: combineDateTimeAndTimeOfDay(dateController, timeController),
-          category_id: categoryController.id,
-        );
-        newIncome.insertAndUpdateWalletIncome().then((_){
-          widget.callbackWhenDataSaved(newIncome);
-          closePage(context);
-          showSnackbar(context, successSnackBar('Data saved'));
-        });
-      }
+      DBModelIncome newIncome = DBModelIncome(
+        title: titleController.text,
+        amount: double.tryParse(amountController.text),
+        description: descriptionController.text,
+        wallet_id: walletController.id,
+        datetime: combineDateTimeAndTimeOfDay(dateController, timeController),
+        category_id: categoryController.id,
+      );
+      newIncome.insertAndUpdateWalletIncome().then((_) {
+        widget.callbackWhenDataSaved(newIncome);
+        closePage(context);
+        showSnackbar(context, successSnackBar('Data saved'));
+      });
+    }
   }
 
   void handleClear() {
@@ -152,7 +152,8 @@ class _IncomeFormState extends State<IncomeForm> {
           ),
           dummyWidth(vw(context, 2.5)),
           //TODO: handle when user want to add new category
-          KOutlinedButton(onPressed: (){}, text: 'Add', icon: const Icon(Icons.add)),
+          KOutlinedButton(
+              onPressed: () {}, text: 'Add', icon: const Icon(Icons.add)),
         ],
       ),
       dummyHeight(22.5),
@@ -221,21 +222,20 @@ class _IncomeFormState extends State<IncomeForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kText(context, 'Income', KTStyle.title, KTSType.large),
-          kText(context, 'Insert new income data.', KTStyle.label, KTSType.medium),
+          kText(context, 'Insert new income data.', KTStyle.label,
+              KTSType.medium),
           ...fields(context),
           Row(
             children: [
               KOutlinedButton(
-                onPressed: () => handleSave(context), 
-                color: const Color(0xff377550), 
-                text: 'Save'
-              ),
+                  onPressed: () => handleSave(context),
+                  color: const Color(0xff377550),
+                  text: 'Save'),
               dummyWidth(10),
               KOutlinedButton(
-                onPressed: handleClear, 
-                color: BaseColor.old_red.color, 
-                text: 'Clear'
-              ),
+                  onPressed: handleClear,
+                  color: baseColor_dark_red,
+                  text: 'Clear'),
             ],
           )
         ],
@@ -261,14 +261,13 @@ class _IncomeFormState extends State<IncomeForm> {
     );
   }
 
-  Widget buildWhenListOrCategoryIsEmpty(BuildContext context){
+  Widget buildWhenListOrCategoryIsEmpty(BuildContext context) {
     return const EmptyWalletWarning();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if (widget.wallets.isEmpty || widget.incomeCategories.isEmpty){
+    if (widget.wallets.isEmpty || widget.incomeCategories.isEmpty) {
       return buildWhenListOrCategoryIsEmpty(context);
     }
     return content(context);

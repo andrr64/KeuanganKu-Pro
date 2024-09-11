@@ -10,15 +10,17 @@ enum DateRange {
   final int intVal;
 }
 
-extension DateRangeExtension on DateRange {
+extension Ex1 on DateRange {
   Map<String, DateRange> getDateRangeMap() {
     return Map.fromEntries(DateRange.values.map((DateRange data) {
       return MapEntry(data.label, data);
     }));
   }
+  
   List<String> get labels {
     return List.generate(DateRange.values.length, (i) => DateRange.values[i].label);
   }
+  
   String get startDateISO8601 {
     final now = DateTime.now();
     switch (this) {

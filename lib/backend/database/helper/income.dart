@@ -7,14 +7,17 @@ import 'package:keuanganku/main.dart';
 class DBHelperIncome extends DBHelper<DBModelIncome> {
   @override
   List<Map<String, String>> get tableColumns => [
-    createSql3Column(name: 'id', dtype: 'INTEGER', constraint: 'PRIMARY KEY AUTOINCREMENT'),
-    createSql3Column(name: 'title', dtype: 'TEXT', required: true),
-    createSql3Column(name: 'amount', dtype: 'REAL', required: true),
-    createSql3Column(name: 'description', dtype: 'TEXT'),
-    createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),
-    createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
-  ];
+        createSql3Column(
+            name: 'id',
+            dtype: 'INTEGER',
+            constraint: 'PRIMARY KEY AUTOINCREMENT'),
+        createSql3Column(name: 'title', dtype: 'TEXT', required: true),
+        createSql3Column(name: 'amount', dtype: 'REAL', required: true),
+        createSql3Column(name: 'description', dtype: 'TEXT'),
+        createSql3Column(name: 'wallet_id', dtype: 'INTEGER', required: true),
+        createSql3Column(name: 'category_id', dtype: 'INTEGER', required: true),
+        createSql3Column(name: 'datetime', dtype: 'TEXT', required: true),
+      ];
 
   @override
   String get tableName => 'incomes';
@@ -41,9 +44,8 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
     final whereClause = (startDate != null && endDate != null)
         ? 'datetime >= ? AND datetime <= ?'
         : null;
-    final whereArgs = (startDate != null && endDate != null)
-        ? [startDate, endDate]
-        : null;
+    final whereArgs =
+        (startDate != null && endDate != null) ? [startDate, endDate] : null;
 
     final List<Map<String, dynamic>> data = await db.database.query(
       tableName,
@@ -60,7 +62,8 @@ class DBHelperIncome extends DBHelper<DBModelIncome> {
   }
 
   Future<List<DBModelIncome>> readByWalletId({required int wallet_id}) async {
-    return await db.database.query(tableName, where: 'wallet_id = ?', whereArgs: [wallet_id]).then((incomes) {
+    return await db.database.query(tableName,
+        where: 'wallet_id = ?', whereArgs: [wallet_id]).then((incomes) {
       return List<DBModelIncome>.generate(incomes.length, (index) {
         return DBModelIncome().fromJson(incomes[index]);
       });

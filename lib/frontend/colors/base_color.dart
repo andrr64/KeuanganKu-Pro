@@ -1,28 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-enum BackgroundColor {
-  white(Color(0xffffffff)),
-  black(Color(0xff14192b));
-  const BackgroundColor(this.color);
-  final Color color;
-}
-enum FontColor {
-  black(Color(0xff14192b));
-  const FontColor(this.color);
-  final Color color;
-}
-
-enum BaseColor {
-  old_red(Color(0xff7e312a)),
-  primary(Color(0xff15193a)),
-  old_green(Color(0xff117347));
-  const BaseColor(this.color);
-  final Color color;
-}
+const Color baseColor_dark_red = Color(0xff7e312a);
+const Color baseColor_dark_blue = Color(0xff15193a);
+const Color baseColor_dark_green = Color(0xff117347);
 
 Color invertColor(Color? color) {
-  color = color?? Colors.white;
+  color = color ?? Colors.white;
   return Color.fromARGB(
     color.alpha,
     255 - color.red,
@@ -31,11 +15,11 @@ Color invertColor(Color? color) {
   );
 }
 
-List<Color> generate3Color(Color mainColor){
+List<Color> generate3Color(Color mainColor) {
   return [
     mainColor,
     Color(mainColor.value + 1249810),
-    Color(mainColor.value + (2* 0x101797))
+    Color(mainColor.value + (2 * 0x101797))
   ];
 }
 

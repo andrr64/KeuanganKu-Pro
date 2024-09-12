@@ -8,7 +8,7 @@ import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/cards/wallet_card.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
-import 'package:keuanganku/frontend/components/text/k_text.dart';
+import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
@@ -44,57 +44,52 @@ class BalanceCard extends HookConsumerWidget {
       );
     }
 
-    List<Widget> buildTitle() {
-      const TEXT = ['Wallets', 'All your wallet information.'];
-
-      return [
-        kText(context, TEXT[0], KTStyle.title, KTSType.large,
-            fontWeight: FontWeight.w500, color: Colors.white),
-        SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.7,
-          child: kText(context, TEXT[1], KTStyle.label, KTSType.medium,
-              color: Colors.white),
-        )
-      ];
-    }
-
     Widget buildContent() {
       return Padding(
         padding: const EdgeInsets.all(22.5),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Column(
+                Expanded(
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [...buildTitle()],
-                ),
+                  children: [
+                    ...kContainerHeading(context,
+                        const ['Wallets', 'All your wallet information.']),
+                  ],
+                )),
               ],
             ),
-            dummyHeight(5),
-            buildWallets(),
-            KOutlinedButton(
-                onPressed: () {
-                  whenAddButtonPressed();
-                },
-                text: 'Add Wallet',
-                color: Colors.white12,
-                textColor: Colors.white,
-                icon: const Icon(FluentIcons.add_12_filled),
-                withOutline: false),
+            vspace_10,
+            Center(
+              child: Column(
+                children: [
+                  buildWallets(),
+                  KOutlinedButton(
+                      onPressed: () {
+                        whenAddButtonPressed();
+                      },
+                      text: 'Add Wallet',
+                      color: Colors.white12,
+                      icon: const Icon(FluentIcons.add_12_filled),
+                      textColor: Colors.white,
+                      withOutline: false),
+                ],
+              ),
+            ),
           ],
         ),
       );
     }
 
-    return KCardPlus(context, buildContent(),
-        color: const Color(0xff222831),
-        title: 'Balance',
-        withoutTitle: true,
-        icon: const Icon(
-          FluentIcons.text_bullet_list_square_20_filled,
-          color: Colors.white,
-        ));
+    return KContainer(
+      context,
+      child: buildContent(),
+      backgroundColor: const Color(0xff222831),
+    );
   }
 }

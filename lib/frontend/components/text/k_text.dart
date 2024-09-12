@@ -79,5 +79,6 @@ Text kText(BuildContext context, String text, KTStyle? style, KTSType? type,
     text,
     style: getTextStyle(context, style, type, color, fontWeight: fontWeight),
     textAlign: align,
+    overflow: TextOverflow.ellipsis,
   );
 }

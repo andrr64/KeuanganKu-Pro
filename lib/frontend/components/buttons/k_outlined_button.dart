@@ -50,8 +50,14 @@ OutlinedButton KOutlinedButton(
   if (icon != null) {
     return OutlinedButton.icon(
       onPressed: onPressed,
-      label: Text(text),
-      icon: icon,
+      label: Text(
+        text,
+        style: const TextStyle(fontSize: 12),
+      ),
+      icon: Icon(
+        icon.icon,
+        size: icon.size ?? 16,
+      ),
       style: style,
     );
   }
@@ -59,8 +65,11 @@ OutlinedButton KOutlinedButton(
     onPressed: onPressed,
     style: style,
     child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: paddingHorizontal?? 0),
-      child: Text(text),
+      padding: EdgeInsets.symmetric(horizontal: paddingHorizontal ?? 0),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 12),
+      ),
     ),
   );
 }

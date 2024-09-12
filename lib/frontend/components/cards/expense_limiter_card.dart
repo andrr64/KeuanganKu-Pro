@@ -3,25 +3,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/expense_limiter.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
-import 'package:keuanganku/frontend/app/forms/expense_limiter_form.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
-import 'package:keuanganku/frontend/components/buttons/k_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/math_operation.dart';
-import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseLimiterCard extends HookConsumerWidget {
-  const ExpenseLimiterCard({
-    super.key, 
-    required this.limiter_data,
-    required this.expenseCategories,
-    required this.wallets,
-    required this.callbackWhenNewLimiterSaved
-  });
+  const ExpenseLimiterCard(
+      {super.key,
+      required this.limiter_data,
+      required this.expenseCategories,
+      required this.wallets,
+      required this.callbackWhenNewLimiterSaved});
   final void Function(DBModelExpenseLimiter) callbackWhenNewLimiterSaved;
   final List<DBModelExpenseLimiter> limiter_data;
   final List<DBModelExpenseCategory> expenseCategories;
@@ -64,8 +60,8 @@ class ExpenseLimiterCard extends HookConsumerWidget {
                       width: MediaQuery.sizeOf(context).width * 0.7,
                       child: Text(
                         'Excess is not good, limit your spending.',
-                        style: getTextStyle(
-                            context, KTStyle.label, KTSType.medium, Colors.white),
+                        style: getTextStyle(context, KTStyle.label,
+                            KTSType.medium, Colors.white),
                       ),
                     ),
                   ],
@@ -75,13 +71,19 @@ class ExpenseLimiterCard extends HookConsumerWidget {
             dummyHeight(10),
             ...buildLimiter(context, ref),
             dummyHeight(10),
-            k_button(context, () {
-              openPage(context, ExpenseLimiterForm(expenseCategories: expenseCategories, wallets: wallets, callbackWhenDataSaved: callbackWhenNewLimiterSaved));
-            },
-                mainColor: Colors.white24,
-                withoutBg: true,
-                iconColor: Colors.white,
-                text: 'Add Limiter')
+            ///TODO: add button
+            // k_button(context, () {
+            //   openPage(
+            //       context,
+            //       ExpenseLimiterForm(
+            //           expenseCategories: expenseCategories,
+            //           wallets: wallets,
+            //           callbackWhenDataSaved: callbackWhenNewLimiterSaved));
+            // },
+                // mainColor: Colors.white24,
+                // withoutBg: true,
+                // iconColor: Colors.white,
+                // text: 'Add Limiter')
           ],
         ));
   }
@@ -96,22 +98,20 @@ class ExpenseLimiterCard extends HookConsumerWidget {
       ];
     }
     List<Widget> limiterWidget = [];
-    for (var e in limiter_data){
-      final wallet = e.wallet_id == 0? DBModelWallet(name: 'General') : walletNotifier.getById(e.wallet_id);
-      if (e.category != null){
-        limiterWidget.add(buildLimiterInfoWidget(
-          context, 
-          limiter: e, 
-          category: e.category!, 
-          wallet: wallet
-        ));
+    for (var e in limiter_data) {
+      final wallet = e.wallet_id == 0
+          ? DBModelWallet(name: 'General')
+          : walletNotifier.getById(e.wallet_id);
+      if (e.category != null) {
+        limiterWidget.add(buildLimiterInfoWidget(context,
+            limiter: e, category: e.category!, wallet: wallet));
       }
     }
     return limiterWidget;
   }
+
   Widget buildBar(BuildContext context, double percentage) {
     final bar_width = MediaQuery.sizeOf(context).width * 0.75;
-
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -131,7 +131,9 @@ class ExpenseLimiterCard extends HookConsumerWidget {
       ],
     );
   }
-  Widget buildLimiterInfoWidget(BuildContext context, {
+
+  Widget buildLimiterInfoWidget(
+    BuildContext context, {
     required DBModelExpenseLimiter limiter,
     required DBModelExpenseCategory category,
     required DBModelWallet wallet,
@@ -141,7 +143,8 @@ class ExpenseLimiterCard extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
         width: width,
-        decoration: BoxDecoration( color: Colors.white12, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: Colors.white12, borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(12.5),
           child: Column(
@@ -186,7 +189,8 @@ class ExpenseLimiterCard extends HookConsumerWidget {
                 ],
               ),
               dummyHeight(10),
-              buildBar(context, getPercentage(limiter.current_amount, limiter.limit_amount)),
+              buildBar(context,
+                  getPercentage(limiter.current_amount, limiter.limit_amount)),
             ],
           ),
         ),
@@ -196,12 +200,10 @@ class ExpenseLimiterCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return KCardPlus(
+    return KContainer(
       context,
-      buildContent(context, ref),
-      title: 'Expense Limiter',
-      color: bgColor,
-      withoutTitle: true,
+      child: buildContent(context, ref),
+      backgroundColor: bgColor,
     );
   }
 }

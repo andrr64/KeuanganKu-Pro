@@ -17,9 +17,7 @@ class WalletCard extends StatelessWidget {
       child: GestureDetector(
         child: Container(
             decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.circular(10)
-            ),
+                color: Colors.white12, borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
@@ -32,14 +30,17 @@ class WalletCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          kText(context, wallet.name!, KTStyle.label, KTSType.large,
-                              color: Colors.white),
+                          kText(context, wallet.name!, KTStyle.label,
+                              KTSType.large,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal),
                           kText(
                               context,
                               currencyFormat(
                                   wallet.total_income! - wallet.total_expense!),
                               KTStyle.label,
                               KTSType.medium,
+                              fontWeight: FontWeight.w400,
                               color: Colors.white),
                         ],
                       ),
@@ -51,7 +52,8 @@ class WalletCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
+            )
+          ),
       ),
     );
   }

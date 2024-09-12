@@ -79,31 +79,38 @@ class ExpenseCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: vw(context, 40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [...buildTitle()],
+              Expanded(
+                flex: 11,
+                child: SizedBox(
+                  width: vw(context, 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [...buildTitle()],
+                  ),
                 ),
               ),
-              SizedBox(
-                width: vw(context, 30),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: kDropdown(
-                    context,
-                    items: TimePeriod.values,
-                    itemsAsString:
-                        TimePeriod.values.map((e) => e.dropdownString).toList(),
-                    value: dateRange,
-                    borderColor: Colors.white60,
-                    foregroundColor: Colors.white,
-                    borderWidth: 0.25,
-                    backgroundColor: generated3color[1],
-                    dropdownTextColor: Colors.white,
-                    onChanged: callbackWhenDateChange,
-                    label: 'Period',
+              Expanded(
+                flex: 9,
+                child: SizedBox(
+                  width: vw(context, 30),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: kDropdown(
+                      context,
+                      items: TimePeriod.values,
+                      itemsAsString: TimePeriod.values
+                          .map((e) => e.dropdownString)
+                          .toList(),
+                      value: dateRange,
+                      borderColor: Colors.white60,
+                      foregroundColor: Colors.white,
+                      borderWidth: 0.25,
+                      backgroundColor: generated3color[1],
+                      dropdownTextColor: Colors.white,
+                      onChanged: callbackWhenDateChange,
+                      label: 'Period',
+                    ),
                   ),
                 ),
               ),
@@ -112,32 +119,37 @@ class ExpenseCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  kText(
-                    context,
-                    dateRange.label,
-                    KTStyle.label,
-                    KTSType.medium,
-                    color: Colors.white,
-                  ),
-                  kText(
-                    context,
-                    currencyFormat(expenseAmount),
-                    KTStyle.title,
-                    KTSType.large,
-                    color: Colors.white,
-                  ),
-                ],
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    kText(
+                      context,
+                      dateRange.label,
+                      KTStyle.label,
+                      KTSType.medium,
+                      color: Colors.white,
+                    ),
+                    kText(
+                      context,
+                      currencyFormat(expenseAmount),
+                      KTStyle.title,
+                      KTSType.large,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
-              KOutlinedButton(
-                  onPressed: () => whenAddButtonPressed(context),
-                  text: 'Add',
-                  color: Colors.white12,
-                  textColor: Colors.white,
-                  icon: const Icon(FluentIcons.add_12_filled),
-                  withOutline: false),
+              Expanded(
+                child: KOutlinedButton(
+                    onPressed: () => whenAddButtonPressed(context),
+                    text: 'Add',
+                    color: Colors.white12,
+                    textColor: Colors.white,
+                    icon: const Icon(FluentIcons.add_12_filled),
+                    withOutline: false),
+              ),
             ],
           ),
           dummyHeight(5),
@@ -160,12 +172,10 @@ class ExpenseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KCardPlus(
+    return KContainer(
       context,
-      buildContent(context),
-      title: 'Expense',
-      withoutTitle: true,
-      color: baseColor_dark_red,
+      child: buildContent(context),
+      backgroundColor: baseColor_dark_red,
     );
   }
 }

@@ -8,10 +8,10 @@ import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
+import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
-import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
@@ -36,17 +36,17 @@ class IncomeCard extends StatelessWidget {
 
   final Color backgroundColor = const Color(0xff1B4242);
 
-  Widget buildContent(BuildContext context) {
-    List<Widget> buildTitle() {
-      const TEXT = ['Income', 'Lorem ipsum.'];
-      return [
-        kText(context, TEXT[0], KTStyle.title, KTSType.large,
-            fontWeight: FontWeight.w500, color: Colors.white),
-        kText(context, TEXT[1], KTStyle.label, KTSType.medium,
-            color: Colors.white),
-      ];
-    }
+  List<Widget> buildTitle(BuildContext context) {
+    const TEXT = ['Income', 'Lorem ipsum.'];
+    return [
+      kText(context, TEXT[0], KTStyle.title, KTSType.large,
+          fontWeight: FontWeight.w500, color: Colors.white),
+      kText(context, TEXT[1], KTStyle.label, KTSType.medium,
+          color: Colors.white),
+    ];
+  }
 
+  Widget buildContent(BuildContext context) {
     final List<Color> generated3color = generate3Color(backgroundColor);
 
     return Padding(
@@ -59,32 +59,37 @@ class IncomeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: vw(context, 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [...buildTitle()],
+                Expanded(
+                  flex: 11,
+                  child: SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          kContainerHeading(context, ['Income', 'lorem ipsum']),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: vw(context, 30),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: kDropdown(
-                      context,
-                      items: TimePeriod.values,
-                      itemsAsString: TimePeriod.values
-                          .map((e) => e.dropdownString)
-                          .toList(),
-                      value: dateRange,
-                      borderColor: Colors.white60,
-                      foregroundColor: Colors.white,
-                      borderWidth: 0.25,
-                      backgroundColor: generated3color[1],
-                      dropdownTextColor: Colors.white,
-                      onChanged: whenDropdownDateRangeChange,
-                      label: 'Period',
+                Expanded(
+                  flex: 9,
+                  child: SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: kDropdown(
+                        context,
+                        items: TimePeriod.values,
+                        itemsAsString: TimePeriod.values
+                            .map((e) => e.dropdownString)
+                            .toList(),
+                        value: dateRange,
+                        borderColor: Colors.white60,
+                        foregroundColor: Colors.white,
+                        borderWidth: 0.25,
+                        backgroundColor: generated3color[1],
+                        dropdownTextColor: Colors.white,
+                        onChanged: whenDropdownDateRangeChange,
+                        label: 'Period',
+                      ),
                     ),
                   ),
                 ),
@@ -94,32 +99,40 @@ class IncomeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    kText(
-                      context,
-                      dateRange.label,
-                      KTStyle.label,
-                      KTSType.medium,
-                      color: Colors.white,
-                    ),
-                    kText(
-                      context,
-                      currencyFormat(incomesAmount),
-                      KTStyle.title,
-                      KTSType.large,
-                      color: Colors.white,
-                    ),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      kText(
+                        context,
+                        dateRange.label,
+                        KTStyle.label,
+                        KTSType.medium,
+                        color: Colors.white,
+                      ),
+                      kText(
+                        context,
+                        currencyFormat(incomesAmount),
+                        KTStyle.title,
+                        KTSType.large,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
-                KOutlinedButton(
-                    onPressed: () => whenAddButtonPressed(context),
-                    text: 'Add',
-                    color: Colors.white12,
-                    textColor: Colors.white,
-                    icon: const Icon(FluentIcons.add_12_filled),
-                    withOutline: false),
+                Expanded(
+                  child: KOutlinedButton(
+                      onPressed: () => whenAddButtonPressed(context),
+                      text: 'Add',
+                      color: Colors.white12,
+                      textColor: Colors.white,
+                      icon: const Icon(
+                        FluentIcons.add_12_filled,
+                        size: 16,
+                      ),
+                      withOutline: false),
+                ),
               ],
             ),
             Center(
@@ -133,7 +146,7 @@ class IncomeCard extends StatelessWidget {
                   withOutline: false,
                   textColor: Colors.white),
             ),
-            dummyHeight(10),
+            vspace_10,
           ],
         ));
   }
@@ -155,12 +168,10 @@ class IncomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KCardPlus(
+    return KContainer(
       context,
-      buildContent(context),
-      title: 'Income',
-      withoutTitle: true,
-      color: backgroundColor,
+      child: buildContent(context),
+      backgroundColor: backgroundColor,
     );
   }
 }

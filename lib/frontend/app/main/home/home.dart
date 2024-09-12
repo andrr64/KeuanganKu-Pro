@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/model/expense.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
+import 'package:keuanganku/frontend/app/main/home/widgets/greeting.dart';
+import 'package:keuanganku/frontend/app/main/home/widgets/total_balance.dart';
 import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/home/home_provider.dart';
 import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
 import 'package:keuanganku/frontend/app/main/page_padding.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
-import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/cards/balance_card.dart';
 import 'package:keuanganku/frontend/components/cards/expense_card.dart';
 import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/spacer/v_space.dart';
-import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/components/utility/currency_format.dart';
-import 'package:keuanganku/frontend/components/utility/space_x.dart';
 
 bool _initPage = false;
 late WidgetRef _ref;
@@ -51,54 +49,9 @@ class Homepage extends HookConsumerWidget {
       children: [
         vspace_25,
         vspace_10,
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const CircleAvatar(),
-            dummyWidth(22.5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Hi, Andreas',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      color: fontColor_black),
-                ),
-                kText(context, 'Welcome back!', KTStyle.title, KTSType.small,
-                    fontWeight: FontWeight.normal, color: fontColor_grey),
-              ],
-            ),
-          ],
-        ),
+        const Greeting(),
         vspace_25,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                kText(context, 'Total Balance', KTStyle.title, KTSType.small,
-                    fontWeight: FontWeight.w500, color: fontColor_grey),
-                SizedBox(
-                  width: vw(context, 70),
-                  child: Text(
-                    currencyFormat(walletsProviderNotifier.totalBalance),
-                    style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: fontColor_black),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                )
-              ],
-            ),
-            const CircleAvatar(
-              backgroundColor: Colors.redAccent,
-            )
-          ],
-        ),
+        TotalBalance(totalBalance: walletsProviderNotifier.totalBalance),
         vspace_25,
         const BalanceCard(),
         vspace_12_5,

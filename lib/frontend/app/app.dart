@@ -1,49 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keuanganku/frontend/app/bottom_nav_bar.dart';
 import 'package:keuanganku/frontend/app/drawer.dart';
-import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/keep_alive.dart';
+import 'package:keuanganku/frontend/app/main/wallet/wallet.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
-import 'package:keuanganku/frontend/app/providers/expense_limiter.dart';
-import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
-import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
-import 'package:keuanganku/frontend/utility/future.dart';
-import 'package:keuanganku/main.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
+final pageIndexProvider = StateProvider<int>((ref) => 0);
+final pages = [
+  const KeepAlivePage(child: Homepage()),
+  const KeepAlivePage(child: WalletPage())
+];
+final pageViewControllerProvider =
+    StateProvider<PageController>((_) => PageController());
 
 class KeuanganKuPro extends HookConsumerWidget {
   const KeuanganKuPro({super.key});
 
-  Future<void> initData(BuildContext context, WidgetRef ref) async {
-    // Initialize Global Data
-    ref.watch(globalWalletsProvider.notifier).initData();
-    ref.watch(globalIncomeCategoriesProvider.notifier).initData();
-    ref.watch(globalExpenseCategoriesProvider.notifier).initData();
-    ref.watch(globalExpenseLimiterNotifierProvider.notifier).initData();
-
-    ///TODO: uncomment
-    // Initialize Main Page Data
-    // INITDATA_AnalysisPage(context, ref);
-    INITDATA_HomePage(context, ref);
-    // INITDATA_WalletPage(context, ref);
+  void whenBottomBarPressed(int index, WidgetRef ref) {
+    ref.read(pageIndexProvider.notifier).state = index;
+    ref.read(pageViewControllerProvider).jumpToPage(index);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.white));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+
     return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Colors.white,
-      drawer: appDrawer(context),
-      body: kFutureBuilder<void>(
-        futureFunction: initData(context, ref),
-        wxWhenError: (err) => AppError(error: err.toString()),
-        wxWhenSuccess: (_) => const Homepage(),
-        wxWhenWaiting: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
+        key: scaffoldKey,
+        backgroundColor: Colors.white,
+        drawer: appDrawer(context),
+        bottomNavigationBar: KBottomNavigationBar(
+            index: ref.watch(pageIndexProvider),
+            callback: (val) => whenBottomBarPressed(val, ref)),
+        body: PageView(
+          controller: ref.watch(pageViewControllerProvider),
+          children: pages,
+          onPageChanged: (val) {
+            ref.watch(pageIndexProvider.notifier).state = val;
+          },
+        ));
   }
 }

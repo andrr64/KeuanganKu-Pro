@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/database_services.dart';
 import 'package:keuanganku/frontend/app/app.dart';
 import 'package:keuanganku/frontend/app/content_when_x.dart';
+import 'package:keuanganku/frontend/app/main/home/home.dart';
+import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/expense_limiter.dart';
+import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
+import 'package:keuanganku/frontend/utility/future.dart';
 
 DatabaseServices db = DatabaseServices();
 
@@ -30,14 +37,34 @@ class AppError extends StatelessWidget {
   }
 }
 
-class App extends StatelessWidget {
+class App extends HookConsumerWidget {
   const App({super.key});
+  Future<void> initData(BuildContext context, WidgetRef ref) async {
+    // Initialize Global Data
+    ref.watch(globalWalletsProvider.notifier).initData();
+    ref.watch(globalIncomeCategoriesProvider.notifier).initData();
+    ref.watch(globalExpenseCategoriesProvider.notifier).initData();
+    ref.watch(globalExpenseLimiterNotifierProvider.notifier).initData();
+
+    ///TODO: uncomment
+    // Initialize Main Page Data
+    // INITDATA_AnalysisPage(context, ref);
+    INITDATA_HomePage(context, ref);
+    // INITDATA_WalletPage(context, ref);
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'KeuanganKu Pro',
-      home: const KeuanganKuPro(),
+      home: kFutureBuilder<void>(
+        futureFunction: initData(context, ref),
+        wxWhenError: (err) => AppError(error: err.toString()),
+        wxWhenSuccess: (_) => const KeuanganKuPro(),
+        wxWhenWaiting: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
       theme: light_theme,
     );
   }

@@ -21,14 +21,10 @@ class KeuanganKuPro extends HookConsumerWidget {
 
   void whenBottomBarPressed(int index, WidgetRef ref) {
     ref.read(pageIndexProvider.notifier).state = index;
-    ref.read(pageViewControllerProvider).jumpToPage(index);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
-
     return Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -36,12 +32,6 @@ class KeuanganKuPro extends HookConsumerWidget {
         bottomNavigationBar: KBottomNavigationBar(
             index: ref.watch(pageIndexProvider),
             callback: (val) => whenBottomBarPressed(val, ref)),
-        body: PageView(
-          controller: ref.watch(pageViewControllerProvider),
-          children: pages,
-          onPageChanged: (val) {
-            ref.watch(pageIndexProvider.notifier).state = val;
-          },
-        ));
+        body: pages[ref.watch(pageIndexProvider)]);
   }
 }

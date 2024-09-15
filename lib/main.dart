@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/database_services.dart';
@@ -14,11 +15,11 @@ import 'package:keuanganku/frontend/utility/future.dart';
 
 DatabaseServices db = DatabaseServices();
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await db.openDb();
-  } catch (err){
+  } catch (err) {
     runApp(AppError(error: err));
     return;
   }
@@ -55,6 +56,11 @@ class App extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.white, // Transparent status bar
+      statusBarIconBrightness: Brightness.dark, // Dark text for status bar
+    ));
+
     return MaterialApp(
       title: 'KeuanganKu Pro',
       home: kFutureBuilder<void>(

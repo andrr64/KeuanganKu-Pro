@@ -10,9 +10,9 @@ import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
+import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
-import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseLimiterForm extends StatefulWidget {
@@ -95,30 +95,17 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
   }
 
   List<Widget> fields(BuildContext context) {
-    final SPACE = dummyHeight(22.5);
     return [
-      SPACE,
+      vspace_22_5,
       kNumField(context,
           title: 'Limit Amount',
           controller: limitAmountController,
           icon: const Icon(Icons.attach_money),
           maxVal: 10000000000),
-      SPACE,
+      vspace_22_5,
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: vw(context, 35),
-            child: kDropdown<TimePeriod>(context,
-                items: TimePeriod.values,
-                itemsAsString:
-                    TimePeriod.values.map((x) => x.dropdownString).toList(),
-                value: periodController,
-                onChanged: handlePeriod,
-                label: 'Period'),
-          ),
-          SizedBox(
-            width: vw(context, 50),
+          Expanded(
             child: kDropdown<DBModelWallet>(
               context,
               label: 'Wallet',
@@ -128,9 +115,20 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
               onChanged: handleWalletChanged,
             ),
           ),
+          dummyWidth(10), // Memberi jarak antara kedua dropdown
+          Expanded(
+            child: kDropdown<TimePeriod>(
+              context,
+              label: 'Period',
+              items: TimePeriod.values,
+              itemsAsString: TimePeriod.values.map((e) => e.label).toList(),
+              value: periodController,
+              onChanged: handlePeriod,
+            ),
+          ),
         ],
       ),
-      SPACE,
+      vspace_22_5,
     ];
   }
 
@@ -156,7 +154,7 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
                     color: baseColor_dark_red,
                     text: 'Clear'),
               ],
-            )
+            ),
           ],
         ));
   }

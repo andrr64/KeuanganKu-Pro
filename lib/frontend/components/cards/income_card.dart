@@ -108,6 +108,7 @@ class IncomeCard extends StatelessWidget {
                         context,
                         dateRange.label,
                         KTStyle.label,
+                        fontWeight: FontWeight.w400,
                         KTSType.medium,
                         color: Colors.white,
                       ),

@@ -1,15 +1,19 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
 import 'package:keuanganku/backend/database/model/expense_limiter.dart';
 import 'package:keuanganku/backend/database/model/wallet.dart';
+import 'package:keuanganku/frontend/app/forms/expense_limiter_form.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
+import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/cards/k_card_plus.dart';
 import 'package:keuanganku/frontend/components/empty_data.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/currency_format.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/math_operation.dart';
+import 'package:keuanganku/frontend/utility/page.dart';
 
 class ExpenseLimiterCard extends HookConsumerWidget {
   const ExpenseLimiterCard(
@@ -42,35 +46,32 @@ class ExpenseLimiterCard extends HookConsumerWidget {
         child: Column(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Expense Limiter',
-                      style: getTextStyle(
-                          context, KTStyle.title, KTSType.large, Colors.white),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width * 0.7,
-                      child: Text(
-                        'Excess is not good, limit your spending.',
-                        style: getTextStyle(context, KTStyle.label,
-                            KTSType.medium, Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
+                ...kContainerHeading(context, const [
+                  'Expense Limiter',
+                  'Excess is not good, limit your spending.'
+                ]),
               ],
             ),
             dummyHeight(10),
             ...buildLimiter(context, ref),
             dummyHeight(10),
+            KOutlinedButton(
+                onPressed: () {
+                  openPage(
+                      context,
+                      ExpenseLimiterForm(
+                          expenseCategories: expenseCategories,
+                          wallets: wallets,
+                          callbackWhenDataSaved: callbackWhenNewLimiterSaved));
+                },
+                color: Colors.white12,
+                withOutline: false,
+                textColor: Colors.white,
+                icon: const Icon(FluentIcons.add_12_filled),
+                text: 'Add Limiter')
+
             ///TODO: add button
             // k_button(context, () {
             //   openPage(
@@ -80,10 +81,10 @@ class ExpenseLimiterCard extends HookConsumerWidget {
             //           wallets: wallets,
             //           callbackWhenDataSaved: callbackWhenNewLimiterSaved));
             // },
-                // mainColor: Colors.white24,
-                // withoutBg: true,
-                // iconColor: Colors.white,
-                // text: 'Add Limiter')
+            // mainColor: Colors.white24,
+            // withoutBg: true,
+            // iconColor: Colors.white,
+            // text: 'Add Limiter')
           ],
         ));
   }

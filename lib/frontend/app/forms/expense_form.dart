@@ -220,7 +220,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
         }).toList(),
         value: walletController,
         onChanged: (e) {
-          if (e != null) walletController = e;
+          walletController = e?? walletController;
         },
       ),
       dummyHeight(22.5),

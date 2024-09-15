@@ -59,16 +59,6 @@ class ExpenseCard extends StatelessWidget {
   Widget buildContent(BuildContext context) {
     List<Color> generated3color = generate3Color(baseColor_dark_red);
 
-    List<Widget> buildTitle() {
-      const TEXT = ['Expense', 'Lorem ipsum'];
-      return [
-        kText(context, TEXT[0], KTStyle.title, KTSType.large,
-            fontWeight: FontWeight.w500, color: Colors.white),
-        kText(context, TEXT[1], KTStyle.label, KTSType.medium,
-            color: Colors.white),
-      ];
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 22.5),
       child: Column(
@@ -86,7 +76,8 @@ class ExpenseCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [...buildTitle()],
+                    children: kContainerHeading(
+                        context, const ['Expense', 'Lorem ipsum']),
                   ),
                 ),
               ),
@@ -129,6 +120,7 @@ class ExpenseCard extends StatelessWidget {
                       dateRange.label,
                       KTStyle.label,
                       KTSType.medium,
+                      fontWeight: FontWeight.w400,
                       color: Colors.white,
                     ),
                     kText(

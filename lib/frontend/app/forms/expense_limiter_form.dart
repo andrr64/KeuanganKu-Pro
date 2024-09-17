@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/expense_limiter.dart';
 import 'package:keuanganku/backend/database/model/expense_category.dart';
@@ -37,13 +38,17 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
   late DBModelWallet walletController;
   late DBModelExpenseCategory expenseCategoryController;
   late List<DBModelWallet> walletDropDown;
+  late List<DBModelExpenseCategory> expenseCategoryDropdown;
 
   @override
   void initState() {
     limitAmountController = TextEditingController();
+    expenseCategoryDropdown = List.from(widget.expenseCategories);
     walletDropDown = List.from(widget.wallets);
+
     walletDropDown.add(DBModelWallet(id: 0, name: 'General'));
-    expenseCategoryController = widget.expenseCategories[0];
+
+    expenseCategoryController = expenseCategoryDropdown[0];
     walletController = walletDropDown[0];
     super.initState();
   }
@@ -126,6 +131,31 @@ class _ExpenseLimiterFormState extends State<ExpenseLimiterForm> {
               onChanged: handlePeriod,
             ),
           ),
+        ],
+      ),
+      vspace_22_5,
+      Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: kDropdown<DBModelExpenseCategory>(context,
+                items: widget.expenseCategories,
+                itemsAsString:
+                    widget.expenseCategories.map((e) => e.name!).toList(),
+                value: expenseCategoryController,
+                onChanged: (e) =>
+                    expenseCategoryController = e ?? expenseCategoryController,
+                label: 'Categories to Limit'),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Expanded(
+              flex: 2,
+              child: KOutlinedButton(
+                  onPressed: () {},
+                  text: 'Add',
+                  icon: const Icon(FluentIcons.add_16_filled)))
         ],
       ),
       vspace_22_5,

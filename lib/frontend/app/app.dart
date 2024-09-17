@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keuanganku/frontend/app/bottom_nav_bar.dart';
 import 'package:keuanganku/frontend/app/drawer.dart';
-import 'package:keuanganku/frontend/app/keep_alive.dart';
 import 'package:keuanganku/frontend/app/main/wallet/wallet.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
 final pageIndexProvider = StateProvider<int>((ref) => 0);
 final pages = [
-  const KeepAlivePage(child: Homepage()),
-  const KeepAlivePage(child: WalletPage())
+  const Homepage(),
+  const WalletPage()
 ];
+final pageNames = ['Home', 'Wallets', 'Analysis'];
 final pageViewControllerProvider =
     StateProvider<PageController>((_) => PageController());
 
@@ -24,13 +24,20 @@ class KeuanganKuPro extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pageIndex = ref.watch(pageIndexProvider);
     return Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
         drawer: appDrawer(context),
+        appBar: pageIndex == 0
+            ? null
+            : AppBar(
+                centerTitle: true,
+                title: Text(pageNames[pageIndex]),
+              ),
         bottomNavigationBar: KBottomNavigationBar(
-            index: ref.watch(pageIndexProvider),
+            index: pageIndex,
             callback: (val) => whenBottomBarPressed(val, ref)),
-        body: pages[ref.watch(pageIndexProvider)]);
+        body: pages[pageIndex]);
   }
 }

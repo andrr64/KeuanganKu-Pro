@@ -44,47 +44,36 @@ class ExpenseLimiterCard extends HookConsumerWidget {
     return Padding(
         padding: const EdgeInsets.all(22.5),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...kContainerHeading(context, const [
-                  'Expense Limiter',
-                  'Excess is not good, limit your spending.'
-                ]),
-              ],
-            ),
-            dummyHeight(10),
-            ...buildLimiter(context, ref),
-            dummyHeight(10),
-            KOutlinedButton(
-                onPressed: () {
-                  openPage(
-                      context,
-                      ExpenseLimiterForm(
-                          expenseCategories: expenseCategories,
-                          wallets: wallets,
-                          callbackWhenDataSaved: callbackWhenNewLimiterSaved));
-                },
-                color: Colors.white12,
-                withOutline: false,
-                textColor: Colors.white,
-                icon: const Icon(FluentIcons.add_12_filled),
-                text: 'Add Limiter')
-
-            ///TODO: add button
-            // k_button(context, () {
-            //   openPage(
-            //       context,
-            //       ExpenseLimiterForm(
-            //           expenseCategories: expenseCategories,
-            //           wallets: wallets,
-            //           callbackWhenDataSaved: callbackWhenNewLimiterSaved));
-            // },
-            // mainColor: Colors.white24,
-            // withoutBg: true,
-            // iconColor: Colors.white,
-            // text: 'Add Limiter')
+            ...kContainerHeading(context, const [
+              'Expense Limiter',
+              'Excess is not good, limit your spending.'
+            ]),
+            Center(
+              child: Column(
+                children: [
+                  dummyHeight(10),
+                  ...buildLimiter(context, ref),
+                  dummyHeight(10),
+                  KOutlinedButton(
+                      onPressed: () {
+                        openPage(
+                            context,
+                            ExpenseLimiterForm(
+                                expenseCategories: expenseCategories,
+                                wallets: wallets,
+                                callbackWhenDataSaved:
+                                    callbackWhenNewLimiterSaved));
+                      },
+                      color: Colors.white12,
+                      withOutline: false,
+                      textColor: Colors.white,
+                      icon: const Icon(FluentIcons.add_12_filled),
+                      text: 'Add Limiter')
+                ],
+              ),
+            )
           ],
         ));
   }

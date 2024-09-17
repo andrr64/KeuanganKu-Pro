@@ -3,6 +3,7 @@ import 'package:keuanganku/backend/database/helper/expense_category.dart';
 import 'package:keuanganku/backend/database/helper/expense_limiter.dart';
 import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/backend/database/helper/income_category.dart';
+import 'package:keuanganku/backend/database/helper/userdata.dart';
 import 'package:keuanganku/backend/database/helper/wallet.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -22,6 +23,7 @@ class DatabaseServices {
     DBHelperIncomeCategory().checkIfNotExistThenCreate(db);
 
     DBHelperExpenseLimiter().checkIfNotExistThenCreate(db);
+    DBHelperUserdata().checkIfNotExistThenCreate(db);
   }
 
   Future<void> openDb() async {

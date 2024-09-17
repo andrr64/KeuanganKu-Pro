@@ -9,3 +9,7 @@ void openPage(BuildContext context, Widget widget){
 void closePage(BuildContext context){
   Navigator.pop(context);
 }
+
+void changePage(BuildContext context, Widget widget){
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => widget));
+}

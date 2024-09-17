@@ -17,7 +17,7 @@ Widget contentWhenError(BuildContext context, Object? error) {
           children: [
             const Icon(Icons.warning, color: Colors.red, size:80,),
             kText(context,align: TextAlign.center, 'Something wrong...', KTStyle.title, KTSType.large),
-            kText(context,align: TextAlign.center, '$error', KTStyle.body, KTSType.medium),
+            kText(context,align: TextAlign.center, '$error', KTStyle.body, KTSType.medium, overflow: TextOverflow.visible),
           ],
         ),
       )

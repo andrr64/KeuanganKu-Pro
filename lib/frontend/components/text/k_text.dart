@@ -72,13 +72,13 @@ TextStyle getTextStyle(
 }
 
 Text kText(BuildContext context, String text, KTStyle? style, KTSType? type,
-    {Color color = fontColor_black, TextAlign? align, FontWeight? fontWeight}) {
+    {Color color = fontColor_black, TextAlign? align, FontWeight? fontWeight, TextOverflow? overflow}) {
   type = type ?? KTSType.medium;
   style = style ?? KTStyle.label;
   return Text(
     text,
     style: getTextStyle(context, style, type, color, fontWeight: fontWeight),
     textAlign: align,
-    overflow: TextOverflow.ellipsis,
+    overflow: overflow?? TextOverflow.ellipsis,
   );
 }

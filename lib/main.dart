@@ -5,9 +5,11 @@ import 'package:keuanganku/backend/database/database_services.dart';
 import 'package:keuanganku/frontend/app/app.dart';
 import 'package:keuanganku/frontend/app/content_when_x.dart';
 import 'package:keuanganku/frontend/app/main/home/home.dart';
+import 'package:keuanganku/frontend/app/main/introduction/intro.dart';
 import 'package:keuanganku/frontend/app/providers/expense_category_provider.dart';
 import 'package:keuanganku/frontend/app/providers/expense_limiter.dart';
 import 'package:keuanganku/frontend/app/providers/income_category_provider.dart';
+import 'package:keuanganku/frontend/app/providers/userdata_provider.dart';
 import 'package:keuanganku/frontend/app/providers/wallet_provider.dart';
 import 'package:keuanganku/frontend/themes/light_theme.dart';
 import 'package:keuanganku/frontend/utility/future.dart';
@@ -39,12 +41,14 @@ class AppError extends StatelessWidget {
 
 class App extends HookConsumerWidget {
   const App({super.key});
+
   Future<void> initData(BuildContext context, WidgetRef ref) async {
     // Initialize Global Data
     ref.watch(globalWalletsProvider.notifier).initData();
     ref.watch(globalIncomeCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseCategoriesProvider.notifier).initData();
     ref.watch(globalExpenseLimiterNotifierProvider.notifier).initData();
+    await ref.watch(globalUserdataProvider.notifier).initData();
 
     ///TODO: uncomment
     // Initialize Main Page Data
@@ -55,17 +59,19 @@ class App extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white, // Transparent status bar
-      statusBarIconBrightness: Brightness.dark, // Dark text for status bar
-    ));
-
     return MaterialApp(
       title: 'KeuanganKu Pro',
       home: kFutureBuilder<void>(
         futureFunction: initData(context, ref),
         wxWhenError: (err) => AppError(error: err.toString()),
-        wxWhenSuccess: (_) => const KeuanganKuPro(),
+        wxWhenSuccess: (_) {
+          final userData = ref.watch(globalUserdataProvider);
+          if (userData.invalid){
+            return const IntroPage();
+          } else {
+            return const KeuanganKuPro();
+          }
+        },
         wxWhenWaiting: const Center(
           child: CircularProgressIndicator(),
         ),

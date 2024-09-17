@@ -4,8 +4,11 @@ import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 
 class Greeting extends StatelessWidget {
-  const Greeting({super.key});
+  const Greeting({super.key, required this.userName});
+
+  final String userName;
   ///TODO: add requirements attribute
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -16,9 +19,9 @@ class Greeting extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Hi, Andreas',
-              style: TextStyle(
+            Text(
+              'Hi, $userName',
+              style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.normal,
                   color: fontColor_black),

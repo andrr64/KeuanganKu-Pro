@@ -22,7 +22,7 @@ class TotalBalance extends StatelessWidget {
                 width: double.infinity,
                 child: kText(
                     context, 'Total Balance', KTStyle.title, KTSType.small,
-                    color: fontColor_grey),
+                    color: fontColor_grey, fontWeight: FontWeight.normal),
               ),
               SizedBox(
                 width: double.infinity,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const vspace_5 = SizedBox(
+  height: 5,
+);
+
 const vspace_10 = SizedBox(
   height: 10,
 );

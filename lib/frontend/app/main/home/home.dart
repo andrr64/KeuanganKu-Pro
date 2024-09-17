@@ -17,23 +17,6 @@ import 'package:keuanganku/frontend/components/cards/income_card.dart';
 import 'package:keuanganku/enum/time_period.dart';
 import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 
-bool _initPage = false;
-late WidgetRef _ref;
-
-Future<void> REFRESH_HomePage() async {
-  if (_initPage) {
-    await _ref.watch(homepageProvider.notifier).initData();
-  }
-}
-
-void INITDATA_HomePage(BuildContext context, WidgetRef ref) async {
-  if (!_initPage) {
-    _ref = ref;
-    await _ref.watch(homepageProvider.notifier).initData();
-    _initPage = true;
-  }
-}
-
 class Homepage extends HookConsumerWidget {
   const Homepage({super.key});
 
@@ -69,20 +52,20 @@ class Homepage extends HookConsumerWidget {
     );
   }
 
-  void callbackWhenIncomeCardDateChange(TimePeriod val, WidgetRef ref) {
+  void callbackWhenIncomeCardTimePeriodChanged(TimePeriod val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setIncomeCardDateRange(val);
   }
 
-  void callbackWhenExpenseCardDateChange(TimePeriod? val, WidgetRef ref) {
+  void callbackWhenExpenseCardTimePeriodChanged(TimePeriod? val, WidgetRef ref) {
     ref.read(homepageProvider.notifier).setExpenseCardDateRange(val!);
   }
 
   Widget buildIncomeCard(BuildContext context, WidgetRef ref) {
     return IncomeCard(
-      dateRange: ref.watch(homepageProvider).incomesDateRange,
-      incomesAmount: ref.watch(homepageProvider).incomesAmount,
+      dateRange: ref.watch(homepageProvider).incomeCardTimePeriod,
+      incomesAmount: ref.watch(homepageProvider).incomeAmount,
       callbackWhenDateChange: (val) =>
-          callbackWhenIncomeCardDateChange(val, ref),
+          callbackWhenIncomeCardTimePeriodChanged(val, ref),
       wallets: ref.watch(globalWalletsProvider),
       incomeCategories: ref.watch(globalIncomeCategoriesProvider),
       callbackWhenNewIncomeSaved: (newIncome) async {
@@ -108,12 +91,12 @@ class Homepage extends HookConsumerWidget {
     }
 
     return ExpenseCard(
-        dateRange: ref.watch(homepageProvider).expenseDateRange,
+        dateRange: ref.watch(homepageProvider).expenseCardTimePeriod,
         expenseAmount: ref.watch(homepageProvider).expenseAmount,
         wallets: ref.watch(globalWalletsProvider),
         expenseCategories: ref.watch(globalExpenseCategoriesProvider),
         callbackWhenDateChange: (val) =>
-            callbackWhenExpenseCardDateChange(val, ref),
+            callbackWhenExpenseCardTimePeriodChanged(val, ref),
         callbackWhenSubmitNewExpense: callbackWhenSubmitNewExpense,
         callbackWhenSubmitNewExpenseCategory:
             callbackWhenSubmitNewExpenseCategory);

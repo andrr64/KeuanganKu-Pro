@@ -4,15 +4,15 @@ import 'package:keuanganku/backend/database/helper/income.dart';
 import 'package:keuanganku/enum/time_period.dart';
 
 class HomepageData {
-  final TimePeriod incomesDateRange;
-  final TimePeriod expenseDateRange;
-  final double incomesAmount;
+  final TimePeriod incomeCardTimePeriod;
+  final TimePeriod expenseCardTimePeriod;
+  final double incomeAmount;
   final double expenseAmount;
 
   HomepageData(
-      {this.incomesDateRange = TimePeriod.week,
-      this.expenseDateRange = TimePeriod.week,
-      this.incomesAmount = 0,
+      {this.incomeCardTimePeriod = TimePeriod.week,
+      this.expenseCardTimePeriod = TimePeriod.week,
+      this.incomeAmount = 0,
       this.expenseAmount = 0});
 
   HomepageData copyWith(
@@ -21,9 +21,9 @@ class HomepageData {
       TimePeriod? expenseDateRange,
       double? expenseAmount}) {
     return HomepageData(
-      incomesDateRange: incomeCardDateRange ?? incomesDateRange,
-      incomesAmount: incomesAmount ?? this.incomesAmount,
-      expenseDateRange: expenseDateRange ?? this.expenseDateRange,
+      incomeCardTimePeriod: incomeCardDateRange ?? incomeCardTimePeriod,
+      incomeAmount: incomesAmount ?? this.incomeAmount,
+      expenseCardTimePeriod: expenseDateRange ?? this.expenseCardTimePeriod,
       expenseAmount: expenseAmount ?? this.expenseAmount,
     );
   }
@@ -45,14 +45,21 @@ class HomepageProvider extends Notifier<HomepageData> {
     }
   }
 
+  Future<void> refreshData() async {
+    await updateIncomes();
+    await updateExpense();
+  }
+
   Future<void> updateIncomes() async => state = state.copyWith(
-      incomesAmount:
-          await DBHelperIncome().readTotalIncome(date: state.incomesDateRange));
+      incomesAmount: await DBHelperIncome()
+          .readTotalIncome(date: state.incomeCardTimePeriod));
+
   Future<void> updateExpense() async => state = state.copyWith(
       expenseAmount: await DBHelperExpense()
-          .readTotalExpenseByPeriod(dateRange: state.expenseDateRange));
+          .readTotalExpenseByPeriod(dateRange: state.expenseCardTimePeriod));
+
   Future<void> setIncomeCardDateRange(TimePeriod dateRange) async {
-    if (dateRange != state.incomesDateRange) {
+    if (dateRange != state.incomeCardTimePeriod) {
       state = state.copyWith(
           incomesAmount:
               await DBHelperIncome().readTotalIncome(date: dateRange),
@@ -61,7 +68,7 @@ class HomepageProvider extends Notifier<HomepageData> {
   }
 
   Future<void> setExpenseCardDateRange(TimePeriod dateRange) async {
-    if (dateRange != state.expenseDateRange) {
+    if (dateRange != state.expenseCardTimePeriod) {
       state = state.copyWith(
           expenseAmount: await DBHelperExpense()
               .readTotalExpenseByPeriod(dateRange: dateRange),

@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 class KBottomNavigationBar extends StatelessWidget {
@@ -14,8 +15,10 @@ class KBottomNavigationBar extends StatelessWidget {
         onDestinationSelected: callback,
         selectedIndex: index,
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.home), label: 'Money'),
+          NavigationDestination(
+              icon: Icon(FluentIcons.home_16_filled), label: 'Home'),
+          NavigationDestination(
+              icon: Icon(FluentIcons.wallet_16_filled), label: 'Wallets'),
         ]);
   }
 }

@@ -20,10 +20,10 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           PageView(
             controller: _pageController,
-            children: [
+            children: const [
               Scaffold(body: Center(child: Text('page 1'),),),
               Scaffold(body: Center(child: Text('page 2'),),),
-              const UserdataForm()
+              UserdataForm()
             ],
           ),
           Align(

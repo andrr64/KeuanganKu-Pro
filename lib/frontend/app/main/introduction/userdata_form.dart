@@ -3,7 +3,6 @@ import 'package:keuanganku/backend/database/helper/userdata.dart';
 import 'package:keuanganku/backend/database/model/userdata.dart';
 import 'package:keuanganku/enum/locale.dart';
 import 'package:keuanganku/frontend/app/app.dart';
-import 'package:keuanganku/frontend/app/main/home/home.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';

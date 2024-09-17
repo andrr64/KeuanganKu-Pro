@@ -6,16 +6,27 @@ import 'package:keuanganku/frontend/app/forms/category_form.dart';
 import 'package:keuanganku/frontend/app/main/analysis/analysis.dart';
 import 'package:keuanganku/frontend/app/main/empty_wallet_warning.dart';
 import 'package:keuanganku/frontend/app/snackbar.dart';
+import 'package:keuanganku/frontend/colors/font_color.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_numfield.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
+import 'package:keuanganku/frontend/components/icon_rating.dart';
+import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
 import 'package:keuanganku/frontend/components/utility/space_x.dart';
 import 'package:keuanganku/frontend/components/utility/space_y.dart';
 import 'package:keuanganku/frontend/utility/datetime_format.dart';
 import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:keuanganku/frontend/utility/page.dart';
+
+const expense_importants_text = [
+  'absolutely unnecessary',
+  'unnecessary',
+  'moderate',
+  'necessary',
+  'absolutely necessary',
+];
 
 class ExpenseForm extends StatefulWidget {
   final void Function(DBModelExpense) callbackWhenSubmitNewExpense;
@@ -43,7 +54,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
   late TextEditingController amountController;
   late TextEditingController descriptionController;
   late DBModelExpenseCategory categoryController;
-
+  int rating = 1;
   late DBModelWallet walletController;
   late DateTime dateController;
   late TextEditingController dateTextController;
@@ -91,7 +102,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
               description: titleController.text,
               wallet_id: walletController.id,
               category_id: categoryController.id,
-              rate: 0,
+              rate: rating,
               datetime:
                   combineDateTimeAndTimeOfDay(dateController, timeController));
           newExpense.insert().then((_) {
@@ -167,7 +178,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   List<Widget> fields(BuildContext context) {
     return [
-      dummyHeight(22.5),
+      vspace_22_5,
       kTextField(context, controller: titleController, title: 'Title',
           validator: (value) {
         if (value == null || value.isEmpty) {
@@ -175,14 +186,14 @@ class _ExpenseFormState extends State<ExpenseForm> {
         }
         return null;
       }, icon: const Icon(Icons.title), maxLines: 1),
-      dummyHeight(22.5),
+      vspace_22_5,
       kNumField(context,
           controller: amountController,
           title: 'Amount',
           icon: const Icon(Icons.attach_money),
           maxVal:
               walletController.total_income! - walletController.total_expense!),
-      dummyHeight(22.5),
+      vspace_22_5,
       Row(
         children: [
           SizedBox(
@@ -210,7 +221,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
               icon: const Icon(Icons.add)),
         ],
       ),
-      dummyHeight(22.5),
+      vspace_22_5,
       kDropdown<DBModelWallet>(
         context,
         label: 'Wallets',
@@ -220,16 +231,16 @@ class _ExpenseFormState extends State<ExpenseForm> {
         }).toList(),
         value: walletController,
         onChanged: (e) {
-          walletController = e?? walletController;
+          walletController = e ?? walletController;
         },
       ),
-      dummyHeight(22.5),
+      vspace_22_5,
       kTextField(context,
           title: 'Description (optional)',
           controller: descriptionController,
           icon: const Icon(Icons.description),
           maxLines: 2),
-      dummyHeight(22.5),
+      vspace_22_5,
       Row(
         children: [
           SizedBox(
@@ -265,7 +276,49 @@ class _ExpenseFormState extends State<ExpenseForm> {
           ),
         ],
       ),
-      dummyHeight(22.5),
+      vspace_15,
+      kText(context, 'How important is this expense?', KTStyle.title,
+          KTSType.medium),
+      vspace_15,
+      Container(
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(width: 0.75, color: Colors.black54)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: IconRatingBar5(
+                      icon: Icons.circle,
+                      colors: const [
+                        Colors.red,
+                        Colors.orange,
+                        Colors.yellow,
+                        Colors.lightGreen,
+                        Colors.green
+                      ],
+                      rating: rating,
+                      callback: (e) {
+                        if (e != rating) {
+                          rating = e;
+                          setState(() {});
+                        }
+                      })),
+              Expanded(
+                  flex: 7,
+                  child: kText(
+                      context,
+                      'It\'s ${expense_importants_text[rating - 1]}',
+                      KTStyle.label,
+                      KTSType.large))
+            ],
+          ),
+        ),
+      ),
+      vspace_22_5,
     ];
   }
 

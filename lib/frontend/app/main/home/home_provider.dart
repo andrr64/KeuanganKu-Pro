@@ -22,8 +22,8 @@ class HomepageData {
       double? expenseAmount}) {
     return HomepageData(
       incomeCardTimePeriod: incomeCardDateRange ?? incomeCardTimePeriod,
-      incomeAmount: incomesAmount ?? this.incomeAmount,
-      expenseCardTimePeriod: expenseDateRange ?? this.expenseCardTimePeriod,
+      incomeAmount: incomesAmount ?? incomeAmount,
+      expenseCardTimePeriod: expenseDateRange ?? expenseCardTimePeriod,
       expenseAmount: expenseAmount ?? this.expenseAmount,
     );
   }

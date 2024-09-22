@@ -11,7 +11,7 @@ class ExpenseLimiterProvider extends Notifier<List<DBModelExpenseLimiter>>{
   @override
   List<DBModelExpenseLimiter> build() => [];
 
-  void initData() async {
+  Future<void> initData() async {
     if (!init){
       state = await DBHelperExpenseLimiter().readAll(); 
       init = true;

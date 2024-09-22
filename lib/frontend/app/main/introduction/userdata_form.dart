@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:keuanganku/backend/database/helper/userdata.dart';
 import 'package:keuanganku/backend/database/model/userdata.dart';
 import 'package:keuanganku/enum/locale.dart';
-import 'package:keuanganku/frontend/app/app.dart';
 import 'package:keuanganku/frontend/components/buttons/k_outlined_button.dart';
 import 'package:keuanganku/frontend/components/form/k_dropdown.dart';
 import 'package:keuanganku/frontend/components/form/k_textfield.dart';
 import 'package:keuanganku/frontend/components/spacer/v_space.dart';
 import 'package:keuanganku/frontend/components/text/k_text.dart';
-import 'package:keuanganku/frontend/utility/page.dart';
 
 class UserdataForm extends StatefulWidget {
-  const UserdataForm({super.key});
+  const UserdataForm({super.key, required this.callback});
+  final void Function() callback;
 
   @override
   State<UserdataForm> createState() => _UserdataFormState();
@@ -34,7 +33,7 @@ class _UserdataFormState extends State<UserdataForm> {
       DBModelUserdata userdata = DBModelUserdata(id: 1, name: nameController.text, locale: localeController.idLocale);
       bool updated = await DBHelperUserdata().update(data: userdata);
       if (updated){
-        changePage(context, const KeuanganKuPro());
+        widget.callback();
       }
     }
   }

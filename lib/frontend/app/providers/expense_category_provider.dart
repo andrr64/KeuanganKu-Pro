@@ -13,7 +13,7 @@ class ExpenseCategoryProvider extends Notifier<List<DBModelExpenseCategory>>{
     return [];
   }
 
-  void initData() async {
+  Future<void> initData() async {
     if (!init){
       state = await DBHelperExpenseCategory().readAll();
       init = true;

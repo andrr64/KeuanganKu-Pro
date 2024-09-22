@@ -4,7 +4,8 @@ import 'package:keuanganku/frontend/colors/base_color.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
-  const IntroPage({super.key});
+  const IntroPage({super.key, required this.callback});
+  final void Function() callback;
 
   @override
   State<IntroPage> createState() => _IntroPageState();
@@ -20,10 +21,10 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           PageView(
             controller: _pageController,
-            children: const [
-              Scaffold(body: Center(child: Text('page 1'),),),
-              Scaffold(body: Center(child: Text('page 2'),),),
-              UserdataForm()
+            children: [
+              const Scaffold(body: Center(child: Text('page 1'),),),
+              const Scaffold(body: Center(child: Text('page 2'),),),
+              UserdataForm(callback: widget.callback,)
             ],
           ),
           Align(

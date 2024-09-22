@@ -14,7 +14,7 @@ class WalletListProvider extends Notifier<List<DBModelWallet>>{
     return [];
   }
 
-  void initData(){
+  Future<void> initData() async{
     if (!init){
       updateFromDatabase();
     }

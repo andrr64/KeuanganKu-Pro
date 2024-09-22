@@ -12,7 +12,7 @@ class IncomesCategoryProvider extends Notifier<List<DBModelIncomeCategory>>{
     return [];
   }
 
-  void initData() async {
+  Future<void> initData() async {
     if (!init){
       state = await DBHelperIncomeCategory().readAll();
       init = true;
